@@ -1,0 +1,13 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --clr-primary: #643ad9;
+  --clr-bg-light: #1f2226;
+  --clr-bg-dark: #181a1c;
+}
