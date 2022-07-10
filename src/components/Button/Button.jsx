@@ -1,7 +1,15 @@
-import React from "react";
+import styles from "./Button.module.scss";
 
-const Button = () => {
-  return <div>Button</div>;
+const Button = ({ children, leftIcon, rightIcon }) => {
+  return (
+    <button className={styles.btn}>
+      <span>
+        {leftIcon}
+        <span>{children}</span>
+        {rightIcon}
+      </span>
+    </button>
+  );
 };
 
 export default Button;
