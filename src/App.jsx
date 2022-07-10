@@ -1,12 +1,21 @@
-import { Add } from "@mui/icons-material";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import styles from "./App.module.scss";
-import Button from "./components/Button/Button";
+import Home from "./pages/Home/Home";
 
 const App = () => {
   return (
-    <div className={styles.container}>
-      <Button rightIcon={<Add />}>New Campaign</Button>
-    </div>
+    <Router basename="/">
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div className={styles.container}>
+              <Home />
+            </div>
+          }
+        />
+      </Routes>
+    </Router>
   );
 };
 
