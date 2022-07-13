@@ -1,0 +1,14 @@
+@import "../../utils/commons.scss";
+
+.container {
+  background: var(--clr-bg-dark);
+  height: 100vh;
+  width: 100%;
+
+  form {
+    @extend .flexCol;
+    > div {
+      margin: 1rem 0;
+    }
+  }
+}

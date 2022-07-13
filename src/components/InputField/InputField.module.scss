@@ -1,0 +1,23 @@
+@import "../../utils/commons.scss";
+
+.inputField {
+  @extend .flexCol;
+  align-items: flex-start;
+  min-width: 250px;
+  max-width: 300px;
+  input {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.06);
+    border-radius: 15px;
+    outline: none;
+    background: transparent;
+    width: 100%;
+    color: white;
+  }
+  label {
+    font-size: 0.9rem;
+    text-transform: capitalize;
+    color: white;
+  }
+}
