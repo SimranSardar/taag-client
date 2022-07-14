@@ -38,6 +38,11 @@
             >*{
                 margin-left:1rem;
             }
+            .fixedWidth{
+                @extend .flexRow;
+                width:50px;
+                height: 50px;
+            }
         }
       p{
         margin-left: 5.5rem;

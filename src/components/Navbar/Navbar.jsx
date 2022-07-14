@@ -6,6 +6,7 @@ import {
   LinearProgress,
   linearProgressClasses,
 } from "@mui/material";
+import { Breadcrumb } from "../";
 import { styled } from "@mui/system";
 import { icons, images } from "../../assets";
 import { useEffect, useState } from "react";
@@ -64,21 +65,16 @@ const Title = ({ title, isEditIconVisible, isBackIconVisible, brandName }) => {
       className={styles.title}
     >
       <div className={styles.top}>
-        {isBackIconVisible && <Breadcrumb />}
+        <div className={styles.fixedWidth}>
+          {isBackIconVisible && <Breadcrumb />}
+        </div>
+
         <h3>{title}</h3>
-        {isEditIconVisible && <img src={editing} alt="Editing" />}
+        <div className={styles.fixedWidth}>
+          {isEditIconVisible && <img src={editing} alt="Editing" />}
+        </div>
       </div>
       <p style={brandName ? { marginBottom: "0.35rem" } : {}}>{brandName}</p>
-    </div>
-  );
-};
-
-const Breadcrumb = () => {
-  return (
-    <div className={styles.breadcrumb}>
-      <IconButton>
-        <img src={back} alt="Back" />
-      </IconButton>
     </div>
   );
 };

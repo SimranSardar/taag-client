@@ -4,23 +4,7 @@ import { Navbar, Button } from "../../components";
 import styles from "./Home.module.scss";
 
 const Home = () => {
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        if (oldProgress === 100) {
-          return 0;
-        }
-        const diff = Math.random() * 10;
-        return Math.min(oldProgress + diff, 100);
-      });
-    }, 500);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+  const [progress, setProgress] = useState(30);
 
   return (
     <div className={styles.container}>
