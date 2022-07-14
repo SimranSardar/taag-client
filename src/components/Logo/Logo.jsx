@@ -1,7 +1,8 @@
-import logo from "../../assets/icons/logo.svg";
+import { icons } from "../../assets";
 import styles from "./Logo.module.scss";
 
 const Logo = ({ withText = false }) => {
+  const { logo } = icons;
   return (
     <div className={styles.logo}>
       <img src={logo} alt="logo" />
