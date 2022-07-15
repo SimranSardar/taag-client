@@ -69,7 +69,7 @@ const Title = ({ title, isEditIconVisible, isBackIconVisible, brandName }) => {
           {isBackIconVisible && <Breadcrumb />}
         </div>
 
-        <h3>{title}</h3>
+        <h3 style={{ color: "white" }}>{title}</h3>
         <div className={styles.fixedWidth}>
           {isEditIconVisible && <img src={editing} alt="Editing" />}
         </div>
