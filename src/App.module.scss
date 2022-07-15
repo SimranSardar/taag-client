@@ -11,14 +11,13 @@
   --clr-primary: #643ad9;
   --clr-bg-light: #1f2226;
   --clr-bg-dark: #181a1c;
+  --nav-height:100px;
 }
 
 .container {
   background: var(--clr-bg-dark);
   color: white;
-  display: flex;
-  height: 100vh;
+  margin-top: var(--nav-height);
+  height: calc( 100vh - var(--nav-height));
   width: 100%;
-  justify-content: center;
-  align-items: center;
 }
