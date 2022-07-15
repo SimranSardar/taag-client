@@ -1,20 +1,19 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import styles from "./App.module.scss";
-import Home from "./pages/Home/Home";
-import Login from "./pages/Login/Login";
+import { Home, Login, NewCampaign } from "./pages/";
+import { MainLayout } from "./layouts";
+import Campaigns from "./pages/Campaigns/Campaigns";
 
 const App = () => {
   return (
     <Router basename="/">
       <Routes>
+        <Route path="/" element={<MainLayout component={<Home />} />} />
         <Route
-          path="/"
-          element={
-            <div className={styles.container}>
-              <Home />
-            </div>
-          }
+          path="/new-campaign"
+          element={<MainLayout component={<NewCampaign />} />}
         />
+        <Route path="/campaigns" element={<Campaigns />} />
         <Route path="/login" element={<Login />} />
       </Routes>
     </Router>

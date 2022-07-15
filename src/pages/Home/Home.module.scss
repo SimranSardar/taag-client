@@ -1,6 +1,24 @@
 @import "../../utils/commons.scss";
 
-.container{
-    width:100%;
-    padding:1rem;
+.container {
+  width: 100%;
+  padding: 1rem;
+
+  .tableContainer {
+    width: 80%;
+    margin: 3rem auto;
+    border-radius: 10px !important;
+    overflow: hidden;
+    table {
+      background: #1f2226 !important;
+      color: white !important;
+    }
+    thead tr th {
+      color: white !important;
+      background: #21252a !important;
+    }
+    tr:hover {
+      color: #1f2226 !important;
+    }
+  }
 }

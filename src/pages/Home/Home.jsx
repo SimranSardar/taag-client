@@ -148,23 +148,45 @@ const Home = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "30%",
+      // width: "30%",
       ...getColumnSearchProps("name"),
     },
     {
-      title: "Age",
+      title: "Link",
       dataIndex: "age",
       key: "age",
-      width: "20%",
+      // width: "20%",
       ...getColumnSearchProps("age"),
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-      ...getColumnSearchProps("address"),
-      sorter: (a, b) => a.address.length - b.address.length,
+      title: "Followers",
+      dataIndex: "followers",
+      key: "age",
+      // width: "20%",
+      // ...getColumnSearchProps("age"),
+      sorter: (a, b) => a - b,
       sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: "Avg. Views",
+      dataIndex: "avgView",
+      key: "avgView",
+      sorter: (a, b) => a - b,
+      sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: "Deliverable",
+      dataIndex: "deliverable",
+      key: "deliverable",
+      // width: "20%",
+      ...getColumnSearchProps("deliverable"),
+    },
+    {
+      title: "Commercial Creator",
+      dataIndex: "commerciaCreator",
+      key: "commerciaCreator",
+      // width: "20%",
+      ...getColumnSearchProps("commerciaCreator"),
     },
   ];
 
@@ -172,14 +194,16 @@ const Home = () => {
     <div className={styles.container}>
       <Navbar
         titleProps={{
-          title: "New Campaign",
-          isEditIconVisible: true,
-          isBackIconVisible: true,
-          brandName: "Nike",
+          title: "Campaigns",
+          // isEditIconVisible: true,
+          // isBackIconVisible: true,
+          // brandName: "Nike",
         }}
-        progress={progress}
+        //   progress={progress}
       />
-      <Table columns={columns} dataSource={data} />
+      <div className={styles.tableContainer}>
+        <Table columns={columns} dataSource={data} />
+      </div>
     </div>
   );
 };

@@ -18,7 +18,6 @@ const Breadcrumb = () => {
     <div>
       <IconButton onClick={() => navigate("/" + previousRoute)}>
         <img src={back} alt="Back" />
-        {pathname}
       </IconButton>
     </div>
   );
