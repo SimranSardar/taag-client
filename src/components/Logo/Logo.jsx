@@ -5,7 +5,7 @@ const Logo = ({ withText = false }) => {
   return (
     <div className={styles.logo}>
       <img src={logo} alt="logo" />
-      {withText && <h3 style={{ marginLeft: "0", color: "white" }}>BIAS</h3>}
+      {withText && <h1 style={{ marginLeft: "0", color: "white" }}>BIAS</h1>}
     </div>
   );
 };
