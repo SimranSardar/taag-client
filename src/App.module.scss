@@ -4,7 +4,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Inter", sans-serif;
+  // font-family: "Inter", sans-serif;
+  font-family: 'Gilroy-Regular', sans-serif;
+  letter-spacing: 1px;
+  
 }
 
 :root {
@@ -15,9 +18,11 @@
 }
 
 .container {
-  background: var(--clr-bg-dark);
-  color: white;
-  margin-top: var(--nav-height);
-  height: calc( 100vh - var(--nav-height));
-  width: 100%;
+  // background: var(--clr-bg-dark);
+  // color: white;
+  // margin-top: var(--nav-height);
+  // height: calc( 100vh - var(--nav-height));
+  // width: 100%;
 }
+
+

@@ -4,3 +4,4 @@ export { default as Modal } from "./Modal/Modal";
 export { default as Navbar } from "./Navbar/Navbar";
 export { default as Logo } from "./Logo/Logo";
 export { default as Breadcrumb } from "./Breadcrumb/Breadcrumb";
+export { default as RadioButton } from "./RadioButton/RadioButton";

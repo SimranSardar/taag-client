@@ -1,0 +1,10 @@
+@import "../../utils/commons.scss";
+
+
+.container{
+  background: var(--clr-bg-dark);
+  color: white;
+  margin-top: var(--nav-height);
+  height: calc( 100vh - var(--nav-height));
+  width: 100%;
+}
