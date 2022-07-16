@@ -223,7 +223,7 @@ const CustomTable = ({ columns, data }) => {
   }, [data]);
 
   return (
-    <DataGrid
+    <StyledDataGrid
       className={styles.table}
       components={{
         NoRowsOverlay: CustomNoRowsOverlay,
@@ -234,5 +234,40 @@ const CustomTable = ({ columns, data }) => {
     />
   );
 };
+
+const StyledDataGrid = styled(DataGrid)(() => {
+  return {
+    border: "none",
+    borderRadius: "25px",
+    ".MuiTableHead-root .MuiTableRow-root .MuiTableCell-head": {
+      fontWeight: "bold",
+      resize: "horizontal",
+      overflowX: "overlay",
+      overflowY: "hidden",
+      borderRight: "1px solid",
+    },
+    ".MuiDataGrid-cellCheckbox": {
+      outline: "none",
+      "&:focus-within": {
+        outline: "none",
+      },
+    },
+    ".MuiDataGrid-columnHeaders": {
+      borderRadius: "25px",
+      border: "none",
+    },
+    ".MuiDataGrid-cell": {
+      "&:focus": {
+        outline: "none",
+      },
+    },
+    ".MuiDataGrid-row.Mui-selected": {
+      background: "rgba(255,255,255,0.1)",
+      "&:hover": {
+        background: "rgba(255,255,255,0.2)",
+      },
+    },
+  };
+});
 
 export default CustomTable;
