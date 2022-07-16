@@ -2,11 +2,12 @@ import { Add } from "@mui/icons-material";
 import { useState, useEffect, useRef } from "react";
 import { Navbar, Button } from "../../components";
 import styles from "./Home.module.scss";
-import "antd/dist/antd.css";
+// import "antd/dist/antd.css";
 import { SearchOutlined } from "@ant-design/icons";
 import { Button as AntButton, Input, Space, Table } from "antd";
 
 import Highlighter from "react-highlight-words";
+import { MainLayout } from "../../layouts";
 const data = [
   {
     key: "1",
@@ -191,7 +192,7 @@ const Home = () => {
   ];
 
   return (
-    <div className={styles.container}>
+    <MainLayout classes={[styles.container]}>
       <Navbar
         titleProps={{
           title: "Campaigns",
@@ -204,7 +205,7 @@ const Home = () => {
       <div className={styles.tableContainer}>
         <Table columns={columns} dataSource={data} />
       </div>
-    </div>
+    </MainLayout>
   );
 };
 
