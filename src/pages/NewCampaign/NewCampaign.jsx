@@ -3,6 +3,7 @@ import { Button, InputField, InputSelect, RadioButton } from "../../components";
 import { useState } from "react";
 import clsx from "clsx";
 import { MainLayout } from "../../layouts";
+import axios from "axios";
 
 const sectorOptions = [
   {
@@ -39,8 +40,18 @@ const AddCampaign = () => {
     });
   }
 
-  function submitHandler() {
+  function submitHandler(e) {
     //use "values" for form data
+    e.preventDefault();
+    axios
+      .post("http://localhost:5000/campaigns/create", {
+        ...values,
+        createdAt: new Date().toISOString(),
+        modifiedAt: new Date().toISOString(),
+      })
+      .then((res) => {
+        console.log(res);
+      });
   }
 
   return (
