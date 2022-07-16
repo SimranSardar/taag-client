@@ -5,16 +5,17 @@
   padding: 0;
   box-sizing: border-box;
   // font-family: "Inter", sans-serif;
-  font-family: 'Gilroy-Regular', sans-serif;
+  font-family: "Gilroy-Regular", sans-serif;
   letter-spacing: 1px;
-  
 }
 
 :root {
   --clr-primary: #643ad9;
   --clr-bg-light: #1f2226;
   --clr-bg-dark: #181a1c;
-  --nav-height:100px;
+  --nav-height: 100px;
+
+  --fixed-width: 80%;
 }
 
 .container {
@@ -24,5 +25,3 @@
   // height: calc( 100vh - var(--nav-height));
   // width: 100%;
 }
-
-

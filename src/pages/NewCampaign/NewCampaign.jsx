@@ -2,21 +2,23 @@ import styles from "./NewCampaign.module.scss";
 import { InputField, Navbar } from "../../components";
 import { useState } from "react";
 import clsx from "clsx";
+import { MainLayout } from "../../layouts";
 
 const AddCampaign = () => {
   const [progress, setProgress] = useState(30);
   return (
-    <div className={styles.container}>
-      <Navbar
-        titleProps={{
+    <MainLayout
+      classes={[styles.container]}
+      navbarProps={{
+        titleProps: {
           title: "New Campaign",
           isEditIconVisible: true,
           isBackIconVisible: true,
-          // brandName: "Nike",
-        }}
-        progress={progress}
-      />
-      <form action="">
+        },
+        progress,
+      }}
+    >
+      <form>
         <FormSection sectionName={"Brand / Agency"} sectionNumber={1}>
           <section className={styles.inputs}>
             <InputField label={"Brand Name"} />
@@ -33,7 +35,7 @@ const AddCampaign = () => {
           </section>
         </FormSection>
       </form>
-    </div>
+    </MainLayout>
   );
 };
 
