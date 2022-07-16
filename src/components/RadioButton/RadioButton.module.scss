@@ -19,16 +19,15 @@
     }
     label{
         z-index: 1;
-        @extend .fontG500;
-        
+        font-family: Gilroy-700;
         font-size: 0.9rem;
     }
     [type="radio"]:checked + div .background{
         position: absolute;
         width: 100%;
         height: 100%;
-        border: 3px solid var(--clr-primary);
-        border-radius: 10px;
+        border: 2px solid var(--clr-primary);
+        border-radius: 4px;
         background-color: rgba($color: #643AD90D, $alpha: 0.05);
         z-index: 0;
         top:0;
@@ -38,8 +37,8 @@
         position: absolute;
         width: 100%;
         height: 100%;
-        border: 3px solid   rgba($color: #C4C4C4, $alpha: 0.4);
-        border-radius: 10px;
+        border: 2px solid   rgba($color: #C4C4C4, $alpha: 0.4);
+        border-radius: 4px;
         z-index: 0;
         top:0;
         left:0;

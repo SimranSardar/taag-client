@@ -2,22 +2,31 @@
 
 .inputField {
   @extend .flexCol;
+  flex-direction: column-reverse;
   align-items: flex-start;
-  min-width: 250px;
-  max-width: 300px;
-  input {
-    margin-top: 1rem;
+  width: 300px;
+  input ,textarea{
     padding: 1rem;
     border: 2px solid rgba(255, 255, 255, 0.06);
-    border-radius: 15px;
+    border-radius: 4px;
     outline: none;
+    font-family: Gilroy-500 ;
+    font-size: 1rem;
     background: transparent;
     width: 100%;
+    resize: none;
     color: white;
   }
+  input:focus,textarea:focus{
+    border-color: var(--clr-primary);
+  }
   label {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    margin:0.5rem 0;
     text-transform: capitalize;
-    color: white;
+    color: #898989;
+  }
+  input:focus + label,textarea:focus + label{
+    color:white;
   }
 }
