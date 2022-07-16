@@ -7,3 +7,4 @@ export { default as Breadcrumb } from "./Breadcrumb/Breadcrumb";
 export { default as RadioButton } from "./RadioButton/RadioButton";
 export { default as InputSelect } from "./InputSelect/InputSelect";
 export { default as CustomTable } from "./CustomTable/CustomTable";
+export { default as SideMenu } from "./SideMenu/SideMenu";

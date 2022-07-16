@@ -1,4 +1,4 @@
-import { Navbar } from "../../components";
+import { Navbar, SideMenu } from "../../components";
 import styles from "./MainLayout.module.scss";
 import clsx from "clsx";
 
@@ -20,6 +20,7 @@ const MainLayout = ({
   return (
     <section className={styles.container}>
       <Navbar {...navbarProps} />
+      <SideMenu />
       <main className={clsx(classes)}>{children}</main>
     </section>
   );

@@ -1,6 +1,7 @@
 @import "../../utils/commons.scss";
 
 .container {
+  position: relative;
   background: var(--clr-bg-dark);
   color: white;
   // margin-top: var(--nav-height);
