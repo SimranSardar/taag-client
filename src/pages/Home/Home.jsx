@@ -1,13 +1,21 @@
-import { Button } from "../../components";
+import { Button, CustomTable } from "../../components";
 import styles from "./Home.module.scss";
 // import "antd/dist/antd.css";
 import { MainLayout } from "../../layouts";
-import CustomTable from "../../components/CustomTable/CustomTable";
 import { useNavigate } from "react-router-dom";
 
 const data = [
   {
     id: "1",
+    name: "John Brown",
+    link: "https://google.com",
+    followers: "20k",
+    avgViews: "100k",
+    deliverable: "YouTube",
+    commercialCreator: "150k",
+  },
+  {
+    id: "2",
     name: "John Brown",
     link: "https://google.com",
     followers: "20k",
