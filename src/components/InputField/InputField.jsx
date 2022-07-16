@@ -1,6 +1,16 @@
+import { useEffect } from "react";
 import styles from "./InputField.module.scss";
 
-const InputField = ({ type, label, placeholder, variant, value, onChange }) => {
+const InputField = ({
+  id,
+  type,
+  label,
+  placeholder,
+  variant,
+  value,
+  onChange,
+  ...remaining
+}) => {
   return (
     <div
       style={variant !== "large" ? {} : { width: "650px" }}
@@ -8,6 +18,8 @@ const InputField = ({ type, label, placeholder, variant, value, onChange }) => {
     >
       {variant !== "large" ? (
         <input
+          {...remaining}
+          id={id}
           type={type}
           value={value}
           placeholder={placeholder}
@@ -15,6 +27,8 @@ const InputField = ({ type, label, placeholder, variant, value, onChange }) => {
         />
       ) : (
         <textarea
+          {...remaining}
+          id={id}
           type={type}
           value={value}
           placeholder={placeholder}

@@ -1,14 +1,9 @@
-import { Add } from "@mui/icons-material";
-import { useState, useEffect, useRef } from "react";
-import { Navbar, Button } from "../../components";
+import { Button } from "../../components";
 import styles from "./Home.module.scss";
 // import "antd/dist/antd.css";
-import { SearchOutlined } from "@ant-design/icons";
-import { Button as AntButton, Input, Space, Table } from "antd";
-
-import Highlighter from "react-highlight-words";
 import { MainLayout } from "../../layouts";
 import CustomTable from "../../components/CustomTable/CustomTable";
+import { useNavigate } from "react-router-dom";
 
 const data = [
   {
@@ -23,8 +18,7 @@ const data = [
 ];
 
 const Home = () => {
-  const [progress, setProgress] = useState(30);
-
+  const navigate = useNavigate();
   const columns = [
     {
       headerName: "Name",
@@ -86,6 +80,16 @@ const Home = () => {
         },
       }}
     >
+      <div className={styles.header}>
+        <Button
+          onClick={() => {
+            console.log("hehe");
+            navigate("/new-campaign");
+          }}
+        >
+          New Campaign +
+        </Button>
+      </div>
       <div className={styles.tableContainer}>
         <CustomTable columns={columns} data={data} />
       </div>

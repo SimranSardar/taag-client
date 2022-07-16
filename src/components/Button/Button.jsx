@@ -1,8 +1,8 @@
 import styles from "./Button.module.scss";
 
-const Button = ({ children, leftIcon, rightIcon }) => {
+const Button = ({ children, leftIcon, rightIcon, type }) => {
   return (
-    <button className={styles.btn}>
+    <button type={type ? type : "button"} className={styles.btn}>
       <span>
         {leftIcon}
         <span>{children}</span>

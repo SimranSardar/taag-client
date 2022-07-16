@@ -1,12 +1,6 @@
 import styles from "./NewCampaign.module.scss";
-import {
-  Button,
-  InputField,
-  InputSelect,
-  Navbar,
-  RadioButton,
-} from "../../components";
-import { useEffect, useState } from "react";
+import { Button, InputField, InputSelect, RadioButton } from "../../components";
+import { useState } from "react";
 import clsx from "clsx";
 import { MainLayout } from "../../layouts";
 
@@ -32,9 +26,22 @@ const sectorOptions = [
 const AddCampaign = () => {
   const [progress, setProgress] = useState(30);
   const [value, setValue] = useState("");
-  useEffect(() => {
-    console.log(value);
-  });
+  const [values, setValues] = useState({});
+
+  function handleChange(e) {
+    const { id, value, name } = e.target;
+    console.log(e);
+    setValues((prev) => {
+      return {
+        ...prev,
+        [name ? name : id]: value,
+      };
+    });
+  }
+
+  function submitHandler() {
+    //use "values" for form data
+  }
 
   return (
     <MainLayout
@@ -48,17 +55,61 @@ const AddCampaign = () => {
         progress,
       }}
     >
-      <form>
+      <form onSubmit={submitHandler}>
         <FormSection sectionName={"Brand / Agency"} sectionNumber={1}>
           <section className={styles.inputs}>
-            <InputField label={"Brand Name"} />
-            <InputField label={"Sector"} />
-            <InputField label={"Website"} />
+            <InputField
+              required
+              onChange={handleChange}
+              id="brandName"
+              value={values?.brandName}
+              label={"Brand Name"}
+            />
+            <InputField
+              required
+              onChange={handleChange}
+              id="field"
+              value={values?.field}
+              label={"Sector"}
+            />
+            <InputField
+              required
+              onChange={handleChange}
+              id="website"
+              value={values?.website}
+              label={"Website"}
+            />
             <div className={styles.personInContact}>
-              <InputField label={"Person in Contact ID"} />
-              <InputField label={"Position"} />
-              <InputField type="email" label={"Email Id"} />
-              <InputField type="tel" label={"Contact"} />
+              <InputField
+                required
+                onChange={handleChange}
+                id="PICId"
+                value={values?.PICId}
+                label={"Person in Contact ID"}
+              />
+              <InputField
+                required
+                onChange={handleChange}
+                id="PICPosition"
+                value={values?.PICPosition}
+                label={"Position"}
+              />
+              <InputField
+                required
+                onChange={handleChange}
+                id="PICEmail"
+                value={values?.PICEmail}
+                type="email"
+                label={"Email Id"}
+              />
+              <InputField
+                required
+                onChange={handleChange}
+                id="PICContact"
+                value={values?.PICContact}
+                type="tel"
+                label={"Contact"}
+              />
             </div>
           </section>
         </FormSection>
@@ -66,28 +117,34 @@ const AddCampaign = () => {
           <section className={styles.inputs}>
             <div className={styles.radioButtonGroup}>
               <RadioButton
-                group={"Platform"}
+                required
+                name="platform"
                 label={"Youtube"}
                 value={"youtube"}
-                setValue={setValue}
+                onChange={handleChange}
               />
               <RadioButton
-                group={"Platform"}
+                required
+                name="platform"
                 label={"Instagram"}
                 value={"instagram"}
-                setValue={setValue}
+                onChange={handleChange}
               />
               <InputSelect
+                required
+                name="sector"
                 label={"Sector"}
-                value={value}
-                setValue={setValue}
+                value={values?.sector}
+                onChange={handleChange}
                 options={sectorOptions}
               />
             </div>
             <InputSelect
-              label={"Sector"}
-              value={value}
-              setValue={setValue}
+              required
+              name="deliverable"
+              label={"Deliverable"}
+              value={values?.deliverable}
+              onChange={handleChange}
               options={sectorOptions}
             />
           </section>
@@ -95,12 +152,16 @@ const AddCampaign = () => {
         <FormSection sectionName={"Brief"} sectionNumber={3}>
           <section className={styles.inputs}>
             <InputField
+              required
+              id="brief"
+              value={values?.brief}
               variant="large"
+              onChange={handleChange}
               placeholder={"Enter Brief for Influencer"}
             />
           </section>
         </FormSection>
-        <Button type="button">Continue</Button>
+        <Button type="submit">Continue</Button>
       </form>
     </MainLayout>
   );

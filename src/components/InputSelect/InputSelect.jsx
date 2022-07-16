@@ -6,18 +6,24 @@ import {
   styled,
 } from "@mui/material";
 
-const InputSelect = ({ value, setValue, options, label }) => {
-  function handleChange(e) {
-    setValue(e.target.value);
-  }
+const InputSelect = ({
+  name,
+  value,
+  onChange,
+  options,
+  label,
+  ...remaining
+}) => {
   return (
     <StyledMUIFormControl sx={{ minWidth: 120 }}>
       <StyledFormHelperText sx={{ color: "white" }}>
         {label}
       </StyledFormHelperText>
       <StyledMUISelect
+        {...remaining}
+        name={name}
         value={value}
-        onChange={handleChange}
+        onChange={onChange}
         displayEmpty
         inputProps={{ "aria-label": "Without label" }}
       >
@@ -25,7 +31,11 @@ const InputSelect = ({ value, setValue, options, label }) => {
           <em>None</em>
         </MenuItem>
         {options.map((option, index) => {
-          return <MenuItem value={option?.value}>{option?.name}</MenuItem>;
+          return (
+            <MenuItem key={index} value={option?.value}>
+              {option?.name}
+            </MenuItem>
+          );
         })}
       </StyledMUISelect>
     </StyledMUIFormControl>

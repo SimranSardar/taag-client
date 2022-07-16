@@ -1,19 +1,16 @@
 import styles from "./RadioButton.module.scss";
 
-const RadioButton = ({ label, group, value, setValue }) => {
+const RadioButton = ({ name, label, value, onChange, ...remaining }) => {
   const randomId = Date.now() * (3 * Math.random() - 2 * Math.random()) * 1000;
-
-  function handleChange(e) {
-    if (e.target.checked) setValue(e.target.value);
-  }
 
   return (
     <label htmlFor={randomId} className={styles.container}>
       <input
-        onChange={handleChange}
+        {...remaining}
         id={randomId}
+        onChange={onChange}
         type="radio"
-        name={group}
+        name={name}
         value={value}
       />
       <div>
