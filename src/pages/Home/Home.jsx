@@ -11,9 +11,9 @@ const Home = () => {
       <Navbar
         titleProps={{
           title: "Campaigns",
-          // isEditIconVisible: true,
-          // isBackIconVisible: true,
-          // brandName: "Nike",
+          isEditIconVisible: true,
+          isBackIconVisible: true,
+          brandName: "Nike",
         }}
         //   progress={progress}
       />

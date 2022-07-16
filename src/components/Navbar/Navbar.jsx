@@ -74,7 +74,7 @@ const Title = ({ title, isEditIconVisible, isBackIconVisible, brandName }) => {
           {isEditIconVisible && <img src={editing} alt="Editing" />}
         </div>
       </div>
-      <p style={brandName ? { marginBottom: "0.35rem" } : {}}>{brandName}</p>
+      <p style={brandName ? { marginBottom: "6px" } : {}}>{brandName}</p>
     </div>
   );
 };
