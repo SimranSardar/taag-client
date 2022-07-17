@@ -27,9 +27,6 @@ const InputSelect = ({
         displayEmpty
         inputProps={{ "aria-label": "Without label" }}
       >
-        <MenuItem value="">
-          <em>None</em>
-        </MenuItem>
         {options.map((option, index) => {
           return (
             <MenuItem key={index} value={option?.value}>

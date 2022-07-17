@@ -67,6 +67,7 @@ const Search = ({ searchProps }) => {
       />
 
       <img src={search} alt="Search" />
+      <div className={styles.autofill}></div>
     </div>
   );
 };
