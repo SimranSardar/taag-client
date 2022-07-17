@@ -16,11 +16,12 @@ const MainLayout = ({
   children,
   navbarProps = defaultNavbarProps,
   classes = [],
+  isSideMenuVisible = false,
 }) => {
   return (
     <section className={styles.container}>
       <Navbar {...navbarProps} />
-      <SideMenu />
+      <SideMenu isSideMenuVisible={isSideMenuVisible} />
       <main className={clsx(classes)}>{children}</main>
     </section>
   );

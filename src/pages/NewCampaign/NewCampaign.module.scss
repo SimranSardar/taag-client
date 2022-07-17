@@ -3,18 +3,14 @@
 .container {
   position: relative;
   //   background-color: var(--clr-bg-dark);
-  margin-top: var(--nav-height);
-  width: var(--fixed-width);
-  margin: 4rem auto;
+  // margin-top: var(--nav-height);
+  margin: 2rem auto;
   margin-bottom: 0;
   form {
     background-color: #1f2226;
     border-radius: 20px;
     // margin: 3rem 4rem;
     padding: 3rem 4rem;
-    button{
-        margin-left: 60px;
-    }
   }
   .formSection {
     margin: 2rem 0;
