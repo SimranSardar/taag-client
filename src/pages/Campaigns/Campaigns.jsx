@@ -73,6 +73,7 @@ const Campaigns = () => {
         },
       }}
       classes={[styles.container]}
+      isSideMenuVisible
     >
       <div className={styles.tableContainer}>
         <CustomTable columns={columns} data={campaigns} />

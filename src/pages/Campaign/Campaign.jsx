@@ -20,7 +20,7 @@ const Campaign = () => {
     }
   }, [id]);
 
-  return <MainLayout></MainLayout>;
+  return <MainLayout>This is {campaign?.name}</MainLayout>;
 };
 
 export default Campaign;

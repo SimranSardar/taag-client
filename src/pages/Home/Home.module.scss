@@ -2,13 +2,26 @@
 
 .container {
   width: 100%;
-  padding: 1rem;
-  padding: 2rem 1rem;
+  padding: 0rem 1rem;
   .tableContainer {
     // width: var(--fixed-width);
     
     // border-radius: 10px !important;
     // overflow: hidden;
     height: 500px;
+  }
+  .header{
+    @extend .flexRow;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    >div{
+      @extend .flexRow;
+      align-items: flex-end;
+    justify-content: space-between;
+    button{
+      margin-left: 1rem;
+    }
+    }
   }
 }

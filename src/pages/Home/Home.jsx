@@ -121,20 +121,22 @@ const Home = () => {
           onChange={handleChange}
           placeholder={"Search Campaign"}
         />
-        <InputSelect
-          placeholder={"Sort By: Week/Month"}
-          name={"sortBy"}
-          onChange={handleChange}
-          options={sortingOptions}
-          value={filters?.sortBy ? filters.sortBy : ""}
-        />
-        <Button
-          onClick={() => {
-            navigate("/new-campaign");
-          }}
-        >
-          New Campaign +
-        </Button>
+        <div>
+          <InputSelect
+            label={"Sort By: Week/Month"}
+            name={"sortBy"}
+            onChange={handleChange}
+            options={sortingOptions}
+            value={filters?.sortBy ? filters.sortBy : ""}
+          />
+          <Button
+            onClick={() => {
+              navigate("/new-campaign");
+            }}
+          >
+            New Campaign +
+          </Button>
+        </div>
       </div>
       <div className={styles.tableContainer}>
         <CustomTable columns={columns} data={data} />
