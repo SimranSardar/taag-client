@@ -1,8 +1,9 @@
-import { Button, CustomTable } from "../../components";
+import { Button, CustomTable, InputField, InputSelect } from "../../components";
 import styles from "./Home.module.scss";
 // import "antd/dist/antd.css";
 import { MainLayout } from "../../layouts";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const data = [
   {
@@ -25,8 +26,31 @@ const data = [
   },
 ];
 
+const sortingOptions = [
+  {
+    name: "Week",
+    value: "week",
+  },
+  {
+    name: "Month",
+    value: "month",
+  },
+];
+
 const Home = () => {
   const navigate = useNavigate();
+  const [filters, setFilters] = useState({});
+
+  function handleChange(e) {
+    const { id, value, name } = e.target;
+    setFilters((prev) => {
+      return {
+        ...prev,
+        [name ? name : id]: value,
+      };
+    });
+  }
+
   const columns = [
     {
       headerName: "Name",
@@ -89,9 +113,22 @@ const Home = () => {
       }}
     >
       <div className={styles.header}>
+        <InputField
+          id="search"
+          type="search"
+          value={filters?.search ? filters.search : ""}
+          onChange={handleChange}
+          placeholder={"Search Campaign"}
+        />
+        <InputSelect
+          placeholder={"Sort By: Week/Month"}
+          name={"sortBy"}
+          onChange={handleChange}
+          options={sortingOptions}
+          value={filters?.sortBy ? filters.sortBy : ""}
+        />
         <Button
           onClick={() => {
-            console.log("hehe");
             navigate("/new-campaign");
           }}
         >

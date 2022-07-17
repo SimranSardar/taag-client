@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 
-const SideMenu = () => {
+const SideMenu = ({ isSideMenuVisible }) => {
   const [pathName, setPathName] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
@@ -13,7 +13,10 @@ const SideMenu = () => {
     setPathName(location?.pathname);
   }, []);
   return (
-    <div className={styles.container}>
+    <div
+      style={isSideMenuVisible ? {} : { display: "none" }}
+      className={styles.container}
+    >
       <div
         className={
           pathName === "/" ? clsx(styles.button, styles.active) : styles.button
