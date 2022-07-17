@@ -25,4 +25,8 @@
       margin: 0 0.5rem;
     }
   }
+  &:disabled,&:disabled:hover{
+    background: grey;
+    transform: none;
+  }
 }

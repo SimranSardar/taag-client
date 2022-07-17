@@ -1,6 +1,6 @@
 import styles from "./NewCampaign.module.scss";
 import { Button, InputField, InputSelect, RadioButton } from "../../components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { MainLayout } from "../../layouts";
 import axios from "axios";
@@ -25,13 +25,14 @@ const sectorOptions = [
 ];
 
 const AddCampaign = () => {
-  const [progress, setProgress] = useState(30);
+  const totalNoOfFields = 11; //12 considering campaign name
+  const [progress, setProgress] = useState(0.000001);
   const [value, setValue] = useState("");
   const [values, setValues] = useState({});
 
   function handleChange(e) {
     const { id, value, name } = e.target;
-    console.log(id, value, name);
+    // console.log(id, value, name);
     setValues((prev) => {
       return {
         ...prev,
@@ -39,6 +40,19 @@ const AddCampaign = () => {
       };
     });
   }
+
+  function handleProgress() {}
+
+  useEffect(() => {
+    setProgress(
+      (Object.values(values).filter((item) => item).length / totalNoOfFields) *
+        100 || 0.0000001
+    );
+  }, [values]);
+
+  useEffect(() => {
+    console.log(progress);
+  });
 
   async function submitHandler(e) {
     //use "values" for form data
@@ -75,13 +89,13 @@ const AddCampaign = () => {
       createdAt: new Date().toISOString(), // ISOString
       updatedAt: new Date().toISOString(), // ISOString
     };
-    console.log({ campaign });
+    // console.log({ campaign });
     const res = await axios.post(
       "http://localhost:5000/campaigns/create",
       campaign
     );
 
-    console.log({ res });
+    // console.log({ res });
   }
 
   return (
@@ -91,7 +105,7 @@ const AddCampaign = () => {
       navbarProps={{
         titleProps: {
           id: "name",
-          title: values?.name || "New Campaign",
+          name: values?.name || "New Campaign",
           onChange: handleChange,
           isEditIconVisible: true,
           isBackIconVisible: true,
@@ -205,7 +219,9 @@ const AddCampaign = () => {
             />
           </section>
         </FormSection>
-        <Button type="submit">Continue</Button>
+        <Button disabled={progress < 1} type="submit">
+          Continue
+        </Button>
       </form>
     </MainLayout>
   );
