@@ -4,6 +4,7 @@ import { Home, Login, NewCampaign } from "./pages/";
 import Campaign from "./pages/Campaign/Campaign";
 import Campaigns from "./pages/Campaigns/Campaigns";
 import AuthContextProvider from "./utils/auth/AuthContext";
+import PrivateRoute from "./utils/auth/PrivateRoute";
 import CampaignContextProvider from "./utils/contexts/CampaignContext";
 
 const App = () => {
@@ -15,10 +16,19 @@ const App = () => {
         </Routes>
         <CampaignContextProvider>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/new-campaign" element={<NewCampaign />} />
-            <Route path="/campaigns" element={<Campaigns />} />
-            <Route path="/campaign/:id" element={<Campaign />} />
+            <Route path="/" element={<PrivateRoute component={<Home />} />} />
+            <Route
+              path="/new-campaign"
+              element={<PrivateRoute component={<NewCampaign />} />}
+            />
+            <Route
+              path="/campaigns"
+              element={<PrivateRoute component={<Campaigns />} />}
+            />
+            <Route
+              path="/campaign/:id"
+              element={<PrivateRoute component={<Campaign />} />}
+            />
           </Routes>
         </CampaignContextProvider>
       </AuthContextProvider>
