@@ -3,7 +3,8 @@ import styles from "./Home.module.scss";
 // import "antd/dist/antd.css";
 import { MainLayout } from "../../layouts";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { CampgaignContext } from "../../utils/contexts/CampaignContext";
 
 const data = [
   {

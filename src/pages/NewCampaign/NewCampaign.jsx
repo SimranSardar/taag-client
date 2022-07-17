@@ -3,6 +3,7 @@ import { Button, InputField, InputSelect, RadioButton } from "../../components";
 import { useState } from "react";
 import clsx from "clsx";
 import { MainLayout } from "../../layouts";
+import axios from "axios";
 
 const sectorOptions = [
   {
@@ -39,8 +40,48 @@ const AddCampaign = () => {
     });
   }
 
-  function submitHandler() {
+  async function submitHandler(e) {
     //use "values" for form data
+    e.preventDefault();
+    let campaign = {
+      name: values.name || "Test",
+      brand: {
+        name: values.brandName,
+        sector: values.brandSector, // Beauty | Fashion | Health
+        website: values.website, // URL
+        poc: {
+          id: values.PICId,
+          position: values.PICPosition,
+          email: values.PICEmail,
+          contact: values.PICContact, // +91xxxxxxxxxx
+        },
+      },
+      platform: values.platform, // youtube | instagram
+      sector: values.sector, // Beauty | Fashion | Health | Lifestyle
+      deliverable: values.deliverable, // video | image
+      brief: values.brief,
+      // validity: {
+      //   from: { type: String, required: true }, //  ISOString
+      //   to: { type: String, required: true }, //  ISOString
+      // },
+      selectedInfluencers: [],
+      brandAmount: 0,
+      currency: "INR", // INR | USD
+      agencyFee: 0,
+      totalCreators: 0,
+      totalAverageViews: 0,
+      status: "draft", // draft | locked | finished
+      sharedWith: [],
+      createdAt: new Date().toISOString(), // ISOString
+      updatedAt: new Date().toISOString(), // ISOString
+    };
+    console.log({ campaign });
+    const res = await axios.post(
+      "http://localhost:5000/campaigns/create",
+      campaign
+    );
+
+    console.log({ res });
   }
 
   return (
@@ -71,8 +112,8 @@ const AddCampaign = () => {
             <InputField
               required
               onChange={handleChange}
-              id="field"
-              value={values?.field}
+              id="brandSector"
+              value={values?.brandSector}
               label={"Sector"}
             />
             <InputField
