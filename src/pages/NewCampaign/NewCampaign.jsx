@@ -30,6 +30,7 @@ const AddCampaign = () => {
 
   function handleChange(e) {
     const { id, value, name } = e.target;
+    console.log(id, value, name);
     setValues((prev) => {
       return {
         ...prev,
@@ -48,7 +49,9 @@ const AddCampaign = () => {
       isSideMenuVisible
       navbarProps={{
         titleProps: {
-          title: "New Campaign",
+          id: "name",
+          title: values?.name || "New Campaign",
+          onChange: handleChange,
           isEditIconVisible: true,
           isBackIconVisible: true,
         },

@@ -21,7 +21,9 @@ const Navbar = ({ titleProps, progress }) => {
         <div className={styles.left}>
           <Logo />
           <Title
+            id={titleProps?.id}
             title={titleProps?.title}
+            onChange={titleProps?.onChange}
             isEditIconVisible={titleProps?.isEditIconVisible}
             isBackIconVisible={titleProps?.isBackIconVisible}
             brandName={titleProps?.brandName}
@@ -58,7 +60,14 @@ const BellButton = ({ newNotifications }) => {
   );
 };
 
-const Title = ({ title, isEditIconVisible, isBackIconVisible, brandName }) => {
+const Title = ({
+  id,
+  title,
+  isEditIconVisible,
+  isBackIconVisible,
+  brandName,
+  onChange,
+}) => {
   return (
     <div
       style={brandName ? { alignSelf: "flex-end" } : {}}
@@ -68,8 +77,7 @@ const Title = ({ title, isEditIconVisible, isBackIconVisible, brandName }) => {
         <div className={styles.fixedWidth}>
           {isBackIconVisible && <Breadcrumb />}
         </div>
-
-        <h3 style={{ color: "white" }}>{title}</h3>
+        <input id={id} value={title} type="text" onChange={onChange} />
         <div className={styles.fixedWidth}>
           {isEditIconVisible && <img src={editing} alt="Editing" />}
         </div>
