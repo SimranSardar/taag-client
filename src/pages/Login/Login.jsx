@@ -24,13 +24,10 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_USERS_API}/auth/login/`,
-        {
-          email,
-          password,
-        }
-      );
+      const response = await axios.post(`http://localhost:5000/auth/login/`, {
+        email,
+        password,
+      });
 
       console.log({ decoded: decodeToken(response.data.token), response });
 
