@@ -10,11 +10,14 @@ const CampaignContextProvider = ({ children }) => {
   const { currentUser } = useContext(AuthContext);
 
   async function fetchCampaigns(status = "all") {
-    const res = await axios.get("http://localhost:5000/campaigns/all", {
-      params: {
-        status,
-      },
-    });
+    const res = await axios.get(
+      `${process.env.REACT_APP_API_URI}/campaigns/all`,
+      {
+        params: {
+          status,
+        },
+      }
+    );
     setCampaigns(
       res.data?.map((campaign) => {
         let newObj = { ...campaign };
@@ -26,9 +29,12 @@ const CampaignContextProvider = ({ children }) => {
   }
 
   async function fetchCampaign(id) {
-    return await axios.get("http://localhost:5000/campaigns/single/", {
-      params: { id },
-    });
+    return await axios.get(
+      `${process.env.REACT_APP_API_URI}/campaigns/single/`,
+      {
+        params: { id },
+      }
+    );
   }
 
   useEffect(() => {

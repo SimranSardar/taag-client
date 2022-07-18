@@ -4,7 +4,8 @@
   @extend .flexCol;
   flex-direction: column-reverse;
   align-items: flex-start;
-  width: 300px;
+  width: fit-content;
+    width: 300px;
   input,
   textarea {
     padding: calc(1rem + 2px);

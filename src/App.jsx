@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import styles from "./App.module.scss";
-import { Home, Login, NewCampaign } from "./pages/";
+import { Home, Login, NewCampaign, Register } from "./pages/";
 import Campaign from "./pages/Campaign/Campaign";
 import Campaigns from "./pages/Campaigns/Campaigns";
 import AuthContextProvider from "./utils/auth/AuthContext";
@@ -13,6 +13,7 @@ const App = () => {
       <AuthContextProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
         <CampaignContextProvider>
           <Routes>
@@ -21,6 +22,7 @@ const App = () => {
               path="/new-campaign"
               element={<PrivateRoute component={NewCampaign} />}
             />
+
             <Route
               path="/campaigns"
               element={<PrivateRoute component={Campaigns} />}

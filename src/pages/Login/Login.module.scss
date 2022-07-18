@@ -2,13 +2,24 @@
 
 .container {
   background: var(--clr-bg-dark);
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
-
+  
+  .buttons{
+    @extend .flexRow;
+    p{
+      cursor: pointer;
+      user-select: none;
+      &:hover{
+        text-shadow:0 0 1px white;
+      }
+    }
+  }
   form {
     @extend .flexCol;
     > div {
       margin: 1rem 0;
+      width:400px;
     }
   }
   .error {

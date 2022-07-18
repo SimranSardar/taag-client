@@ -29,4 +29,7 @@
     background: grey;
     transform: none;
   }
+  &:focus{
+    box-shadow: 0 0 0px 1px white;
+  }
 }

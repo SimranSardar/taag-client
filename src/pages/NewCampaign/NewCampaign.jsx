@@ -91,7 +91,7 @@ const AddCampaign = () => {
     };
     // console.log({ campaign });
     const res = await axios.post(
-      "http://localhost:5000/campaigns/create",
+      `${process.env.REACT_APP_API_URI}/campaigns/create`,
       campaign
     );
 
