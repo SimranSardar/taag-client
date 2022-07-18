@@ -16,18 +16,18 @@ const App = () => {
         </Routes>
         <CampaignContextProvider>
           <Routes>
-            <Route path="/" element={<PrivateRoute component={<Home />} />} />
+            <Route path="/" element={<PrivateRoute component={Home} />} />
             <Route
               path="/new-campaign"
-              element={<PrivateRoute component={<NewCampaign />} />}
+              element={<PrivateRoute component={NewCampaign} />}
             />
             <Route
               path="/campaigns"
-              element={<PrivateRoute component={<Campaigns />} />}
+              element={<PrivateRoute component={Campaigns} />}
             />
             <Route
               path="/campaign/:id"
-              element={<PrivateRoute component={<Campaign />} />}
+              element={<PrivateRoute component={Campaign} />}
             />
           </Routes>
         </CampaignContextProvider>

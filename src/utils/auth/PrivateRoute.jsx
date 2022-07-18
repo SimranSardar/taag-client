@@ -5,7 +5,7 @@ import { AuthContext } from "./AuthContext";
 const PrivateRoute = ({ component: RouteComponent }) => {
   const { currentUser } = useContext(AuthContext);
 
-  if (!currentUser) {
+  if (!currentUser && !localStorage.getItem("token")) {
     return <Navigate to="/login" />;
   }
 
