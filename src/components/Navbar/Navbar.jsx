@@ -22,7 +22,8 @@ const Navbar = ({ titleProps, progress }) => {
           <Logo />
           <Title
             id={titleProps?.id}
-            title={titleProps?.title}
+            disabled={titleProps?.disabled}
+            name={titleProps?.name}
             onChange={titleProps?.onChange}
             isEditIconVisible={titleProps?.isEditIconVisible}
             isBackIconVisible={titleProps?.isBackIconVisible}
@@ -39,20 +40,20 @@ const Navbar = ({ titleProps, progress }) => {
   );
 };
 
-const ProfileButton = () => {
+const ProfileButton = ({ ...remaining }) => {
   return (
     <div className={styles.profile}>
-      <IconButton>
+      <IconButton {...remaining}>
         <img src={profile} alt="Profile" />
       </IconButton>
     </div>
   );
 };
 
-const BellButton = ({ newNotifications }) => {
+const BellButton = ({ newNotifications, ...remaining }) => {
   return (
     <div className={styles.bellButton}>
-      <IconButton>
+      <IconButton {...remaining}>
         <img src={bell} alt="Bell" />
         {newNotifications && <span className={styles.newNotifications}></span>}
       </IconButton>
@@ -62,12 +63,15 @@ const BellButton = ({ newNotifications }) => {
 
 const Title = ({
   id,
-  title,
+  name,
   isEditIconVisible,
   isBackIconVisible,
   brandName,
   onChange,
+  disabled,
+  ...remaining
 }) => {
+  console.log(remaining);
   return (
     <div
       style={brandName ? { alignSelf: "flex-end" } : {}}
@@ -77,10 +81,17 @@ const Title = ({
         <div className={styles.fixedWidth}>
           {isBackIconVisible && <Breadcrumb />}
         </div>
-        <input id={id} value={title} type="text" onChange={onChange} />
-        <div className={styles.fixedWidth}>
+        <input
+          id={id}
+          value={name}
+          type="text"
+          disabled={disabled}
+          onChange={onChange}
+          {...remaining}
+        />
+        <label htmlFor={id} className={styles.fixedWidth}>
           {isEditIconVisible && <img src={editing} alt="Editing" />}
-        </div>
+        </label>
       </div>
       <p style={brandName ? { marginBottom: "6px" } : {}}>{brandName}</p>
     </div>

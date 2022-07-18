@@ -109,7 +109,8 @@ const Home = () => {
       classes={[styles.container]}
       navbarProps={{
         titleProps: {
-          title: "Campaigns",
+          name: "Campaigns",
+          disabled: true,
         },
       }}
     >

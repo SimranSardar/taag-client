@@ -4,10 +4,11 @@ import clsx from "clsx";
 
 const defaultNavbarProps = {
   titleProps: {
-    title: "",
+    name: "",
     isEditIconVisible: false,
     isBackIconVisible: false,
     brandName: "",
+    disabled: false,
   },
   progress: 0,
 };
