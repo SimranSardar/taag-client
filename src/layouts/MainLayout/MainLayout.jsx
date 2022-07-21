@@ -1,6 +1,7 @@
 import { Navbar, SideMenu } from "../../components";
 import styles from "./MainLayout.module.scss";
 import clsx from "clsx";
+import MoreInformation from "../../components/MoreInformation/MoreInformation";
 
 const defaultNavbarProps = {
   titleProps: {
@@ -18,11 +19,13 @@ const MainLayout = ({
   navbarProps = defaultNavbarProps,
   classes = [],
   isSideMenuVisible = false,
+  moreInformationProps,
 }) => {
   return (
     <section className={styles.container}>
       <Navbar {...navbarProps} />
       <SideMenu isSideMenuVisible={isSideMenuVisible} />
+      <MoreInformation moreInformationProps={moreInformationProps} />
       <main className={clsx(classes)}>{children}</main>
     </section>
   );

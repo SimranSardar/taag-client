@@ -29,7 +29,7 @@ const InputSelect = ({
       >
         {options.map((option, index) => {
           return (
-            <MenuItem key={index} value={option?.value}>
+            <MenuItem sx={{ color: "black" }} key={index} value={option?.value}>
               {option?.name}
             </MenuItem>
           );
@@ -63,10 +63,11 @@ const StyledMUISelect = styled(MUISelect)(() => {
     minWidth: "300px",
     fontFamily: "Gilroy-500 ",
     border: " 2px solid rgba(255, 255, 255, 0.06)",
-    color: "white",
+    color: "white !important",
     ".MuiOutlinedInput-notchedOutline": {
       display: "none",
     },
+
     "&.Mui-focused": {
       border: "2px solid var(--clr-primary)",
     },

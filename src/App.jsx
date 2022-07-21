@@ -1,8 +1,13 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import styles from "./App.module.scss";
-import { Home, Login, NewCampaign, Register } from "./pages/";
-import Campaign from "./pages/Campaign/Campaign";
-import Campaigns from "./pages/Campaigns/Campaigns";
+import {
+  Home,
+  Login,
+  NewCampaign,
+  Register,
+  Campaign,
+  Campaigns,
+} from "./pages/";
 import AuthContextProvider from "./utils/auth/AuthContext";
 import PrivateRoute from "./utils/auth/PrivateRoute";
 import CampaignContextProvider from "./utils/contexts/CampaignContext";
@@ -26,6 +31,10 @@ const App = () => {
             <Route
               path="/campaigns"
               element={<PrivateRoute component={Campaigns} />}
+            />
+            <Route
+              path="/campaigns/:id"
+              element={<PrivateRoute component={Campaign} />}
             />
             <Route
               path="/campaign/:id"

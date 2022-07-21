@@ -114,35 +114,45 @@ const Home = () => {
         },
       }}
     >
-      <div className={styles.header}>
-        <InputField
-          id="search"
-          type="search"
-          value={filters?.search ? filters.search : ""}
-          onChange={handleChange}
-          placeholder={"Search Campaign"}
-        />
-        <div>
-          <InputSelect
-            label={"Sort By: Week/Month"}
-            name={"sortBy"}
-            onChange={handleChange}
-            options={sortingOptions}
-            value={filters?.sortBy ? filters.sortBy : ""}
-          />
-          <Button
-            onClick={() => {
-              navigate("/new-campaign");
-            }}
-          >
-            New Campaign +
-          </Button>
-        </div>
-      </div>
+      <Header
+        filters={filters}
+        handleChange={handleChange}
+        navigate={navigate}
+      />
       <div className={styles.tableContainer}>
         <CustomTable columns={columns} data={data} />
       </div>
     </MainLayout>
+  );
+};
+
+const Header = ({ filters, handleChange, navigate }) => {
+  return (
+    <div className={styles.header}>
+      <InputField
+        id="search"
+        type="search"
+        value={filters?.search ? filters.search : ""}
+        onChange={handleChange}
+        placeholder={"Search Campaign"}
+      />
+      <div>
+        <InputSelect
+          label={"Sort By: Week/Month"}
+          name={"sortBy"}
+          onChange={handleChange}
+          options={sortingOptions}
+          value={filters?.sortBy ? filters.sortBy : ""}
+        />
+        <Button
+          onClick={() => {
+            navigate("/new-campaign");
+          }}
+        >
+          New Campaign +
+        </Button>
+      </div>
+    </div>
   );
 };
 

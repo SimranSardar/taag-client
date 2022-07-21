@@ -2,10 +2,11 @@ import clsx from "clsx";
 import { useEffect } from "react";
 import styles from "./InputField.module.scss";
 import { icons } from "../../assets";
+import { forwardRef } from "react";
 
-const { search } = icons;
+const { searchIcon } = icons;
 
-const InputField = (props) => {
+const InputField = forwardRef((props, ref) => {
   const {
     id,
     type,
@@ -17,7 +18,7 @@ const InputField = (props) => {
     children,
     ...remaining
   } = { ...props };
-  if (type === "search") return <Search searchProps={props} />;
+  if (type === "search") return <Search searchProps={props} ref={ref} />;
   return (
     <div
       style={variant !== "large" ? {} : { width: "650px" }}
@@ -47,29 +48,33 @@ const InputField = (props) => {
       <label htmlFor="">{label}</label>
     </div>
   );
-};
+});
 
-const Search = ({ searchProps }) => {
+const Search = forwardRef(({ searchProps }, ref) => {
   const { id, type, placeholder, value, onChange, children, ...remaining } = {
     ...searchProps,
   };
+  useEffect(() => {
+    console.log(remaining);
+  });
   return (
     <div className={clsx(styles.container, styles.search)}>
       {children}
 
       <input
-        {...remaining}
         id={id}
+        ref={ref}
         type={type}
         value={value}
         placeholder={placeholder}
         onChange={onChange}
+        {...remaining}
       />
 
-      <img src={search} alt="Search" />
+      <img src={searchIcon} alt="Search" />
       <div className={styles.autofill}></div>
     </div>
   );
-};
+});
 
 export default InputField;
