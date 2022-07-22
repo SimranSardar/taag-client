@@ -16,6 +16,7 @@ const defaultNavbarProps = {
 
 const MainLayout = ({
   children,
+  campaignId,
   navbarProps = defaultNavbarProps,
   classes = [],
   isSideMenuVisible = false,
@@ -24,7 +25,7 @@ const MainLayout = ({
   return (
     <section className={styles.container}>
       <Navbar {...navbarProps} />
-      <SideMenu isSideMenuVisible={isSideMenuVisible} />
+      <SideMenu campaignId={campaignId} isSideMenuVisible={isSideMenuVisible} />
       <MoreInformation moreInformationProps={moreInformationProps} />
       <main className={clsx(classes)}>{children}</main>
     </section>

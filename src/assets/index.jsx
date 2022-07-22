@@ -11,12 +11,13 @@ import searchIcon from "./icons/search.svg";
 import purplePerson from "./icons/purplePerson.svg";
 import info from "./icons/info.svg";
 import phone from "./icons/phone.svg";
+import selectedBrandPlaceholder from "./icons/selectedBrandPlaceholder.svg";
 import purpleBrandPlaceholder from "./icons/purpleBrandPlaceholder.svg";
 import brandPlaceholder from "./icons/brandPlaceholder.svg";
 import purpleCoin from "./icons/purpleCoin.svg";
 import purpleEye from "./icons/purpleEye.svg";
-import purpleInfo from "./icons/info.svg";
-import purplePhone from "./icons/phone.svg";
+import selectedInfo from "./icons/selectedInfo.svg";
+import selectedPhone from "./icons/selectedPhone.svg";
 
 export const icons = {
   logo,
@@ -31,10 +32,13 @@ export const icons = {
   purplePerson,
   purpleCoin,
   purpleEye,
-  purpleBrandPlaceholder,
+  selectedBrandPlaceholder,
   brandPlaceholder,
   info,
+  purpleBrandPlaceholder,
   phone,
+  selectedInfo,
+  selectedPhone,
 };
 
 export const images = {
@@ -43,15 +47,15 @@ export const images = {
 
 export const TabIcon = ({ filled, value }) => {
   console.log(filled);
-  if (value === "0" && !filled)
+  if (value === "1" && !filled)
     return <img src={brandPlaceholder} alt="Brands" />;
-  if (value === "0" && filled)
-    return <img src={purpleBrandPlaceholder} alt="Brands" />;
-  if (value === "1" && !filled) return <img src={info} alt="Information" />;
   if (value === "1" && filled)
-    return <img src={purpleInfo} alt="Information" />;
-  if (value === "2" && !filled) return <img src={phone} alt="Phone" />;
-  if (value === "2" && filled) return <img src={purplePhone} alt="Phone" />;
+    return <img src={selectedBrandPlaceholder} alt="Brands" />;
+  if (value === "2" && !filled) return <img src={info} alt="Information" />;
+  if (value === "2" && filled)
+    return <img src={selectedInfo} alt="Information" />;
+  if (value === "3" && !filled) return <img src={phone} alt="Phone" />;
+  if (value === "3" && filled) return <img src={selectedPhone} alt="Phone" />;
 
   return <div>Hello</div>;
 };

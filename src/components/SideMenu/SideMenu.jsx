@@ -4,14 +4,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 
-const SideMenu = ({ isSideMenuVisible }) => {
+const SideMenu = ({ isSideMenuVisible, campaignId }) => {
   const [pathName, setPathName] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     setPathName(location?.pathname);
-  }, []);
+  }, [location]);
   return (
     <div
       style={isSideMenuVisible ? {} : { display: "none" }}
@@ -19,32 +19,40 @@ const SideMenu = ({ isSideMenuVisible }) => {
     >
       <div
         className={
-          pathName === "/" ? clsx(styles.button, styles.active) : styles.button
+          pathName === "/campaigns/" + campaignId
+            ? clsx(styles.button, styles.active)
+            : styles.button
         }
       >
-        <IconButton onClick={() => navigate("/")}>
+        <IconButton onClick={() => navigate("/campaigns/" + campaignId)}>
           <SpeakerImage />
         </IconButton>
         <div className={styles.verticalLine}></div>
       </div>
       <div
         className={
-          pathName === "/new-campaign"
+          pathName === "/campaigns/" + campaignId + "/commercials"
             ? clsx(styles.button, styles.active)
             : styles.button
         }
       >
-        <IconButton onClick={() => navigate("/new-campaign")}>
+        <IconButton
+          onClick={() => navigate("/campaigns/" + campaignId + "/commercials")}
+        >
           <PapersImage />
         </IconButton>
         <div className={styles.verticalLine}></div>
       </div>
       <div
         className={
-          pathName === "" ? clsx(styles.button, styles.active) : styles.button
+          pathName === "/campaigns/" + campaignId + "/analytics"
+            ? clsx(styles.button, styles.active)
+            : styles.button
         }
       >
-        <IconButton onClick={() => navigate()}>
+        <IconButton
+          onClick={() => navigate("/campaigns/" + campaignId + "/analytics")}
+        >
           <EyeImage />
         </IconButton>
         <div className={styles.verticalLine}></div>
