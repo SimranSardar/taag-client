@@ -2,9 +2,12 @@ import { Button, CustomTable, InputField, InputSelect } from "../../components";
 import styles from "./Home.module.scss";
 // import "antd/dist/antd.css";
 import { MainLayout } from "../../layouts";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { CampgaignContext } from "../../utils/contexts/CampaignContext";
+import {
+  CampaignContext,
+  CampgaignContext,
+} from "../../utils/contexts/CampaignContext";
 
 const data = [
   {
@@ -52,55 +55,110 @@ const Home = () => {
     });
   }
 
+  // const columns = [
+  //   {
+  //     headerName: "Name",
+  //     field: "name",
+  //     key: "name",
+  //     // width: "30%",
+  //     // ...getColumnSearchProps("name"),
+  //   },
+  //   {
+  //     headerName: "Link",
+  //     field: "link",
+  //     key: "link",
+  //     renderCell: (row) => (
+  //       <a target="_blank" rel="noreferrer" href={row.value}>
+  //         {row.value}
+  //       </a>
+  //     ),
+  //     // width: "20%",
+  //     // ...getColumnSearchProps("age"),
+  //   },
+  //   {
+  //     headerName: "Followers",
+  //     field: "followers",
+  //     key: "age",
+  //     // width: "20%",
+  //     // ...getColumnSearchProps("age"),
+  //     // sorter: (a, b) => a - b,
+  //     // sortDirections: ["descend", "ascend"],
+  //   },
+  //   {
+  //     headerName: "Avg. Views",
+  //     field: "avgViews",
+  //     key: "avgViews",
+  //     // sorter: (a, b) => a - b,
+  //     // sortDirections: ["descend", "ascend"],
+  //   },
+  //   {
+  //     headerName: "Deliverable",
+  //     field: "deliverable",
+  //     key: "deliverable",
+  //     // width: "20%",
+  //     // ...getColumnSearchProps("deliverable"),
+  //   },
+  //   {
+  //     headerName: "Commercial Creator",
+  //     field: "commercialCreator",
+  //     key: "commercialCreator",
+  //     // width: "20%",
+  //     // ...getColumnSearchProps("commerciaCreator"),
+  //   },
+  // ];
+
+  const { campaigns } = useContext(CampaignContext);
+
   const columns = [
     {
-      headerName: "Name",
+      headerName: "Date",
+      field: "createdAt",
+      key: "date",
+      renderCell: (row) => (
+        <span>{new Date(row.value).toLocaleDateString()}</span>
+      ),
+      // width: "30%",
+      // ...getColumnSearchProps("name"),
+    },
+    {
+      headerName: "Brand Name",
+      field: "brand",
+      key: "brandName",
+      renderCell: (brand) => <span>{brand.value.name}</span>,
+      // width: "30%",
+      // ...getColumnSearchProps("name"),
+    },
+    {
+      headerName: "Campaign Name",
       field: "name",
       key: "name",
       // width: "30%",
       // ...getColumnSearchProps("name"),
     },
     {
-      headerName: "Link",
-      field: "link",
-      key: "link",
+      headerName: "Amount",
+      field: "brandAmount",
+      key: "brandAmount",
+      // width: "30%",
+      // ...getColumnSearchProps("name"),
+    },
+    {
+      headerName: "Status",
+      field: "status",
+      key: "status",
       renderCell: (row) => (
-        <a target="_blank" rel="noreferrer" href={row.value}>
-          {row.value}
-        </a>
+        <span style={{ textTransform: "capitalize " }}>{row.value}</span>
       ),
       // width: "20%",
       // ...getColumnSearchProps("age"),
     },
     {
-      headerName: "Followers",
-      field: "followers",
-      key: "age",
+      headerName: "View",
+      field: "id",
+      key: "open",
+      renderCell: (row) => <Link to={`/campaigns/${row.value}`}>View</Link>,
       // width: "20%",
       // ...getColumnSearchProps("age"),
-      // sorter: (a, b) => a - b,
-      // sortDirections: ["descend", "ascend"],
-    },
-    {
-      headerName: "Avg. Views",
-      field: "avgViews",
-      key: "avgViews",
-      // sorter: (a, b) => a - b,
-      // sortDirections: ["descend", "ascend"],
-    },
-    {
-      headerName: "Deliverable",
-      field: "deliverable",
-      key: "deliverable",
-      // width: "20%",
-      // ...getColumnSearchProps("deliverable"),
-    },
-    {
-      headerName: "Commercial Creator",
-      field: "commercialCreator",
-      key: "commercialCreator",
-      // width: "20%",
-      // ...getColumnSearchProps("commerciaCreator"),
     },
   ];
 
@@ -120,7 +178,7 @@ const Home = () => {
         navigate={navigate}
       />
       <div className={styles.tableContainer}>
-        <CustomTable columns={columns} data={data} />
+        <CustomTable columns={columns} data={campaigns} />
       </div>
     </MainLayout>
   );

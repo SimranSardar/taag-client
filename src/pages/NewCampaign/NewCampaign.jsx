@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { MainLayout } from "../../layouts";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const sectorOptions = [
   {
@@ -30,6 +31,8 @@ const AddCampaign = () => {
   const [value, setValue] = useState("");
   const [values, setValues] = useState({});
 
+  const navigate = useNavigate();
+
   function handleChange(e) {
     const { id, value, name } = e.target;
     // console.log(id, value, name);
@@ -55,7 +58,6 @@ const AddCampaign = () => {
   });
 
   async function submitHandler(e) {
-    //use "values" for form data
     e.preventDefault();
     let campaign = {
       name: values.name || "Test",
@@ -95,7 +97,11 @@ const AddCampaign = () => {
       campaign
     );
 
-    // console.log({ res });
+    console.log({ res });
+
+    if (res.status === 200) {
+      navigate(`/campaigns/${res.data.id}/select-artists`);
+    }
   }
 
   return (

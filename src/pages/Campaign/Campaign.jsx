@@ -94,7 +94,7 @@ const columns = [
 
 const Campaign = () => {
   const [campaign, setCampaign] = useState({});
-  const [tabIndex, setTabIndex] = React.useState("0");
+  const [tabIndex, setTabIndex] = React.useState("1");
 
   const handleTabsChange = (event, newValue) => {
     setTabIndex(newValue);
@@ -161,20 +161,11 @@ const Campaign = () => {
               <Tab
                 icon={
                   <TabIcon
-                    filled={tabIndex === "0" ? true : false}
-                    value={"0"}
-                  />
-                }
-                value={0}
-              />
-              <Tab
-                icon={
-                  <TabIcon
                     filled={tabIndex === "1" ? true : false}
                     value={"1"}
                   />
                 }
-                value={1}
+                value={"1"}
               />
               <Tab
                 icon={
@@ -183,16 +174,19 @@ const Campaign = () => {
                     value={"2"}
                   />
                 }
-                value={2}
+                value={"2"}
+              />
+              <Tab
+                icon={
+                  <TabIcon
+                    filled={tabIndex === "3" ? true : false}
+                    value={"3"}
+                  />
+                }
+                value={"3"}
               />
             </TabList>
           </Box>
-          <TabPanel value={"0"}>
-            <div className={styles.tableContainer}>
-              {" "}
-              <CustomTable columns={columns} data={data} />
-            </div>
-          </TabPanel>
           <TabPanel value={"1"}>
             <div className={styles.tableContainer}>
               {" "}
@@ -200,6 +194,12 @@ const Campaign = () => {
             </div>
           </TabPanel>
           <TabPanel value={"2"}>
+            <div className={styles.tableContainer}>
+              {" "}
+              <CustomTable columns={columns} data={data} />
+            </div>
+          </TabPanel>
+          <TabPanel value={"3"}>
             <div className={styles.tableContainer}>
               {" "}
               <CustomTable columns={columns} data={data} />
