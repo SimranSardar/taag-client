@@ -8,20 +8,63 @@ import { useNavigate } from "react-router-dom";
 
 const sectorOptions = [
   {
-    name: "Lifestyle",
-    value: "lifestyle",
+    name: "Vlog",
+    value: "vlog",
   },
   {
-    name: "Option 2",
-    value: "option 2",
+    name: "Makeup",
+    value: "makeup",
   },
   {
-    name: "Option 3",
-    value: "option 3",
+    name: "Genz",
+    value: "genz",
   },
   {
-    name: "Option 4",
-    value: "option 4",
+    name: "Skincare",
+    value: "skincare",
+  },
+  {
+    name: "Fitness",
+    value: "fitness",
+  },
+  {
+    name: "Couple",
+    value: "couple",
+  },
+  {
+    name: "Dance",
+    value: "dance",
+  },
+  {
+    name: "Comedy",
+    value: "comedy",
+  },
+  {
+    name: "Music",
+    value: "music",
+  },
+];
+
+const deliverableOptions = [
+  {
+    name: "IG Video",
+    value: "IGVideo",
+  },
+  {
+    name: "IG Static",
+    value: "IGStatic",
+  },
+  {
+    name: "IG Story",
+    value: "IGStory",
+  },
+  {
+    name: "YT Video",
+    value: "YTVideo",
+  },
+  {
+    name: "YT Shorts",
+    value: "YTShorts",
   },
 ];
 
@@ -209,7 +252,7 @@ const AddCampaign = () => {
               label={"Deliverable"}
               value={values?.deliverable}
               onChange={handleChange}
-              options={sectorOptions}
+              options={deliverableOptions}
             />
           </section>
         </FormSection>
