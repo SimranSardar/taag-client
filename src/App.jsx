@@ -9,6 +9,7 @@ import {
   Campaigns,
 } from "./pages/";
 import SelectArtists from "./pages/SelectArtists/SelectArtists";
+import UploadArtists from "./pages/UploadArtists/UploadArtists";
 import AuthContextProvider from "./utils/auth/AuthContext";
 import PrivateRoute from "./utils/auth/PrivateRoute";
 import CampaignContextProvider from "./utils/contexts/CampaignContext";
@@ -30,7 +31,6 @@ const App = () => {
                 path="/new-campaign"
                 element={<PrivateRoute component={NewCampaign} />}
               />
-
               <Route
                 path="/campaigns"
                 element={<PrivateRoute component={Campaigns} />}
@@ -50,6 +50,10 @@ const App = () => {
               <Route
                 path="/campaigns/:id/select-artists"
                 element={<PrivateRoute component={SelectArtists} />}
+              />
+              <Route
+                path="/upload-artists"
+                element={<PrivateRoute component={UploadArtists} />}
               />
             </Routes>
           </CampaignContextProvider>

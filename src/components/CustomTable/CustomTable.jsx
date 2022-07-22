@@ -80,7 +80,7 @@ function CustomNoRowsOverlay() {
   );
 }
 
-const CustomTable = ({ columns, data }) => {
+const CustomTable = ({ columns, data, onRowClick }) => {
   const [dataSource, setDataSource] = useState([]);
 
   useEffect(() => {
@@ -101,6 +101,7 @@ const CustomTable = ({ columns, data }) => {
       rows={dataSource}
       columns={columns}
       checkboxSelection
+      onRowClick={onRowClick}
     />
   );
 };
