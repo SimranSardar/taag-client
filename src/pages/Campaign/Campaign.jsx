@@ -8,6 +8,7 @@ import { TabContext, TabPanel, TabList } from "@mui/lab";
 import { Box, Tab, styled } from "@mui/material";
 import { TabIcon } from "../../assets";
 import { CurrentContext } from "../../utils/contexts";
+import { KMBFormatter } from "../../utils";
 
 const Campaign = () => {
   const [campaign, setCampaign] = useState({});
@@ -20,23 +21,14 @@ const Campaign = () => {
   const { fetchCampaign } = useContext(CampaignContext);
   const { id } = useParams();
 
-  function handleChange(e) {
-    const { id, value, name } = e.target;
-    // console.log(id, value, name);
-    setCampaign((prev) => {
-      return {
-        ...prev,
-        [name ? name : id]: value,
-      };
-    });
-  }
   useEffect(() => {
     setCampaignId(id);
   }, [id]);
+
   useEffect(() => {
     async function fetchData() {
       const temp = await fetchCampaign(id);
-      setCampaign(temp);
+      setCampaign(temp.data);
       console.log({ temp });
     }
     if (id) {
@@ -52,18 +44,16 @@ const Campaign = () => {
       navbarProps={{
         titleProps: {
           id: "name",
-          name: "Women's Day",
-          isEditIconVisible: true,
+          disabled: true,
           isBackIconVisible: true,
-          name: campaign?.name || "New Campaign",
-          onChange: handleChange,
+          name: campaign?.name,
         },
       }}
       moreInformationProps={{
         isVisible: true,
-        agencyFees: "1,50,000",
-        brandAmount: "4,00,000",
-        totalAverageViews: "100K",
+        agencyFees: campaign?.agencyFee,
+        brandAmount: campaign?.brandAmount,
+        totalAverageViews: KMBFormatter("10000000"),
         totalCreator: "4",
         averageROI: "0.4",
       }}

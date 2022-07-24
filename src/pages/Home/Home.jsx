@@ -44,9 +44,40 @@ const sortingOptions = [
 const Home = () => {
   const navigate = useNavigate();
   const [filters, setFilters] = useState({});
+  const [data, setData] = useState([]);
+  const [search, setSearch] = useState("");
+
+  const { campaigns } = useContext(CampaignContext);
+
+  function debounce(func, timeout) {
+    let timer;
+    return (...args) => {
+      if (!timer) {
+        func.apply(this, args);
+      }
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        timer = undefined;
+      }, timeout);
+    };
+  }
+
+  function onSearch(e) {
+    const { value } = e.target;
+    setData(
+      campaigns?.filter((campaign) =>
+        campaign.name.toLowerCase().includes(value.toLowerCase())
+      )
+    );
+  }
 
   function handleChange(e) {
     const { id, value, name } = e.target;
+
+    if (id === "search") {
+      debounce(onSearch, 500)(e);
+    }
+
     setFilters((prev) => {
       return {
         ...prev,
@@ -107,7 +138,9 @@ const Home = () => {
   //   },
   // ];
 
-  const { campaigns } = useContext(CampaignContext);
+  useEffect(() => {
+    setData(campaigns);
+  }, [campaigns]);
 
   const columns = [
     {
@@ -172,46 +205,47 @@ const Home = () => {
         },
       }}
     >
-      <Header
+      {/* <Header
         filters={filters}
         handleChange={handleChange}
         navigate={navigate}
-      />
+      /> */}
+      <div className={styles.header}>
+        <InputField
+          id="search"
+          type="search"
+          value={filters.search || ""}
+          onChange={handleChange}
+          placeholder={"Search Campaign"}
+        />
+        <div>
+          <InputSelect
+            label={"Sort By: Week/Month"}
+            name={"sortBy"}
+            onChange={handleChange}
+            options={sortingOptions}
+            value={filters?.sortBy ? filters.sortBy : ""}
+          />
+          <Button
+            onClick={() => {
+              navigate("/new-campaign");
+            }}
+          >
+            New Campaign +
+          </Button>
+        </div>
+      </div>
       <div className={styles.tableContainer}>
-        <CustomTable columns={columns} data={campaigns} />
+        <CustomTable columns={columns} data={data} />
       </div>
     </MainLayout>
   );
 };
 
-const Header = ({ filters, handleChange, navigate }) => {
-  return (
-    <div className={styles.header}>
-      <InputField
-        id="search"
-        type="search"
-        value={filters?.search ? filters.search : ""}
-        onChange={handleChange}
-        placeholder={"Search Campaign"}
-      />
-      <div>
-        <InputSelect
-          label={"Sort By: Week/Month"}
-          name={"sortBy"}
-          onChange={handleChange}
-          options={sortingOptions}
-          value={filters?.sortBy ? filters.sortBy : ""}
-        />
-        <Button
-          onClick={() => {
-            navigate("/new-campaign");
-          }}
-        >
-          New Campaign +
-        </Button>
-      </div>
-    </div>
-  );
-};
+// const Header = ({ filters, handleChange, navigate }) => {
+//   return (
+
+//   );
+// };
 
 export default Home;

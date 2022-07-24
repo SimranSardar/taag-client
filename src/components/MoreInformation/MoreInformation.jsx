@@ -97,7 +97,10 @@ const MoreInformation = ({
 
 const InformationTag = ({ icon, value, title }) => {
   return (
-    <div style={value ? {} : { display: "none" }} className={styles.tag}>
+    <div
+      style={value !== undefined && value !== null ? {} : { display: "none" }}
+      className={styles.tag}
+    >
       <img src={icon} alt={value} />
       <p>
         {title + ":"} <span>{value}</span>
