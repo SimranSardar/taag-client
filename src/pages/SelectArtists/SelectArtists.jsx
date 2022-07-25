@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { CampaignContext } from "../../utils/contexts";
 import clsx from "clsx";
 import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 
 const SelectArtists = () => {
   const columns = [
@@ -61,6 +62,8 @@ const SelectArtists = () => {
 
   const { artists } = useContext(CampaignContext);
   const [selectedArtists, setSelectedArtists] = useState([]);
+  const { id } = useParams();
+  const navigate = useNavigate();
 
   function handleRowClick(row) {
     const selected = selectedArtists.find((artist) => artist.id === row.row.id);
@@ -75,13 +78,14 @@ const SelectArtists = () => {
 
   async function onClickContinue() {
     console.log({ selectedArtists });
-    const res = axios.post(
-      `${process.env.REACT_APP_API_URL}/campaigns/update`,
-      {
-        selectedArtists,
-      }
+    const res = await axios.patch(
+      `${process.env.REACT_APP_API_URI}/campaigns/update/${id}`,
+
+      { selectedArtists }
     );
-    console.log({ res });
+    if (res.status(200)) {
+      navigate(`/campaigns/${id}`);
+    }
   }
 
   return (

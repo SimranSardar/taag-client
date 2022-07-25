@@ -123,7 +123,7 @@ const AddCampaign = () => {
       //   from: { type: String, required: true }, //  ISOString
       //   to: { type: String, required: true }, //  ISOString
       // },
-      selectedInfluencers: [],
+      selectedArtists: [],
       brandAmount: 0,
       currency: "INR", // INR | USD
       agencyFee: 0,
