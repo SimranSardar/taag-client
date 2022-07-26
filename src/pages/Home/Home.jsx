@@ -144,54 +144,52 @@ const Home = () => {
 
   const columns = [
     {
-      headerName: "Date",
-      field: "createdAt",
+      title: "Date",
+      dataIndex: "createdAt",
       key: "date",
-      renderCell: (row) => (
-        <span>{new Date(row.value).toLocaleDateString()}</span>
-      ),
+      render: (date) => <span>{new Date(date).toLocaleDateString()}</span>,
       // width: "30%",
-      // ...getColumnSearchProps("name"),
+      searchable: true,
     },
     {
-      headerName: "Brand Name",
-      field: "brand",
-      key: "brandName",
-      renderCell: (brand) => <span>{brand.value.name}</span>,
+      title: "Brand Name",
+      dataIndex: "brand",
+      key: "brand",
+      render: (brand) => <span>{brand.name}</span>,
       // width: "30%",
-      // ...getColumnSearchProps("name"),
+      searchable: true,
     },
     {
-      headerName: "Campaign Name",
-      field: "name",
+      title: "Campaign Name",
+      dataIndex: "name",
       key: "name",
       // width: "30%",
-      // ...getColumnSearchProps("name"),
+      searchable: true,
     },
     {
-      headerName: "Amount",
-      field: "brandAmount",
+      title: "Amount",
+      dataIndex: "brandAmount",
       key: "brandAmount",
       // width: "30%",
-      // ...getColumnSearchProps("name"),
+      searchable: true,
     },
     {
-      headerName: "Status",
-      field: "status",
+      title: "Status",
+      dataIndex: "status",
       key: "status",
-      renderCell: (row) => (
-        <span style={{ textTransform: "capitalize " }}>{row.value}</span>
+      render: (status) => (
+        <span style={{ textTransform: "capitalize " }}>{status}</span>
       ),
       // width: "20%",
-      // ...getColumnSearchProps("age"),
+      // searchable: true,
     },
     {
-      headerName: "View",
-      field: "id",
+      title: "View",
+      dataIndex: "id",
       key: "open",
-      renderCell: (row) => <Link to={`/campaigns/${row.value}`}>View</Link>,
+      render: (id) => <Link to={`/campaigns/${id}`}>View</Link>,
       // width: "20%",
-      // ...getColumnSearchProps("age"),
+      // searchable: true,
     },
   ];
 

@@ -6,57 +6,68 @@ import { CampaignContext } from "../../utils/contexts";
 import clsx from "clsx";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { KMBFormatter } from "../../utils";
 
 const SelectArtists = () => {
   const columns = [
     {
-      headerName: "Name",
-      field: "name",
+      title: "Name",
+      dataIndex: "name",
       key: "name",
       // width: "30%",
-      // ...getColumnSearchProps("name"),
+      searchable: true,
     },
     {
-      headerName: "Link",
-      field: "link",
-      key: "link",
-      renderCell: (row) => (
-        <a target="_blank" rel="noreferrer" href={row.value}>
-          {row.value}
-        </a>
+      title: "Followers",
+      dataIndex: "followers",
+      key: "followers",
+      render: (followers) => <span>{KMBFormatter(followers)}</span>,
+      // width: "20%",
+      sorter: (a, b) => parseInt(a) - parseInt(b),
+      sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
+      render: (type) => (
+        <span style={{ textTransform: "capitalize" }}>{type}</span>
+      ),
+      // sorter: (a, b) => a - b,
+      // sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+      render: (gender) => (
+        <span style={{ textTransform: "capitalize" }}>{gender}</span>
       ),
       // width: "20%",
-      // ...getColumnSearchProps("age"),
+      searchable: true,
     },
     {
-      headerName: "Followers",
-      field: "followers",
-      key: "age",
+      title: "Agency Name",
+      dataIndex: "agencyName",
+      key: "agencyName",
       // width: "20%",
-      // ...getColumnSearchProps("age"),
-      // sorter: (a, b) => a - b,
-      // sortDirections: ["descend", "ascend"],
+      searchable: true,
     },
     {
-      headerName: "Avg. Views",
-      field: "avgViews",
-      key: "avgViews",
-      // sorter: (a, b) => a - b,
-      // sortDirections: ["descend", "ascend"],
-    },
-    {
-      headerName: "Deliverable",
-      field: "deliverable",
-      key: "deliverable",
+      title: "Categories",
+      dataIndex: "categories",
+      key: "categories",
+      render: (categories) => <span>{categories.join(", ")}</span>,
       // width: "20%",
-      // ...getColumnSearchProps("deliverable"),
+      searchable: true,
     },
     {
-      headerName: "Commercial Creator",
-      field: "commercialCreator",
-      key: "commercialCreator",
+      title: "Languages",
+      dataIndex: "languages",
+      key: "languages",
+      render: (languages) => <span>{languages.join(", ")}</span>,
       // width: "20%",
-      // ...getColumnSearchProps("commerciaCreator"),
+      searchable: true,
     },
   ];
 
@@ -64,6 +75,10 @@ const SelectArtists = () => {
   const [selectedArtists, setSelectedArtists] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log({ artists });
+  }, [artists]);
 
   function handleRowClick(row) {
     const selected = selectedArtists.find((artist) => artist.id === row.row.id);
@@ -74,6 +89,7 @@ const SelectArtists = () => {
     } else {
       setSelectedArtists([...selectedArtists, row.row]);
     }
+    console.log({ selectedArtists });
   }
 
   async function onClickContinue() {
@@ -83,7 +99,7 @@ const SelectArtists = () => {
 
       { selectedArtists }
     );
-    if (res.status(200)) {
+    if (res.status === 200) {
       navigate(`/campaigns/${id}`);
     }
   }
