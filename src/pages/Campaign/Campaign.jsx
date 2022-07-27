@@ -11,14 +11,14 @@ import { CurrentContext } from "../../utils/contexts";
 import { KMBFormatter } from "../../utils";
 
 const Campaign = () => {
-  const [campaign, setCampaign] = useState({});
+  // const [campaign, setCampaign] = useState({});
   const { tabIndex, setTabIndex, table, setCampaignId } =
     useContext(CurrentContext);
   const handleTabsChange = (event, newValue) => {
     setTabIndex(newValue);
   };
 
-  // const { fetchCampaign } = useContext(CampaignContext);
+  const { campaign } = useContext(CurrentContext);
   const { id } = useParams();
 
   useEffect(() => {
@@ -53,8 +53,8 @@ const Campaign = () => {
         isVisible: true,
         agencyFees: campaign?.agencyFee,
         brandAmount: campaign?.brandAmount,
-        totalAverageViews: KMBFormatter("10000000"),
-        totalCreator: "4",
+        totalAverageViews: KMBFormatter(campaign?.totalAverageViews || 0),
+        totalCreator: campaign?.selectedArtists?.length.toString() || "0",
         averageROI: "0.4",
       }}
     >

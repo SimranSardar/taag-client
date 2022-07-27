@@ -19,6 +19,17 @@
 
   --fixed-width: 80%;
 }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: white;
+}
+p {
+  margin-bottom: 0 !important;
+}
 
 .container {
   // background: var(--clr-bg-dark);

@@ -14,6 +14,7 @@ import AuthContextProvider from "./utils/auth/AuthContext";
 import PrivateRoute from "./utils/auth/PrivateRoute";
 import CampaignContextProvider from "./utils/contexts/CampaignContext";
 import CurrentContextProvider from "./utils/contexts/CurrentContext";
+import "./App.css";
 
 const App = () => {
   return (

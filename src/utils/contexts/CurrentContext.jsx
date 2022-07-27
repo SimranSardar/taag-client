@@ -14,6 +14,7 @@ const CurrentContextProvider = ({ children }) => {
   });
   const [campaignId, setCampaignId] = useState("");
   const [tabIndex, setTabIndex] = useState("1");
+  const [campaign, setCampaign] = useState({});
   const [campaignMain, setCampaignMain] = useState([]);
   const [campaignInfo, setCampaignInfo] = useState([]);
   const [campaignContact, setCampaignContact] = useState([]);
@@ -25,7 +26,14 @@ const CurrentContextProvider = ({ children }) => {
   useEffect(() => {
     async function fetchData() {
       const temp = await fetchCampaign(campaignId);
+      temp.data.totalAverageViews = getTotal(
+        temp.data.selectedArtists,
+        "averageViews"
+      );
+      temp.data.totalCreator = temp.data.selectedArtists.length.toString();
+      temp.data.agencyFees = getTotal(temp.data.selectedArtists, "agencyFees");
       console.log({ temp });
+      setCampaign(temp.data);
       setCampaignMain(
         temp.data.selectedArtists.map((item) => ({
           name: item.name,
@@ -144,7 +152,7 @@ const CurrentContextProvider = ({ children }) => {
     async function fetchData() {
       const data = await axios.get("http://localhost:5000/youtube/getLikes", {
         params: {
-          videoId: "dkdXCbwWKHY",
+          videoId: "ABCq_VHfsUM",
         },
       });
       console.log({ data });
@@ -155,6 +163,8 @@ const CurrentContextProvider = ({ children }) => {
   return (
     <CurrentContext.Provider
       value={{
+        campaign,
+        setCampaign,
         table,
         setTable,
         campaignId,
@@ -169,3 +179,7 @@ const CurrentContextProvider = ({ children }) => {
 };
 
 export default CurrentContextProvider;
+
+function getTotal(data, key) {
+  return data.reduce((acc, item) => acc + item[key], 0);
+}

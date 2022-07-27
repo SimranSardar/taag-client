@@ -87,7 +87,13 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-const CustomTable = ({ columns, data, onRowSelect }) => {
+const CustomTable = ({
+  columns,
+  data,
+  onRowSelect,
+  selectedRowKeys = [],
+  setSelectedRowKeys,
+}) => {
   const [dataSource, setDataSource] = useState([]);
 
   useEffect(() => {
@@ -100,7 +106,13 @@ const CustomTable = ({ columns, data, onRowSelect }) => {
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
   const [cols, setCols] = useState([]);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selRowKeys, setSelRowKeys] = useState([]);
+
+  useEffect(() => {
+    if (selectedRowKeys) {
+      setSelRowKeys(selectedRowKeys);
+    }
+  }, [selectedRowKeys]);
 
   const onSelectChange = (newSelectedRowKeys, rows) => {
     console.log("selectedRowKeys changed: ", selectedRowKeys);
@@ -265,6 +277,7 @@ const CustomTable = ({ columns, data, onRowSelect }) => {
       rowClassName={() => "editable-row"}
       rowSelection={rowSelection}
       components={components}
+      selectedRowKeys={selRowKeys}
       scroll={{
         x: 1500,
         y: 800,
