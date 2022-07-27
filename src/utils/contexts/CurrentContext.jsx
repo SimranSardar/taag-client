@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { tableData } from "../constants";
@@ -71,9 +72,9 @@ const CurrentContextProvider = ({ children }) => {
       setCampaignAnalytics(
         temp.data.selectedArtists.map((item) => ({
           name: item.name,
-          upload: item.upload,
-          views: item.views,
-          comments: item.comments,
+          link: item.link || "",
+          views: item.views || "loading...",
+          comments: item.comments || "loading...",
           roi: item.roi,
         }))
       );
@@ -135,9 +136,22 @@ const CurrentContextProvider = ({ children }) => {
     console.log(tabIndex);
   }, [tabIndex, location]);
 
+  // useEffect(() => {
+  //   console.log({ table, location, tabIndex, campaignId });
+  // });
+
   useEffect(() => {
-    console.log({ table, location, tabIndex, campaignId });
-  });
+    async function fetchData() {
+      const data = await axios.get("http://localhost:5000/youtube/getLikes", {
+        params: {
+          videoId: "dkdXCbwWKHY",
+        },
+      });
+      console.log({ data });
+    }
+    fetchData();
+  }, []);
+
   return (
     <CurrentContext.Provider
       value={{
