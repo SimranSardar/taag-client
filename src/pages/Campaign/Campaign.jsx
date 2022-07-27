@@ -18,23 +18,23 @@ const Campaign = () => {
     setTabIndex(newValue);
   };
 
-  const { fetchCampaign } = useContext(CampaignContext);
+  // const { fetchCampaign } = useContext(CampaignContext);
   const { id } = useParams();
 
   useEffect(() => {
     setCampaignId(id);
   }, [id]);
 
-  useEffect(() => {
-    async function fetchData() {
-      const temp = await fetchCampaign(id);
-      setCampaign(temp.data);
-      console.log({ temp });
-    }
-    if (id) {
-      fetchData();
-    }
-  }, [id]);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const temp = await fetchCampaign(id);
+  //     setCampaign(temp.data);
+  //     console.log({ temp });
+  //   }
+  //   if (id) {
+  //     fetchData();
+  //   }
+  // }, [id]);
 
   return (
     <MainLayout

@@ -80,16 +80,22 @@ const SelectArtists = () => {
     console.log({ artists });
   }, [artists]);
 
-  function handleRowClick(row) {
-    const selected = selectedArtists.find((artist) => artist.id === row.row.id);
-    if (selected) {
-      setSelectedArtists(
-        selectedArtists.filter((artist) => artist.id !== row.row.id)
-      );
-    } else {
-      setSelectedArtists([...selectedArtists, row.row]);
-    }
-    console.log({ selectedArtists });
+  function handleSelectRow(selectedRows) {
+    setSelectedArtists(
+      selectedRows?.map((item) => ({
+        _id: item._id,
+        link: "",
+        averageViews: 0,
+        deliverable: "",
+        commercialCreator: 0,
+        brandCommercial: 0,
+        cpvBrand: 0,
+        agencyFees: 0,
+        invoice: "",
+        date: "",
+        note: "",
+      }))
+    );
   }
 
   async function onClickContinue() {
@@ -114,7 +120,7 @@ const SelectArtists = () => {
         <CustomTable
           columns={columns}
           data={artists || []}
-          onRowClick={handleRowClick}
+          onRowSelect={handleSelectRow}
         />
       </div>
     </MainLayout>

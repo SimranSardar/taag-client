@@ -96,15 +96,15 @@ const CustomTable = ({ columns, data, onRowSelect }) => {
   const [cols, setCols] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const onSelectChange = (newSelectedRowKeys) => {
+  const onSelectChange = (newSelectedRowKeys, rows) => {
     console.log("selectedRowKeys changed: ", selectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
+    onRowSelect(rows);
   };
 
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
-    onSelect: onRowSelect,
   };
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -229,7 +229,15 @@ const CustomTable = ({ columns, data, onRowSelect }) => {
     //   checkboxSelection
     //   onRowClick={onRowClick}
     // />
-    <Table columns={cols} dataSource={dataSource} rowSelection={rowSelection} />
+    <Table
+      columns={cols}
+      dataSource={dataSource}
+      rowSelection={rowSelection}
+      scroll={{
+        x: 1500,
+        y: 800,
+      }}
+    />
   );
 };
 

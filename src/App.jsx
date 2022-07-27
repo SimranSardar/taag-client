@@ -18,13 +18,13 @@ import CurrentContextProvider from "./utils/contexts/CurrentContext";
 const App = () => {
   return (
     <Router basename="/">
-      <CurrentContextProvider>
-        <AuthContextProvider>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-          <CampaignContextProvider>
+      <AuthContextProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+        <CampaignContextProvider>
+          <CurrentContextProvider>
             <Routes>
               <Route path="/" element={<PrivateRoute component={Home} />} />
               <Route
@@ -56,9 +56,9 @@ const App = () => {
                 element={<PrivateRoute component={UploadArtists} />}
               />
             </Routes>
-          </CampaignContextProvider>
-        </AuthContextProvider>
-      </CurrentContextProvider>
+          </CurrentContextProvider>
+        </CampaignContextProvider>
+      </AuthContextProvider>
     </Router>
   );
 };
