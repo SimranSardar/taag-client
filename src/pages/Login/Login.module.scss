@@ -9,6 +9,7 @@
     @extend .flexRow;
     p {
       cursor: pointer;
+      -webkit-user-select: none;
       user-select: none;
       color: white;
       &:hover {
