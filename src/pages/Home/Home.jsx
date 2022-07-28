@@ -140,6 +140,7 @@ const Home = () => {
 
   useEffect(() => {
     setData(campaigns);
+    console.log({ campaigns });
   }, [campaigns]);
 
   const columns = [
@@ -147,17 +148,19 @@ const Home = () => {
       title: "Date",
       dataIndex: "createdAt",
       key: "date",
+      searchable: true,
+      isObj: false,
       render: (date) => <span>{new Date(date).toLocaleDateString()}</span>,
       // width: "30%",
-      searchable: true,
     },
     {
       title: "Brand Name",
       dataIndex: "brand",
       key: "brand",
-      render: (brand) => <span>{brand.name}</span>,
-      // width: "30%",
       searchable: true,
+      isObj: true,
+      render: (brand) => <span>{brand?.name}</span>,
+      // width: "30%",
     },
     {
       title: "Campaign Name",
@@ -177,6 +180,7 @@ const Home = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      isObj: false,
       render: (status) => (
         <span style={{ textTransform: "capitalize " }}>{status}</span>
       ),
@@ -187,6 +191,7 @@ const Home = () => {
       title: "View",
       dataIndex: "id",
       key: "open",
+      isObj: false,
       render: (id) => <Link to={`/campaigns/${id}`}>View</Link>,
       // width: "20%",
       // searchable: true,

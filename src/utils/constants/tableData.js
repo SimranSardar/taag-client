@@ -50,13 +50,16 @@ export const tableData = {
           title: "Link",
           dataIndex: "link",
           key: "link",
-          renderCell: (row) => (
-            <a target="_blank" rel="noreferrer" href={row.value}>
-              {row.value}
-            </a>
-          ),
           // width: "20%",
-          searchable: true,
+          // searchable: true,
+          render: (link) =>
+            link ? (
+              <a href={link} target="_blank" rel="noreferrer">
+                View
+              </a>
+            ) : (
+              "NA"
+            ),
           editable: true,
         },
         {
@@ -165,7 +168,7 @@ export const tableData = {
           key: "language",
           render: (languages) => <span>{languages.join(", ")}</span>,
           // width: "30%",
-          searchable: true,
+          // searchable: true,
         },
         {
           title: "Category(Multiple#)",
@@ -173,7 +176,7 @@ export const tableData = {
           key: "categories",
           render: (categories) => <span>{categories?.join(", ")}</span>,
           // width: "30%",
-          searchable: true,
+          // searchable: true,
         },
         {
           title: "Type",
@@ -312,10 +315,11 @@ export const tableData = {
       },
       {
         title: "Upload Link",
-        dataIndex: "link",
-        key: "link",
+        dataIndex: "deliverableLink",
+        key: "deliverableLink",
         // width: "30%",
         searchable: true,
+        editable: true,
       },
       {
         title: "Views",

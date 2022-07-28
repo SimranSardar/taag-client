@@ -18,12 +18,16 @@ const Campaign = () => {
     setTabIndex(newValue);
   };
 
-  const { campaign } = useContext(CurrentContext);
+  const { campaign, setCampaign } = useContext(CurrentContext);
   const { id } = useParams();
 
   useEffect(() => {
     setCampaignId(id);
   }, [id]);
+
+  useEffect(() => {
+    console.log({ campaign });
+  }, [campaign]);
 
   // useEffect(() => {
   //   async function fetchData() {
@@ -35,6 +39,10 @@ const Campaign = () => {
   //     fetchData();
   //   }
   // }, [id]);
+
+  function handleSelectRow(rows) {
+    setCampaign({ ...campaign, selectedArtists: rows });
+  }
 
   return (
     <MainLayout
@@ -102,6 +110,8 @@ const Campaign = () => {
           <CustomTable
             columns={table?.columns || []}
             data={table?.data || []}
+            onRowSelect={handleSelectRow}
+            selectedRows={campaign?.selectedArtists || []}
           />
         </div>
       </div>

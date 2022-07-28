@@ -25,7 +25,7 @@ const CurrentContextProvider = ({ children }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const temp = await fetchCampaign(campaignId);
+      let temp = await fetchCampaign(campaignId);
       temp.data.totalAverageViews = getTotal(
         temp.data.selectedArtists,
         "averageViews"
@@ -36,6 +36,7 @@ const CurrentContextProvider = ({ children }) => {
       setCampaign(temp.data);
       setCampaignMain(
         temp.data.selectedArtists.map((item) => ({
+          _id: item._id,
           name: item.name,
           link: item.link || "",
           followers: item.followers,
@@ -52,6 +53,7 @@ const CurrentContextProvider = ({ children }) => {
       );
       setCampaignInfo(
         temp.data.selectedArtists.map((item) => ({
+          _id: item._id,
           name: item.name,
           gender: item.gender,
           location: item.location,
@@ -62,6 +64,7 @@ const CurrentContextProvider = ({ children }) => {
       );
       setCampaignContact(
         temp.data.selectedArtists.map((item) => ({
+          _id: item._id,
           name: item.name,
           agencyName: item.agencyName,
           manager: item.manager,
@@ -71,6 +74,7 @@ const CurrentContextProvider = ({ children }) => {
       );
       setCampaignInvoice(
         temp.data.selectedArtists.map((item) => ({
+          _id: item._id,
           name: item.name,
           invoice: item.invoice,
           date: item.date,
@@ -79,10 +83,11 @@ const CurrentContextProvider = ({ children }) => {
       );
       setCampaignAnalytics(
         temp.data.selectedArtists.map((item) => ({
+          _id: item._id,
           name: item.name,
-          link: item.link || "",
-          views: item.views || "loading...",
-          comments: item.comments || "loading...",
+          deliverableLink: item.deliverableLink || ".",
+          views: item.views,
+          comments: item.comments,
           roi: item.roi,
         }))
       );
@@ -148,17 +153,17 @@ const CurrentContextProvider = ({ children }) => {
   //   console.log({ table, location, tabIndex, campaignId });
   // });
 
-  useEffect(() => {
-    async function fetchData() {
-      const data = await axios.get("http://localhost:5000/youtube/getLikes", {
-        params: {
-          videoId: "ABCq_VHfsUM",
-        },
-      });
-      console.log({ data });
-    }
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const data = await axios.get("http://localhost:5000/youtube/getLikes", {
+  //       params: {
+  //         videoId: "ABCq_VHfsUM",
+  //       },
+  //     });
+  //     console.log({ data });
+  //   }
+  //   fetchData();
+  // }, []);
 
   return (
     <CurrentContext.Provider

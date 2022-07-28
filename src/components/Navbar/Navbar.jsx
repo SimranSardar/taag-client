@@ -10,11 +10,19 @@ import { Breadcrumb } from "../";
 import { styled } from "@mui/system";
 import { icons, images } from "../../assets";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const { bell, editing, back } = icons;
 const { profile } = images;
 
 const Navbar = ({ titleProps, progress }) => {
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    localStorage.removeItem("token");
+    navigate("/login");
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -32,7 +40,7 @@ const Navbar = ({ titleProps, progress }) => {
         </div>
         <div className={styles.right}>
           <BellButton newNotifications={true} />
-          <ProfileButton />
+          <ProfileButton onClick={handleLogout} />
         </div>
       </div>
       {progress ? <MUILinearProgress progress={progress} /> : ""}

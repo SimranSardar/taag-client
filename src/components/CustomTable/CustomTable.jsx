@@ -4,6 +4,8 @@ import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import styles from "./CustomTable.module.scss";
 import "antd/dist/antd.css";
+import axios from "axios";
+import { getYoutubeId } from "../../utils";
 
 const EditableContext = React.createContext(null);
 
@@ -87,14 +89,9 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-const CustomTable = ({
-  columns,
-  data,
-  onRowSelect,
-  selectedRowKeys = [],
-  setSelectedRowKeys,
-}) => {
+const CustomTable = ({ columns, data, onRowSelect, selectedRows }) => {
   const [dataSource, setDataSource] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setDataSource(
@@ -106,17 +103,23 @@ const CustomTable = ({
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
   const [cols, setCols] = useState([]);
-  const [selRowKeys, setSelRowKeys] = useState([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   useEffect(() => {
-    if (selectedRowKeys) {
-      setSelRowKeys(selectedRowKeys);
+    if (selectedRows) {
+      console.log({ selectedRows });
+      setSelectedRowKeys(selectedRows.map((item) => item._id));
     }
+  }, [selectedRows]);
+
+  useEffect(() => {
+    console.log({ selectedRowKeys });
   }, [selectedRowKeys]);
 
   const onSelectChange = (newSelectedRowKeys, rows) => {
     console.log("selectedRowKeys changed: ", selectedRowKeys);
-    setSelectedRowKeys(newSelectedRowKeys);
+    // setSelectedRowKeys(newSelectedRowKeys);
+    console.log({ rows });
     onRowSelect(rows);
   };
 
@@ -135,7 +138,7 @@ const CustomTable = ({
     setSearchText("");
   };
 
-  const getColumnSearchProps = (dataIndex) => ({
+  const getColumnSearchProps = (dataIndex, CompCustomRender, customProps) => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -211,7 +214,7 @@ const CustomTable = ({
         setTimeout(() => searchInput.current?.select(), 100);
       }
     },
-    render: (text) =>
+    render: (text, record) =>
       searchedColumn === dataIndex ? (
         <Highlighter
           highlightStyle={{
@@ -222,6 +225,8 @@ const CustomTable = ({
           autoEscape
           textToHighlight={text ? text.toString() : ""}
         />
+      ) : CompCustomRender ? (
+        <CompCustomRender value={text} {...text} />
       ) : (
         text
       ),
@@ -246,7 +251,11 @@ const CustomTable = ({
         if (col.searchable) {
           finalCol = {
             ...finalCol,
-            ...getColumnSearchProps(col.dataIndex),
+            ...getColumnSearchProps(
+              col.dataIndex,
+              col.render,
+              col.isObj ? {} : { [col.dataIndex]: "" }
+            ),
           };
         }
         return finalCol;
@@ -254,12 +263,33 @@ const CustomTable = ({
     );
   }, [columns]);
 
-  const handleSave = (row) => {
+  const handleSave = async (row) => {
     const newData = [...dataSource];
-    const index = newData.findIndex((item) => row.key === item.key);
+    const index = newData.findIndex((item) => row._id === item._id);
     const item = newData[index];
     newData.splice(index, 1, { ...item, ...row });
     setDataSource(newData);
+    // console.log({ newData, index });
+    if (item.deliverableLink) {
+      setLoading(true);
+      console.log(getYoutubeId(row.deliverableLink)["1"]);
+      const ytData = await axios.get(
+        `${process.env.REACT_APP_API_URI}/youtube/getLikes`,
+        {
+          params: {
+            videoId: getYoutubeId(row.deliverableLink)["1"],
+          },
+        }
+      );
+      let newItem = row;
+      newItem.views = ytData.data.views;
+      newItem.comments = ytData.data.comments;
+      console.log({ ytData });
+      newData.splice(index, 1, { ...item, ...newItem });
+      console.log({ newData, index });
+      setDataSource(newData);
+      setLoading(false);
+    }
   };
 
   const components = {
@@ -277,11 +307,12 @@ const CustomTable = ({
       rowClassName={() => "editable-row"}
       rowSelection={rowSelection}
       components={components}
-      selectedRowKeys={selRowKeys}
+      selectedRowKeys={selectedRowKeys}
       scroll={{
         x: 1500,
         y: 800,
       }}
+      loading={loading}
     />
   );
 };
