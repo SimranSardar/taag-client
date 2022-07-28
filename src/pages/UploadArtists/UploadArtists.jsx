@@ -15,7 +15,7 @@ const UploadArtists = () => {
       formData
     );
     if (response.status.toString().includes("20")) {
-      showAlert("Artists uploaded successfully");
+      showAlert("success", "Artists uploaded successfully");
     }
     console.log({ response });
   }

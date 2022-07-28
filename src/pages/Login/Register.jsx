@@ -8,6 +8,7 @@ import { useNavigate } from "react-router";
 import logo from "../../assets/icons/logo.svg";
 import { LinearProgress } from "@mui/material";
 import Logo from "../../components/Logo/Logo";
+import { showAlert } from "../../utils";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -61,10 +62,32 @@ const Register = () => {
   //   }
   // }
 
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URI}/user/create/`,
+        {
+          ...values,
+        }
+      );
+      console.log({ res });
+      showAlert("success", "You have successfully registered");
+      setValues({});
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+      showAlert("error", "Error: " + error);
+    }
+  }
+
   return (
     <div className={styles.container}>
       <Logo withText />
-      <form>
+      <form onSubmit={handleSubmit}>
         <InputField
           id="name"
           label="Name"

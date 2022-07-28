@@ -12,8 +12,18 @@ export function KMBFormatter(num) {
   }
 }
 
-export function showAlert(msg) {
-  message.success(msg);
+export function showAlert(type, msg) {
+  switch (type) {
+    case "success":
+      message.success(msg);
+      break;
+    case "error":
+      message.error(msg);
+      break;
+    default:
+      message.success(msg);
+      break;
+  }
 }
 
 export function getYoutubeId(url) {
