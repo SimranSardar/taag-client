@@ -3,6 +3,7 @@ import { Button, InputField, InputSelect, RadioButton } from "../../components";
 import { MainLayout } from "../../layouts";
 import Dropzone from "react-dropzone";
 import axios from "axios";
+import { showAlert } from "../../utils";
 
 const UploadArtists = () => {
   async function onSubmit(acceptedFiles) {
@@ -13,12 +14,17 @@ const UploadArtists = () => {
       `${process.env.REACT_APP_API_URI}/artist/bulk`,
       formData
     );
+    if (response.status.toString().includes("20")) {
+      showAlert("success", "Artists uploaded successfully");
+    }
     console.log({ response });
   }
 
   return (
     <MainLayout classes={[styles.container]}>
-      <h1 style={{ color: "white" }}>Upload Artists</h1>
+      <div>
+        <h3>Upload Artists (xlsx)</h3>
+      </div>
       <Dropzone onDrop={(acceptedFiles) => onSubmit(acceptedFiles)}>
         {({ getRootProps, getInputProps }) => (
           <section>

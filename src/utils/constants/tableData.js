@@ -1,4 +1,38 @@
 import { KMBFormatter } from "..";
+import { Button, message, Upload } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import axios from "axios";
+
+const props = {
+  name: "file",
+  action: `${process.env.REACT_APP_API_URL}/campaign/upload`,
+  headers: {
+    authorization: localStorage.getItem("token"),
+  },
+
+  onChange(info) {
+    if (info.file.status !== "uploading") {
+      console.log(info.file, info.fileList);
+    }
+
+    if (info.file.status === "done") {
+      message.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+};
+
+const handleChangeInvoice = async (e) => {
+  const formData = new FormData();
+  formData.id = window.location.pathname.split("/")[2];
+  formData.append("file", e.file);
+  const res = await axios.post(
+    `${process.env.REACT_APP_API_URI}/campaigns/upload`,
+    formData
+  );
+  console.log({ res });
+};
 
 export const tableData = {
   campaign: {
@@ -10,18 +44,23 @@ export const tableData = {
           key: "name",
           // width: "30%",
           searchable: true,
+          editable: true,
         },
         {
           title: "Link",
           dataIndex: "link",
           key: "link",
-          renderCell: (row) => (
-            <a target="_blank" rel="noreferrer" href={row.value}>
-              {row.value}
-            </a>
-          ),
           // width: "20%",
-          searchable: true,
+          // searchable: true,
+          render: (link) =>
+            link ? (
+              <a href={link} target="_blank" rel="noreferrer">
+                View
+              </a>
+            ) : (
+              "NA"
+            ),
+          editable: true,
         },
         {
           title: "Followers",
@@ -58,7 +97,7 @@ export const tableData = {
           dataIndex: "brandCommercial",
           key: "brandCommercial",
           // width: "20%",
-          searchable: true,
+          // searchable: true,
         },
         {
           title: "CPV Brand",
@@ -129,7 +168,7 @@ export const tableData = {
           key: "language",
           render: (languages) => <span>{languages.join(", ")}</span>,
           // width: "30%",
-          searchable: true,
+          // searchable: true,
         },
         {
           title: "Category(Multiple#)",
@@ -137,7 +176,7 @@ export const tableData = {
           key: "categories",
           render: (categories) => <span>{categories?.join(", ")}</span>,
           // width: "30%",
-          searchable: true,
+          // searchable: true,
         },
         {
           title: "Type",
@@ -223,14 +262,28 @@ export const tableData = {
         dataIndex: "date",
         key: "date",
         // width: "30%",
-        searchable: true,
+        render: (date) => <span>{new Date().toLocaleDateString()}</span>,
+        // searchable: true,
       },
       {
         title: "Invoice Upload",
-        dataIndex: "invoiceUpload",
-        key: "invoiceUpload",
+        dataIndex: "invoice",
+        key: "invoice",
+        render: (invoice) =>
+          invoice ? (
+            <a href={invoice} download>
+              Download
+            </a>
+          ) : (
+            <input
+              type="file"
+              placeholder="Upload"
+              onChange={handleChangeInvoice}
+            />
+          ),
+
         // width: "30%",
-        searchable: true,
+        // searchable: true,
       },
       {
         title: "Note",
@@ -262,10 +315,11 @@ export const tableData = {
       },
       {
         title: "Upload Link",
-        dataIndex: "uploadLink",
-        key: "uploadLink",
+        dataIndex: "deliverableLink",
+        key: "deliverableLink",
         // width: "30%",
         searchable: true,
+        editable: true,
       },
       {
         title: "Views",

@@ -11,19 +11,23 @@ import { CurrentContext } from "../../utils/contexts";
 import { KMBFormatter } from "../../utils";
 
 const Campaign = () => {
-  const [campaign, setCampaign] = useState({});
+  // const [campaign, setCampaign] = useState({});
   const { tabIndex, setTabIndex, table, setCampaignId } =
     useContext(CurrentContext);
   const handleTabsChange = (event, newValue) => {
     setTabIndex(newValue);
   };
 
-  // const { fetchCampaign } = useContext(CampaignContext);
+  const { campaign, setCampaign } = useContext(CurrentContext);
   const { id } = useParams();
 
   useEffect(() => {
     setCampaignId(id);
   }, [id]);
+
+  useEffect(() => {
+    console.log({ campaign });
+  }, [campaign]);
 
   // useEffect(() => {
   //   async function fetchData() {
@@ -35,6 +39,10 @@ const Campaign = () => {
   //     fetchData();
   //   }
   // }, [id]);
+
+  function handleSelectRow(rows) {
+    setCampaign({ ...campaign, selectedArtists: rows });
+  }
 
   return (
     <MainLayout
@@ -53,8 +61,8 @@ const Campaign = () => {
         isVisible: true,
         agencyFees: campaign?.agencyFee,
         brandAmount: campaign?.brandAmount,
-        totalAverageViews: KMBFormatter("10000000"),
-        totalCreator: "4",
+        totalAverageViews: KMBFormatter(campaign?.totalAverageViews || 0),
+        totalCreator: campaign?.selectedArtists?.length.toString() || "0",
         averageROI: "0.4",
       }}
     >
@@ -102,6 +110,8 @@ const Campaign = () => {
           <CustomTable
             columns={table?.columns || []}
             data={table?.data || []}
+            onRowSelect={handleSelectRow}
+            selectedRows={campaign?.selectedArtists || []}
           />
         </div>
       </div>

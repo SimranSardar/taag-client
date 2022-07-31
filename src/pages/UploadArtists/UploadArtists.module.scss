@@ -3,8 +3,14 @@
 .container {
   width: 100%;
   margin-top: 1rem;
+  > div {
+    h3 {
+      color: white;
+    }
+    margin: 1rem 0;
+  }
   section {
-    height: 80vh;
+    height: 70vh;
     width: 100%;
     border: 2px dotted grey;
     border-radius: 5px;

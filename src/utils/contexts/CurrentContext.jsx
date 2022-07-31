@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { tableData } from "../constants";
@@ -13,6 +14,7 @@ const CurrentContextProvider = ({ children }) => {
   });
   const [campaignId, setCampaignId] = useState("");
   const [tabIndex, setTabIndex] = useState("1");
+  const [campaign, setCampaign] = useState({});
   const [campaignMain, setCampaignMain] = useState([]);
   const [campaignInfo, setCampaignInfo] = useState([]);
   const [campaignContact, setCampaignContact] = useState([]);
@@ -23,10 +25,18 @@ const CurrentContextProvider = ({ children }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const temp = await fetchCampaign(campaignId);
+      let temp = await fetchCampaign(campaignId);
+      temp.data.totalAverageViews = getTotal(
+        temp.data.selectedArtists,
+        "averageViews"
+      );
+      temp.data.totalCreator = temp.data.selectedArtists.length.toString();
+      temp.data.agencyFees = getTotal(temp.data.selectedArtists, "agencyFees");
       console.log({ temp });
+      setCampaign(temp.data);
       setCampaignMain(
         temp.data.selectedArtists.map((item) => ({
+          _id: item._id,
           name: item.name,
           link: item.link || "",
           followers: item.followers,
@@ -43,6 +53,7 @@ const CurrentContextProvider = ({ children }) => {
       );
       setCampaignInfo(
         temp.data.selectedArtists.map((item) => ({
+          _id: item._id,
           name: item.name,
           gender: item.gender,
           location: item.location,
@@ -53,6 +64,7 @@ const CurrentContextProvider = ({ children }) => {
       );
       setCampaignContact(
         temp.data.selectedArtists.map((item) => ({
+          _id: item._id,
           name: item.name,
           agencyName: item.agencyName,
           manager: item.manager,
@@ -62,6 +74,7 @@ const CurrentContextProvider = ({ children }) => {
       );
       setCampaignInvoice(
         temp.data.selectedArtists.map((item) => ({
+          _id: item._id,
           name: item.name,
           invoice: item.invoice,
           date: item.date,
@@ -70,8 +83,9 @@ const CurrentContextProvider = ({ children }) => {
       );
       setCampaignAnalytics(
         temp.data.selectedArtists.map((item) => ({
+          _id: item._id,
           name: item.name,
-          upload: item.upload,
+          deliverableLink: item.deliverableLink || ".",
           views: item.views,
           comments: item.comments,
           roi: item.roi,
@@ -135,12 +149,27 @@ const CurrentContextProvider = ({ children }) => {
     console.log(tabIndex);
   }, [tabIndex, location]);
 
-  useEffect(() => {
-    console.log({ table, location, tabIndex, campaignId });
-  });
+  // useEffect(() => {
+  //   console.log({ table, location, tabIndex, campaignId });
+  // });
+
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const data = await axios.get("http://localhost:5000/youtube/getLikes", {
+  //       params: {
+  //         videoId: "ABCq_VHfsUM",
+  //       },
+  //     });
+  //     console.log({ data });
+  //   }
+  //   fetchData();
+  // }, []);
+
   return (
     <CurrentContext.Provider
       value={{
+        campaign,
+        setCampaign,
         table,
         setTable,
         campaignId,
@@ -155,3 +184,7 @@ const CurrentContextProvider = ({ children }) => {
 };
 
 export default CurrentContextProvider;
+
+function getTotal(data, key) {
+  return data.reduce((acc, item) => acc + item[key], 0);
+}
