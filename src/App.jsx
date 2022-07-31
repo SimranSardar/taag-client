@@ -9,28 +9,29 @@ import {
   Campaigns,
 } from "./pages/";
 import SelectArtists from "./pages/SelectArtists/SelectArtists";
+import UploadArtists from "./pages/UploadArtists/UploadArtists";
 import AuthContextProvider from "./utils/auth/AuthContext";
 import PrivateRoute from "./utils/auth/PrivateRoute";
 import CampaignContextProvider from "./utils/contexts/CampaignContext";
 import CurrentContextProvider from "./utils/contexts/CurrentContext";
+import "./App.css";
 
 const App = () => {
   return (
     <Router basename="/">
-      <CurrentContextProvider>
-        <AuthContextProvider>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-          <CampaignContextProvider>
+      <AuthContextProvider>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+        <CampaignContextProvider>
+          <CurrentContextProvider>
             <Routes>
               <Route path="/" element={<PrivateRoute component={Home} />} />
               <Route
                 path="/new-campaign"
                 element={<PrivateRoute component={NewCampaign} />}
               />
-
               <Route
                 path="/campaigns"
                 element={<PrivateRoute component={Campaigns} />}
@@ -51,10 +52,14 @@ const App = () => {
                 path="/campaigns/:id/select-artists"
                 element={<PrivateRoute component={SelectArtists} />}
               />
+              <Route
+                path="/upload-artists"
+                element={<PrivateRoute component={UploadArtists} />}
+              />
             </Routes>
-          </CampaignContextProvider>
-        </AuthContextProvider>
-      </CurrentContextProvider>
+          </CurrentContextProvider>
+        </CampaignContextProvider>
+      </AuthContextProvider>
     </Router>
   );
 };

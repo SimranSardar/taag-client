@@ -123,7 +123,7 @@ const AddCampaign = () => {
       //   from: { type: String, required: true }, //  ISOString
       //   to: { type: String, required: true }, //  ISOString
       // },
-      selectedInfluencers: [],
+      selectedArtists: [],
       brandAmount: 0,
       currency: "INR", // INR | USD
       agencyFee: 0,
@@ -142,8 +142,8 @@ const AddCampaign = () => {
 
     console.log({ res });
 
-    if (res.status === 200) {
-      navigate(`/campaigns/${res.data.id}/select-artists`);
+    if (res.status.toString().includes("20")) {
+      navigate(`/campaigns/${res.data.data._id}/select-artists`);
     }
   }
 

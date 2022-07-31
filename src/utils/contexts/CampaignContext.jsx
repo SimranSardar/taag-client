@@ -6,6 +6,7 @@ export const CampaignContext = createContext({});
 
 const CampaignContextProvider = ({ children }) => {
   const [campaigns, setCampaigns] = useState([]);
+  const [artists, setArtists] = useState([]);
 
   const { currentUser } = useContext(AuthContext);
 
@@ -26,6 +27,8 @@ const CampaignContextProvider = ({ children }) => {
         return newObj;
       })
     );
+    const art = await axios.get(`${process.env.REACT_APP_API_URI}/artist/all`);
+    setArtists(art.data);
   }
 
   async function fetchCampaign(id) {
@@ -42,7 +45,7 @@ const CampaignContextProvider = ({ children }) => {
   }, [currentUser]);
 
   return (
-    <CampaignContext.Provider value={{ campaigns, fetchCampaign }}>
+    <CampaignContext.Provider value={{ campaigns, fetchCampaign, artists }}>
       {children}
     </CampaignContext.Provider>
   );
