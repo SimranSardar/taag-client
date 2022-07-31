@@ -10,6 +10,43 @@ import { TabIcon } from "../../assets";
 import { CurrentContext } from "../../utils/contexts";
 import { KMBFormatter } from "../../utils";
 import { tableData } from "../../utils/constants";
+import SelectArtists from "./SelectArtists";
+
+function newSelectionArist(item, campaign) {
+  return {
+    ...item,
+    key: item._id,
+    _id: item._id,
+    name: item.name,
+    link: item.link || "",
+    followers: item.followers,
+    averageViews: item.averageViews,
+    deliverable: item.deliverable || campaign.deliverable || "NA",
+    commercialCreator: item.commercialCreator || 0,
+    brandCommercial: item.brandCommercial || 0,
+    cpvBrand: item.cpvBrand || 0,
+    agencyFees:
+      item.agencyFees ||
+      parseInt(item.brandCommercial) - parseInt(item.commercialCreator) ||
+      0,
+    gender: item.gender,
+    location: item.location,
+    languages: item.languages,
+    categories: item.categories,
+    type: item.type,
+    agencyName: item.agencyName,
+    manager: item.manager,
+    contact: item.contact,
+    email: item.email,
+    invoice: item.invoice,
+    date: item.date,
+    note: item.note || ".",
+    deliverableLink: item.deliverableLink || "NA",
+    views: item.views || "NA",
+    comments: item.comments,
+    roi: item.roi,
+  };
+}
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -38,14 +75,23 @@ const Campaign = () => {
   // const [campaign, setCampaign] = useState({});
   const { tabIndex, setTabIndex, table, setCampaignId } =
     useContext(CurrentContext);
+  const { updateCampaign } = useContext(CampaignContext);
   const handleTabsChange = (event, newValue) => {
     setTabIndex(newValue);
     setTab(newValue);
   };
 
+  const [selRows, setSelRows] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
+
   const location = useLocation();
 
   const [tab, setTab] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  function handleClose() {
+    setModalOpen(false);
+  }
 
   const {
     campaign,
@@ -70,6 +116,13 @@ const Campaign = () => {
 
   useEffect(() => {
     console.log({ campaign });
+    if (campaign?.selectedArtists) {
+      setSelectedRows(
+        campaign.selectedArtists.map((item) =>
+          newSelectionArist(item, campaign)
+        )
+      );
+    }
   }, [campaign]);
 
   useEffect(() => {
@@ -100,8 +153,34 @@ const Campaign = () => {
   // }, [id]);
 
   function handleSelectRow(rows) {
-    setCampaign({ ...campaign, selectedArtists: rows });
+    // setCampaign({ ...campaign, selectedArtists: rows });
+    setSelRows(rows);
   }
+
+  function handleSave(rows) {
+    setSelectedRows(rows?.map((item) => newSelectionArist(item, campaign)));
+    updateCampaign({
+      ...campaign,
+      selectedArtists: rows?.map((item) => newSelectionArist(item, campaign)),
+    });
+    // setCampaign({
+    //   ...campaign,
+    //   selectedArtiss: rows?.map((item) => newSelectionArist(item, campaign)),
+    // });
+  }
+
+  function handleClickSave() {
+    updateCampaign({
+      ...campaign,
+      selectedArtists: selectedRows?.map((item) =>
+        newSelectionArist(item, campaign)
+      ),
+    });
+  }
+
+  // useEffect(() => {
+  //   setSelectedRows();
+  // }, [selRows]);
 
   return (
     <MainLayout
@@ -132,13 +211,17 @@ const Campaign = () => {
         {/* <Box sx={{ borderBottom: 1, borderColor: "divider" }}> */}
 
         {/* </TabContext> */}
+
         {location.pathname.includes("commercials") && (
           <div className={styles.tableContainer}>
+            <div className={styles.flexRow}>
+              <Button onClick={handleClickSave}>Save</Button>
+            </div>
             <CustomTable
               columns={tableData.campaign_commercials.columns}
-              data={campaignInvoice}
+              data={selectedRows}
               isSelectable
-              setData={setCampaignInvoice}
+              setData={setSelectedRows}
               onRowSelect={handleSelectRow}
               selectedRows={campaign?.selectedArtists || []}
             />
@@ -146,11 +229,14 @@ const Campaign = () => {
         )}
         {location.pathname.includes("analytics") && (
           <div className={styles.tableContainer}>
+            <div className={styles.flexRow}>
+              <Button onClick={handleClickSave}>Save</Button>
+            </div>
             <CustomTable
               columns={tableData.campaign_analytics.columns}
-              data={campaignAnalytics}
+              data={selectedRows}
               isSelectable
-              setData={setCampaignAnalytics}
+              setData={setSelectedRows}
               onRowSelect={handleSelectRow}
               selectedRows={campaign?.selectedArtists || []}
             />
@@ -159,7 +245,7 @@ const Campaign = () => {
         {!location.pathname.includes("commercials") &&
           !location.pathname.includes("analytics") && (
             <>
-              <div className={styles.flexRow}>
+              <div className={styles.tabs}>
                 <Tabs value={tab} onChange={handleTabsChange} aria-label="Tabs">
                   <Tab
                     icon={<TabIcon filled={tabIndex === 0} value={0} />}
@@ -175,7 +261,7 @@ const Campaign = () => {
                     // value={2}
                   />
                 </Tabs>
-                <Button>Save</Button>
+                <Button onClick={handleClickSave}>Save</Button>
               </div>
 
               {/* </Box> */}
@@ -184,9 +270,8 @@ const Campaign = () => {
                 <div className={styles.tableContainer}>
                   <CustomTable
                     columns={tableData.campaign.main.columns}
-                    data={campaignMain}
-                    isSelectable
-                    setData={setCampaignMain}
+                    data={selectedRows}
+                    setData={setSelectedRows}
                     onRowSelect={handleSelectRow}
                     selectedRows={campaign?.selectedArtists || []}
                   />
@@ -196,9 +281,8 @@ const Campaign = () => {
                 <div className={styles.tableContainer}>
                   <CustomTable
                     columns={tableData.campaign.info.columns}
-                    data={campaignInfo}
-                    isSelectable
-                    setData={setCampaignInfo}
+                    data={selectedRows}
+                    setData={setSelectedRows}
                     onRowSelect={handleSelectRow}
                     selectedRows={campaign?.selectedArtists || []}
                   />
@@ -208,9 +292,8 @@ const Campaign = () => {
                 <div className={styles.tableContainer}>
                   <CustomTable
                     columns={tableData.campaign.phone.columns}
-                    data={campaignContact}
-                    isSelectable
-                    setData={setCampaignContact}
+                    data={selectedRows}
+                    setData={setSelectedRows}
                     onRowSelect={handleSelectRow}
                     selectedRows={campaign?.selectedArtists || []}
                   />
@@ -218,7 +301,14 @@ const Campaign = () => {
               </TabPanel>
             </>
           )}
+        <br />
+        <Button onClick={() => setModalOpen(true)}>Add Artists</Button>
       </div>
+      <SelectArtists
+        open={modalOpen}
+        handleClose={handleClose}
+        handleSave={handleSave}
+      />
     </MainLayout>
   );
 };

@@ -40,12 +40,21 @@ const CampaignContextProvider = ({ children }) => {
     );
   }
 
+  async function updateCampaign(campaign) {
+    return await axios.patch(
+      `${process.env.REACT_APP_API_URI}/campaigns/update/`,
+      campaign
+    );
+  }
+
   useEffect(() => {
     fetchCampaigns();
   }, [currentUser]);
 
   return (
-    <CampaignContext.Provider value={{ campaigns, fetchCampaign, artists }}>
+    <CampaignContext.Provider
+      value={{ campaigns, fetchCampaign, artists, updateCampaign }}
+    >
       {children}
     </CampaignContext.Provider>
   );

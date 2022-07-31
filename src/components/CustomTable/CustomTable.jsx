@@ -49,7 +49,7 @@ const EditableCell = ({
     try {
       const values = await form.validateFields();
       toggleEdit();
-      handleSave({ ...record, ...values });
+      handleSave({ ...record, ...values, dataIndex });
     } catch (errInfo) {
       console.log("Save failed:", errInfo);
     }
@@ -100,14 +100,15 @@ const CustomTable = ({
   // const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   setLoading(true);
+  useEffect(() => {
+    setLoading(true);
 
-  //   setDataSource(
-  //     data?.map((item) => ({ ...item, key: item.id || item._id || item.name }))
-  //   );
-  //   setLoading(false);
-  // }, [data]);
+    sessionStorage.setItem("data", JSON.stringify(data));
+    // setDataSource(
+    //   data?.map((item) => ({ ...item, key: item.id || item._id || item.name }))
+    // );
+    setLoading(false);
+  }, [data]);
 
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
@@ -115,18 +116,18 @@ const CustomTable = ({
   const [cols, setCols] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  useEffect(() => {
-    if (selectedRows) {
-      setLoading(true);
-      console.log({ selectedRows });
-      setSelectedRowKeys(selectedRows.map((item) => item._id));
-      setLoading(false);
-    }
-  }, [selectedRows]);
+  // useEffect(() => {
+  //   if (selectedRows) {
+  //     setLoading(true);
+  //     console.log({ selectedRows });
+  //     setSelectedRowKeys(selectedRows.map((item) => item._id));
+  //     setLoading(false);
+  //   }
+  // }, [selectedRows]);
 
   const onSelectChange = (newSelectedRowKeys, rows) => {
     console.log("selectedRowKeys changed: ", selectedRowKeys);
-    // setSelectedRowKeys(newSelectedRowKeys);
+    setSelectedRowKeys(newSelectedRowKeys);
     console.log({ rows });
     onRowSelect(rows);
   };
@@ -277,18 +278,30 @@ const CustomTable = ({
   const handleSave = async (row) => {
     setLoading(true);
     console.log("----------------------------------------------------");
-    console.log({ data });
-    const newData = [...data];
+    console.log({ data, row });
+    const dat = JSON.parse(sessionStorage.getItem("data"));
+    const newData = [...dat];
     const index = newData.findIndex((item) => row._id === item._id);
     const item = newData[index];
     console.log({ newData, index, item, row });
+    if (row?.commercialCreator || row?.brandCommercial) {
+      row.agencyFees =
+        parseInt(row.brandCommercial) - parseInt(row.commercialCreator);
+    }
+    if (row.dataIndex !== "deliverableLink") {
+      delete item.dataIndex;
+      setData(newData);
+    }
     newData.splice(index, 1, { ...item, ...row });
     console.log({ newData });
-    setData(newData);
+    if (item?.deliverableLink === row?.deliverableLink) {
+      setData(newData);
+    }
+    // setData(newData);
     if (item?.deliverableLink !== row?.deliverableLink) {
       setLoading(true);
       const ytId = getYoutubeId(row.deliverableLink);
-      if (!ytId) return;
+      if (!ytId) return setData(newData);
       console.log(ytId["1"]);
       const ytData = await axios.get(
         `${process.env.REACT_APP_API_URI}/youtube/getLikes`,
@@ -306,6 +319,7 @@ const CustomTable = ({
       console.log({ newData, index });
       setData(newData);
     }
+
     setLoading(false);
   };
 
@@ -324,7 +338,7 @@ const CustomTable = ({
       rowClassName={() => "editable-row"}
       rowSelection={isSelectable ? rowSelection : null}
       components={components}
-      selectedRowKeys={selectedRowKeys}
+      // selectedRowKeys={selectedRowKeys}
       scroll={{
         x: 1500,
         y: 800,

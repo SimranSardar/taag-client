@@ -40,7 +40,7 @@ const CurrentContextProvider = ({ children }) => {
       console.log({ temp });
       setCampaign(temp.data);
       setCampaignMain(
-        artists.map((item) => ({
+        temp.data.selectedArtists.map((item) => ({
           key: item._id,
           _id: item._id,
           name: item.name,
@@ -58,7 +58,7 @@ const CurrentContextProvider = ({ children }) => {
         }))
       );
       setCampaignInfo(
-        artists.map((item) => ({
+        temp.data.selectedArtists.map((item) => ({
           key: item._id,
           _id: item._id,
           name: item.name,
@@ -70,7 +70,7 @@ const CurrentContextProvider = ({ children }) => {
         }))
       );
       setCampaignContact(
-        artists.map((item) => ({
+        temp.data.selectedArtists.map((item) => ({
           key: item._id,
           _id: item._id,
           name: item.name,
@@ -81,7 +81,7 @@ const CurrentContextProvider = ({ children }) => {
         }))
       );
       setCampaignInvoice(
-        artists.map((item) => ({
+        temp.data.selectedArtists.map((item) => ({
           key: item._id,
           _id: item._id,
           name: item.name,
@@ -91,7 +91,7 @@ const CurrentContextProvider = ({ children }) => {
         }))
       );
       setCampaignAnalytics(
-        artists.map((item) => ({
+        temp.data.selectedArtists.map((item) => ({
           key: item._id,
           _id: item._id,
           name: item.name,

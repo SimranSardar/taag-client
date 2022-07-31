@@ -8,12 +8,41 @@
 
     // border-radius: 10px !important;
     // overflow: hidden;
-    height: 500px;
+    // height: 500px;
     margin-top: 1rem;
+    button {
+      margin: 1rem 0;
+      margin-left: auto;
+    }
   }
   button {
     img {
       width: 30px;
+    }
+  }
+}
+.tabs {
+  @extend .flexRow;
+  div > div > span {
+    background-color: var(--clr-primary) !important;
+  }
+}
+.dialog {
+  div:nth-of-type(3) > div {
+    background: var(--clr-bg-dark) !important;
+  }
+  header {
+    background: var(--clr-primary);
+  }
+  .tablesContainer {
+    width: 90%;
+    margin: 2rem auto;
+
+    .tabs {
+      margin: 1rem 0;
+      img {
+        width: 30px;
+      }
     }
   }
 }
