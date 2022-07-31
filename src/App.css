@@ -46,3 +46,6 @@ th:last-child {
 .ant-table-body::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+.ant-dropdown {
+  z-index: 10000;
+}

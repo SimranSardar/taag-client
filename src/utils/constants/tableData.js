@@ -340,6 +340,7 @@ export const tableData = {
         key: "views",
         // width: "30%",
         searchable: true,
+        render: ({ text }) => <span>{KMBFormatter(text)}</span>,
       },
       {
         title: "Comments",
@@ -347,6 +348,7 @@ export const tableData = {
         key: "comments",
         // width: "30%",
         searchable: true,
+        render: ({ text }) => <span>{KMBFormatter(text)}</span>,
       },
       {
         title: "ROI",
