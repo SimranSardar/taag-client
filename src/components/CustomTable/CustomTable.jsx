@@ -89,15 +89,25 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-const CustomTable = ({ columns, data, onRowSelect, selectedRows }) => {
-  const [dataSource, setDataSource] = useState([]);
+const CustomTable = ({
+  columns,
+  data,
+  setData,
+  onRowSelect,
+  selectedRows,
+  isSelectable,
+}) => {
+  // const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    setDataSource(
-      data?.map((item) => ({ ...item, key: item.id || item._id || item.name }))
-    );
-  }, [data]);
+  // useEffect(() => {
+  //   setLoading(true);
+
+  //   setDataSource(
+  //     data?.map((item) => ({ ...item, key: item.id || item._id || item.name }))
+  //   );
+  //   setLoading(false);
+  // }, [data]);
 
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
@@ -107,14 +117,12 @@ const CustomTable = ({ columns, data, onRowSelect, selectedRows }) => {
 
   useEffect(() => {
     if (selectedRows) {
+      setLoading(true);
       console.log({ selectedRows });
       setSelectedRowKeys(selectedRows.map((item) => item._id));
+      setLoading(false);
     }
   }, [selectedRows]);
-
-  useEffect(() => {
-    console.log({ selectedRowKeys });
-  }, [selectedRowKeys]);
 
   const onSelectChange = (newSelectedRowKeys, rows) => {
     console.log("selectedRowKeys changed: ", selectedRowKeys);
@@ -226,13 +234,15 @@ const CustomTable = ({ columns, data, onRowSelect, selectedRows }) => {
           textToHighlight={text ? text.toString() : ""}
         />
       ) : CompCustomRender ? (
-        <CompCustomRender value={text} {...text} />
+        <CompCustomRender text={text} record={record} {...text} />
       ) : (
         text
       ),
   });
 
   useEffect(() => {
+    setLoading(true);
+
     setCols(
       columns?.map((col) => {
         let finalCol = { ...col };
@@ -261,23 +271,30 @@ const CustomTable = ({ columns, data, onRowSelect, selectedRows }) => {
         return finalCol;
       })
     );
+    setLoading(false);
   }, [columns]);
 
   const handleSave = async (row) => {
-    const newData = [...dataSource];
+    setLoading(true);
+    console.log("----------------------------------------------------");
+    console.log({ data });
+    const newData = [...data];
     const index = newData.findIndex((item) => row._id === item._id);
     const item = newData[index];
+    console.log({ newData, index, item, row });
     newData.splice(index, 1, { ...item, ...row });
-    setDataSource(newData);
-    // console.log({ newData, index });
-    if (item.deliverableLink) {
+    console.log({ newData });
+    setData(newData);
+    if (item?.deliverableLink !== row?.deliverableLink) {
       setLoading(true);
-      console.log(getYoutubeId(row.deliverableLink)["1"]);
+      const ytId = getYoutubeId(row.deliverableLink);
+      if (!ytId) return;
+      console.log(ytId["1"]);
       const ytData = await axios.get(
         `${process.env.REACT_APP_API_URI}/youtube/getLikes`,
         {
           params: {
-            videoId: getYoutubeId(row.deliverableLink)["1"],
+            videoId: ytId["1"],
           },
         }
       );
@@ -287,9 +304,9 @@ const CustomTable = ({ columns, data, onRowSelect, selectedRows }) => {
       console.log({ ytData });
       newData.splice(index, 1, { ...item, ...newItem });
       console.log({ newData, index });
-      setDataSource(newData);
-      setLoading(false);
+      setData(newData);
     }
+    setLoading(false);
   };
 
   const components = {
@@ -303,9 +320,9 @@ const CustomTable = ({ columns, data, onRowSelect, selectedRows }) => {
     <Table
       className={styles.customTable}
       columns={cols}
-      dataSource={dataSource}
+      dataSource={data}
       rowClassName={() => "editable-row"}
-      rowSelection={rowSelection}
+      rowSelection={isSelectable ? rowSelection : null}
       components={components}
       selectedRowKeys={selectedRowKeys}
       scroll={{

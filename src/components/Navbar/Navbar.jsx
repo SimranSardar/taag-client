@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 const { bell, editing, back } = icons;
 const { profile } = images;
 
-const Navbar = ({ titleProps, progress }) => {
+const Navbar = ({ titleProps, progress, prevRoute }) => {
   const navigate = useNavigate();
 
   function handleLogout() {
@@ -36,6 +36,7 @@ const Navbar = ({ titleProps, progress }) => {
             isEditIconVisible={titleProps?.isEditIconVisible}
             isBackIconVisible={titleProps?.isBackIconVisible}
             brandName={titleProps?.brandName}
+            prevRoute={prevRoute}
           />
         </div>
         <div className={styles.right}>
@@ -77,6 +78,7 @@ const Title = ({
   brandName,
   onChange,
   disabled,
+  prevRoute,
   ...remaining
 }) => {
   console.log(remaining);
@@ -87,7 +89,7 @@ const Title = ({
     >
       <div className={styles.top}>
         <div className={styles.fixedWidth}>
-          {isBackIconVisible && <Breadcrumb />}
+          {isBackIconVisible && <Breadcrumb prevRoute={prevRoute} />}
         </div>
         <input
           id={id}

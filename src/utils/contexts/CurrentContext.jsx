@@ -21,11 +21,16 @@ const CurrentContextProvider = ({ children }) => {
   const [campaignInvoice, setCampaignInvoice] = useState([]);
   const [campaignAnalytics, setCampaignAnalytics] = useState([]);
 
-  const { fetchCampaign } = useContext(CampaignContext);
+  const { fetchCampaign, artists } = useContext(CampaignContext);
 
   useEffect(() => {
     async function fetchData() {
-      let temp = await fetchCampaign(campaignId);
+      let temp = await axios.get(
+        `${process.env.REACT_APP_API_URI}/campaigns/single/`,
+        {
+          params: { id: campaignId },
+        }
+      );
       temp.data.totalAverageViews = getTotal(
         temp.data.selectedArtists,
         "averageViews"
@@ -35,7 +40,8 @@ const CurrentContextProvider = ({ children }) => {
       console.log({ temp });
       setCampaign(temp.data);
       setCampaignMain(
-        temp.data.selectedArtists.map((item) => ({
+        artists.map((item) => ({
+          key: item._id,
           _id: item._id,
           name: item.name,
           link: item.link || "",
@@ -52,7 +58,8 @@ const CurrentContextProvider = ({ children }) => {
         }))
       );
       setCampaignInfo(
-        temp.data.selectedArtists.map((item) => ({
+        artists.map((item) => ({
+          key: item._id,
           _id: item._id,
           name: item.name,
           gender: item.gender,
@@ -63,7 +70,8 @@ const CurrentContextProvider = ({ children }) => {
         }))
       );
       setCampaignContact(
-        temp.data.selectedArtists.map((item) => ({
+        artists.map((item) => ({
+          key: item._id,
           _id: item._id,
           name: item.name,
           agencyName: item.agencyName,
@@ -73,7 +81,8 @@ const CurrentContextProvider = ({ children }) => {
         }))
       );
       setCampaignInvoice(
-        temp.data.selectedArtists.map((item) => ({
+        artists.map((item) => ({
+          key: item._id,
           _id: item._id,
           name: item.name,
           invoice: item.invoice,
@@ -82,72 +91,77 @@ const CurrentContextProvider = ({ children }) => {
         }))
       );
       setCampaignAnalytics(
-        temp.data.selectedArtists.map((item) => ({
+        artists.map((item) => ({
+          key: item._id,
           _id: item._id,
           name: item.name,
-          deliverableLink: item.deliverableLink || ".",
-          views: item.views,
+          deliverableLink: item.deliverableLink || "NA",
+          views: item.views || "NA",
           comments: item.comments,
           roi: item.roi,
         }))
       );
-      handleTable(location);
+      // handleTable(location);
+      console.log("inside");
     }
-    if (campaignId) {
+    // console.log("fdsddddddddd ", { campaignId, len: artists?.length });
+    if (campaignId && artists?.length) {
+      console.log("fd ", { campaignId, len: artists?.length });
       fetchData();
     }
-  }, [campaignId, fetchCampaign]);
+    // console.warn("useeffect");
+  }, [campaignId, artists]);
 
-  function handleTable(location) {
-    let newTable = {};
+  // function handleTable(location) {
+  //   let newTable = {};
 
-    if (location?.pathname === "/campaigns/" + campaignId) {
-      switch (tabIndex) {
-        case "1": {
-          newTable.data = campaignMain;
-          newTable.columns = tableData.campaign.main.columns;
-          console.log(newTable);
-          break;
-        }
-        case "2": {
-          newTable.data = campaignInfo;
-          newTable.columns = tableData.campaign.info.columns;
-          break;
-        }
-        case "3": {
-          newTable.data = campaignContact;
-          newTable.columns = tableData.campaign.phone.columns;
-          break;
-        }
-        default:
-          newTable.data = [];
-          newTable.columns = [];
-      }
-    } else if (
-      location?.pathname ===
-      "/campaigns/" + campaignId + "/commercials"
-    ) {
-      newTable.columns = tableData.campaign_commercials.columns;
-      newTable.data = campaignInvoice;
-    } else if (
-      location?.pathname ===
-      "/campaigns/" + campaignId + "/analytics"
-    ) {
-      newTable.columns = tableData.campaign_analytics.columns;
-      newTable.data = campaignAnalytics;
-    }
-    setTable(newTable);
-  }
+  //   if (location?.pathname === "/campaigns/" + campaignId) {
+  //     switch (tabIndex) {
+  //       case "1": {
+  //         newTable.data = campaignMain;
+  //         newTable.columns = tableData.campaign.main.columns;
+  //         console.log(newTable);
+  //         break;
+  //       }
+  //       case "2": {
+  //         newTable.data = campaignInfo;
+  //         newTable.columns = tableData.campaign.info.columns;
+  //         break;
+  //       }
+  //       case "3": {
+  //         newTable.data = campaignContact;
+  //         newTable.columns = tableData.campaign.phone.columns;
+  //         break;
+  //       }
+  //       default:
+  //         newTable.data = [];
+  //         newTable.columns = [];
+  //     }
+  //   } else if (
+  //     location?.pathname ===
+  //     "/campaigns/" + campaignId + "/commercials"
+  //   ) {
+  //     newTable.columns = tableData.campaign_commercials.columns;
+  //     newTable.data = campaignInvoice;
+  //   } else if (
+  //     location?.pathname ===
+  //     "/campaigns/" + campaignId + "/analytics"
+  //   ) {
+  //     newTable.columns = tableData.campaign_analytics.columns;
+  //     newTable.data = campaignAnalytics;
+  //   }
+  //   setTable(newTable);
+  // }
 
-  useEffect(() => {
-    if (location?.pathname === "/campaigns/" + campaignId) setTabIndex("1");
-    else setTabIndex(undefined);
-  }, [location, campaignId]);
+  // useEffect(() => {
+  //   if (location?.pathname === "/campaigns/" + campaignId) setTabIndex("1");
+  //   else setTabIndex(undefined);
+  // }, [location, campaignId]);
 
-  useEffect(() => {
-    handleTable(location);
-    console.log(tabIndex);
-  }, [tabIndex, location]);
+  // useEffect(() => {
+  //   handleTable(location);
+  //   console.log(tabIndex);
+  // }, [tabIndex, location]);
 
   // useEffect(() => {
   //   console.log({ table, location, tabIndex, campaignId });
@@ -176,6 +190,16 @@ const CurrentContextProvider = ({ children }) => {
         setCampaignId,
         setTabIndex,
         tabIndex,
+        campaignMain,
+        campaignInfo,
+        campaignContact,
+        campaignInvoice,
+        campaignAnalytics,
+        setCampaignMain,
+        setCampaignInfo,
+        setCampaignContact,
+        setCampaignInvoice,
+        setCampaignAnalytics,
       }}
     >
       {children}

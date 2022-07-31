@@ -40,6 +40,7 @@ export const tableData = {
       columns: [
         {
           title: "Name",
+          fixed: "left",
           dataIndex: "name",
           key: "name",
           // width: "30%",
@@ -52,15 +53,20 @@ export const tableData = {
           key: "link",
           // width: "20%",
           // searchable: true,
-          render: (link) =>
-            link ? (
-              <a href={link} target="_blank" rel="noreferrer">
-                View
-              </a>
-            ) : (
-              "NA"
-            ),
-          editable: true,
+          render: (link) => (
+            <span
+              style={{
+                maxWidth: "100px",
+                display: "block",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {link || "NA"}
+            </span>
+          ),
+          editable: false,
         },
         {
           title: "Followers",
@@ -90,12 +96,14 @@ export const tableData = {
           title: "Commercial Creator",
           dataIndex: "commercialCreator",
           key: "commercialCreator",
+          editable: true,
           // width: "20%",
         },
         {
           title: "Brand Commercial",
           dataIndex: "brandCommercial",
           key: "brandCommercial",
+          editable: true,
           // width: "20%",
           // searchable: true,
         },
@@ -143,6 +151,7 @@ export const tableData = {
       columns: [
         {
           title: "Name",
+          fixed: "left",
           dataIndex: "name",
           key: "name",
           // width: "30%",
@@ -202,6 +211,7 @@ export const tableData = {
       columns: [
         {
           title: "Name",
+          fixed: "left",
           dataIndex: "name",
           key: "name",
           // width: "30%",
@@ -252,6 +262,7 @@ export const tableData = {
     columns: [
       {
         title: "Name",
+        fixed: "left",
         dataIndex: "name",
         key: "name",
         // width: "30%",
@@ -291,6 +302,7 @@ export const tableData = {
         key: "note",
         // width: "30%",
         searchable: true,
+        editable: true,
       },
     ],
     data: [
@@ -308,6 +320,7 @@ export const tableData = {
     columns: [
       {
         title: "Name",
+        fixed: "left",
         dataIndex: "name",
         key: "name",
         // width: "30%",
