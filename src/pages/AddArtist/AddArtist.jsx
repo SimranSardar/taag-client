@@ -100,13 +100,19 @@ const AddArtist = () => {
   const totalNoOfFields = 13;
   const [progress, setProgress] = useState(0.000001);
   const [value, setValue] = useState("");
+  const [categories, setCategories] = useState([]);
   const [values, setValues] = useState({});
-
+  useEffect(() => {
+    console.log(categories);
+  });
   const navigate = useNavigate();
+
+  async function handleAddLanguage(valueToAdd) {
+    console.log(valueToAdd);
+  }
 
   function handleChange(e) {
     const { id, value, name } = e.target;
-    // console.log(id, value, name);
     setValues((prev) => {
       return {
         ...prev,
@@ -123,10 +129,6 @@ const AddArtist = () => {
         100 || 0.0000001
     );
   }, [values]);
-
-  useEffect(() => {
-    console.log(progress);
-  });
 
   async function submitHandler(e) {
     e.preventDefault();
@@ -162,13 +164,10 @@ const AddArtist = () => {
       createdAt: new Date().toISOString(), // ISOString
       updatedAt: new Date().toISOString(), // ISOString
     };
-    // console.log({ campaign });
     const res = await axios.post(
       `${process.env.REACT_APP_API_URI}/campaigns/create`,
       campaign
     );
-
-    console.log({ res });
 
     if (res.status.toString().includes("20")) {
       navigate(`/campaigns/${res.data.data._id}/select-artists`);
@@ -198,7 +197,14 @@ const AddArtist = () => {
             value={values?.artistName}
             label={"Artist Name"}
           />
-          <CreatableSelect />
+          <CreatableSelect
+            value={categories}
+            setValue={setCategories}
+            label={"Categories"}
+            id="categories"
+            onAddOptionSubmit={handleAddLanguage}
+            options={sectorOptions}
+          />
           <InputField
             required
             onChange={handleChange}
