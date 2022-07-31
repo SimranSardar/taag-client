@@ -47,15 +47,15 @@ export const images = {
 
 export const TabIcon = ({ filled, value }) => {
   console.log(filled);
-  if (value === "1" && !filled)
+  if (value === 0 && !filled)
     return <img src={brandPlaceholder} alt="Brands" />;
-  if (value === "1" && filled)
+  if (value === 0 && filled)
     return <img src={selectedBrandPlaceholder} alt="Brands" />;
-  if (value === "2" && !filled) return <img src={info} alt="Information" />;
-  if (value === "2" && filled)
+  if (value === 1 && !filled) return <img src={info} alt="Information" />;
+  if (value === 1 && filled)
     return <img src={selectedInfo} alt="Information" />;
-  if (value === "3" && !filled) return <img src={phone} alt="Phone" />;
-  if (value === "3" && filled) return <img src={selectedPhone} alt="Phone" />;
+  if (value === 2 && !filled) return <img src={phone} alt="Phone" />;
+  if (value === 2 && filled) return <img src={selectedPhone} alt="Phone" />;
 
   return <div>Hello</div>;
 };

@@ -145,12 +145,22 @@ const Home = () => {
 
   const columns = [
     {
+      title: "Campaign Name",
+      dataIndex: "name",
+      key: "name",
+      // width: "30%",
+      render: ({ text, record }) => (
+        <Link to={`/campaigns/${record.id}`}>{text}</Link>
+      ),
+      searchable: true,
+    },
+    {
       title: "Date",
       dataIndex: "createdAt",
       key: "date",
       searchable: true,
       isObj: false,
-      render: (date) => <span>{new Date(date).toLocaleDateString()}</span>,
+      render: ({ text }) => <span>{new Date(text).toLocaleDateString()}</span>,
       // width: "30%",
     },
     {
@@ -159,15 +169,8 @@ const Home = () => {
       key: "brand",
       searchable: true,
       isObj: true,
-      render: (brand) => <span>{brand?.name}</span>,
+      render: ({ text }) => <span>{text?.name}</span>,
       // width: "30%",
-    },
-    {
-      title: "Campaign Name",
-      dataIndex: "name",
-      key: "name",
-      // width: "30%",
-      searchable: true,
     },
     {
       title: "Amount",
@@ -187,15 +190,15 @@ const Home = () => {
       // width: "20%",
       // searchable: true,
     },
-    {
-      title: "View",
-      dataIndex: "id",
-      key: "open",
-      isObj: false,
-      render: (id) => <Link to={`/campaigns/${id}`}>View</Link>,
-      // width: "20%",
-      // searchable: true,
-    },
+    // {
+    //   title: "View",
+    //   dataIndex: "id",
+    //   key: "open",
+    //   isObj: false,
+    //   render: (id) => <Link to={`/campaigns/${id}`}>View</Link>,
+    //   // width: "20%",
+    //   // searchable: true,
+    // },
   ];
 
   return (

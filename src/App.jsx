@@ -16,6 +16,7 @@ import PrivateRoute from "./utils/auth/PrivateRoute";
 import CampaignContextProvider from "./utils/contexts/CampaignContext";
 import CurrentContextProvider from "./utils/contexts/CurrentContext";
 import "./App.css";
+import BrandCampaigns from "./pages/Brand/BrandCampaigns";
 
 const App = () => {
   return (
@@ -61,6 +62,7 @@ const App = () => {
                 path="/upload-artists"
                 element={<PrivateRoute component={UploadArtists} />}
               />
+              <Route path="/brand" element={<BrandCampaigns />} />
             </Routes>
           </CurrentContextProvider>
         </CampaignContextProvider>
