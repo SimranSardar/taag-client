@@ -1,5 +1,11 @@
 import styles from "./AddArtist.module.scss";
-import { Button, InputField, InputSelect, RadioButton } from "../../components";
+import {
+  Button,
+  CreatableSelect,
+  InputField,
+  InputSelect,
+  RadioButton,
+} from "../../components";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { MainLayout } from "../../layouts";
@@ -45,31 +51,53 @@ const sectorOptions = [
   },
 ];
 
-const deliverableOptions = [
+const genderOptions = [
   {
-    name: "IG Video",
-    value: "IGVideo",
+    name: "Male",
+    value: "male",
   },
   {
-    name: "IG Static",
-    value: "IGStatic",
+    name: "Female",
+    value: "female",
   },
   {
-    name: "IG Story",
-    value: "IGStory",
+    name: "Other",
+    value: "other",
+  },
+];
+
+const typeOptions = [
+  {
+    name: "Macro",
+    value: "macro",
   },
   {
-    name: "YT Video",
-    value: "YTVideo",
+    name: "Mini",
+    value: "mini",
   },
   {
-    name: "YT Shorts",
-    value: "YTShorts",
+    name: "Mega",
+    value: "mega",
+  },
+];
+
+const languageOptions = [
+  {
+    name: "Hindi",
+    value: "hindi",
+  },
+  {
+    name: "English",
+    value: "english",
+  },
+  {
+    name: "Marathi",
+    value: "marathi",
   },
 ];
 
 const AddArtist = () => {
-  const totalNoOfFields = 11; //12 considering campaign name
+  const totalNoOfFields = 13;
   const [progress, setProgress] = useState(0.000001);
   const [value, setValue] = useState("");
   const [values, setValues] = useState({});
@@ -103,7 +131,7 @@ const AddArtist = () => {
   async function submitHandler(e) {
     e.preventDefault();
     let campaign = {
-      name: values.name || "Test",
+      name: values.name || "Add ",
       brand: {
         name: values.brandName,
         sector: values.brandSector, // Beauty | Fashion | Health
@@ -153,121 +181,117 @@ const AddArtist = () => {
       isSideMenuVisible
       navbarProps={{
         titleProps: {
+          disabled: true,
           id: "name",
-          name: values?.name || "New Campaign",
-          onChange: handleChange,
-          isEditIconVisible: true,
+          name: "Add Artist",
           isBackIconVisible: true,
         },
         progress,
       }}
     >
       <form onSubmit={submitHandler}>
-        <FormSection sectionName={"Brand / Agency"} sectionNumber={1}>
-          <section className={styles.inputs}>
-            <InputField
-              required
-              onChange={handleChange}
-              id="brandName"
-              value={values?.brandName}
-              label={"Brand Name"}
-            />
-            <InputField
-              required
-              onChange={handleChange}
-              id="brandSector"
-              value={values?.brandSector}
-              label={"Sector"}
-            />
-            <InputField
-              required
-              onChange={handleChange}
-              id="website"
-              value={values?.website}
-              label={"Website"}
-            />
-            <div className={styles.personInContact}>
-              <InputField
-                required
-                onChange={handleChange}
-                id="PICId"
-                value={values?.PICId}
-                label={"Person in Contact ID"}
-              />
-              <InputField
-                required
-                onChange={handleChange}
-                id="PICPosition"
-                value={values?.PICPosition}
-                label={"Position"}
-              />
-              <InputField
-                required
-                onChange={handleChange}
-                id="PICEmail"
-                value={values?.PICEmail}
-                type="email"
-                label={"Email Id"}
-              />
-              <InputField
-                required
-                onChange={handleChange}
-                id="PICContact"
-                value={values?.PICContact}
-                type="tel"
-                label={"Contact"}
-              />
-            </div>
-          </section>
-        </FormSection>
-        <FormSection sectionName={"Platform"} sectionNumber={2}>
-          <section className={styles.inputs}>
-            <div className={styles.radioButtonGroup}>
-              <RadioButton
-                required
-                name="platform"
-                label={"Youtube"}
-                value={"youtube"}
-                onChange={handleChange}
-              />
-              <RadioButton
-                required
-                name="platform"
-                label={"Instagram"}
-                value={"instagram"}
-                onChange={handleChange}
-              />
-              <InputSelect
-                required
-                name="sector"
-                label={"Sector"}
-                value={values?.sector}
-                onChange={handleChange}
-                options={sectorOptions}
-              />
-            </div>
-            <InputSelect
-              required
-              name="deliverable"
-              label={"Deliverable"}
-              value={values?.deliverable}
-              onChange={handleChange}
-              options={deliverableOptions}
-            />
-          </section>
-        </FormSection>
-        <FormSection sectionName={"Brief"} sectionNumber={3}>
-          <section className={styles.inputs}>
-            <InputField
-              required
-              id="brief"
-              value={values?.brief}
-              variant="large"
-              onChange={handleChange}
-              placeholder={"Enter Brief for Influencer"}
-            />
-          </section>
-        </FormSection>
+        <section className={styles.inputs}>
+          <InputField
+            required
+            onChange={handleChange}
+            id="artistName"
+            value={values?.artistName}
+            label={"Artist Name"}
+          />
+          <CreatableSelect />
+          <InputField
+            required
+            onChange={handleChange}
+            id="followers"
+            value={values?.followers}
+            label={"Followers"}
+          />
+          <InputSelect
+            required
+            name="categories"
+            label={"Categories"}
+            value={values?.categories}
+            onChange={handleChange}
+            options={sectorOptions}
+          />
+          <InputSelect
+            required
+            name="languages"
+            label={"Languages"}
+            value={values?.languages}
+            onChange={handleChange}
+            options={languageOptions}
+          />
+          <InputSelect
+            required
+            name="type"
+            label={"Type"}
+            value={values?.type}
+            onChange={handleChange}
+            options={typeOptions}
+          />
+          <InputSelect
+            required
+            name="gender"
+            label={"Gender"}
+            value={values?.gender}
+            onChange={handleChange}
+            options={genderOptions}
+          />
+          <InputField
+            required
+            onChange={handleChange}
+            id="type"
+            value={values?.link}
+            label={"Social Link"}
+          />
+          <InputField
+            required
+            onChange={handleChange}
+            id="Location"
+            value={values?.location}
+            label={"Location"}
+          />
+          <InputField
+            required
+            onChange={handleChange}
+            id="agencyName"
+            value={values?.agencyName}
+            label={"Agency Name"}
+          />
+          <InputField
+            required
+            onChange={handleChange}
+            id="averageViews"
+            value={values?.averageViews}
+            type="tel"
+            label={"Average Views"}
+          />
+          <InputField
+            required
+            onChange={handleChange}
+            id="manager"
+            value={values?.manager}
+            type="tel"
+            label={"Manager"}
+          />
+          <InputField
+            required
+            onChange={handleChange}
+            id="contact"
+            value={values?.contact}
+            type="tel"
+            label={"Contact"}
+          />
+          <InputField
+            required
+            onChange={handleChange}
+            id="email"
+            value={values?.email}
+            type="email"
+            label={"Email"}
+          />
+        </section>
         <Button disabled={progress < 1} type="submit">
           Continue
         </Button>

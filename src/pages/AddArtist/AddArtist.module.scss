@@ -12,6 +12,7 @@
         border-radius: 20px;
         // margin: 3rem 4rem;
         padding: 3rem 4rem;
+        @extend .flexCol;
     }
 
     .formSection {
@@ -49,7 +50,9 @@
     }
 
     .inputs {
-        margin-left: 60px;
+        margin:0 60px;
+        @extend .flexRow;
+        flex-wrap: wrap
     }
 
     .radioButtonGroup {
