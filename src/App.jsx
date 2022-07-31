@@ -7,6 +7,7 @@ import {
   Register,
   Campaign,
   Campaigns,
+  AddArtist,
 } from "./pages/";
 import SelectArtists from "./pages/SelectArtists/SelectArtists";
 import UploadArtists from "./pages/UploadArtists/UploadArtists";
@@ -52,6 +53,10 @@ const App = () => {
               <Route
                 path="/campaigns/:id/select-artists"
                 element={<PrivateRoute component={SelectArtists} />}
+              />
+              <Route
+                path="/add-artist"
+                element={<PrivateRoute component={AddArtist} />}
               />
               <Route
                 path="/upload-artists"

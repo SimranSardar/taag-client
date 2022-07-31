@@ -30,7 +30,7 @@ const InputField = forwardRef((props, ref) => {
           {...remaining}
           id={id}
           type={type}
-          value={value}
+          value={value || ""}
           placeholder={placeholder}
           onChange={onChange}
         />
