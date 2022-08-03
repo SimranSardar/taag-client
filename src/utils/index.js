@@ -31,3 +31,31 @@ export function getYoutubeId(url) {
     url
   );
 }
+
+export function campaignsOfLastMonth(campaigns) {
+  let lastMonth = [];
+  let today = new Date();
+  let lastMonthStart = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+  for (let i = 0; i < campaigns.length; i++) {
+    let campaign = campaigns[i];
+    let startDate = new Date(campaign.createdAt);
+    if (startDate >= lastMonthStart && startDate <= today) {
+      lastMonth.push(campaign);
+    }
+  }
+  return lastMonth;
+}
+
+export function campaignsOfLast7Days(campaigns) {
+  let last7Days = [];
+  let today = new Date();
+  let last7DaysStart = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+  for (let i = 0; i < campaigns.length; i++) {
+    let campaign = campaigns[i];
+    let startDate = new Date(campaign.createdAt);
+    if (startDate >= last7DaysStart && startDate <= today) {
+      last7Days.push(campaign);
+    }
+  }
+  return last7Days;
+}

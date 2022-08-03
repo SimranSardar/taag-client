@@ -223,22 +223,22 @@ const CustomTable = ({
         setTimeout(() => searchInput.current?.select(), 100);
       }
     },
-    render: (text, record) =>
-      searchedColumn === dataIndex ? (
-        <Highlighter
-          highlightStyle={{
-            backgroundColor: "#ffc069",
-            padding: 0,
-          }}
-          searchWords={[searchText]}
-          autoEscape
-          textToHighlight={text ? text.toString() : ""}
-        />
-      ) : CompCustomRender ? (
-        <CompCustomRender text={text} record={record} {...text} />
-      ) : (
-        text
-      ),
+    // render: (text, record) =>
+    //   searchedColumn === dataIndex ? (
+    //     <Highlighter
+    //       highlightStyle={{
+    //         backgroundColor: "#ffc069",
+    //         padding: 0,
+    //       }}
+    //       searchWords={[searchText]}
+    //       autoEscape
+    //       textToHighlight={text ? text.toString() : ""}
+    //     />
+    //   ) : CompCustomRender ? (
+    //     <CompCustomRender text={text} record={record} />
+    //   ) : (
+    //     text
+    //   ),
   });
 
   useEffect(() => {
@@ -339,9 +339,15 @@ const CustomTable = ({
       rowSelection={isSelectable ? rowSelection : null}
       components={components}
       // selectedRowKeys={selectedRowKeys}
+      pagination={{
+        position: ["right", "bottom"],
+        showSizeChanger: true,
+        size: "small",
+      }}
+      sticky
       scroll={{
         x: 1500,
-        y: 800,
+        y: 600,
       }}
       loading={loading}
     />

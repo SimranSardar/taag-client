@@ -45,10 +45,10 @@ const CurrentContextProvider = ({ children }) => {
           _id: item._id,
           name: item.name,
           link: item.link || "",
-          followers: item.followers,
+          followers: item.instagram ? item.instagram.followers : "NA",
           averageViews: item.averageViews,
           deliverable: temp.data.deliverable,
-          commercialCreator: item.commercialCreator || 0,
+          // commercialCreator: item.commercialCreator || 0,
           brandCommercial: item.brandCommercial || 0,
           cpvBrand: item.cpvBrand || 0,
           agencyFees:

@@ -8,6 +8,7 @@ import {
   CampaignContext,
   CampgaignContext,
 } from "../../utils/contexts/CampaignContext";
+import { campaignsOfLast7Days, campaignsOfLastMonth } from "../../utils";
 
 const data = [
   {
@@ -78,10 +79,16 @@ const Home = () => {
       debounce(onSearch, 500)(e);
     }
 
+    if (id !== "search") {
+      if (value === "week") setData(campaignsOfLast7Days(campaigns));
+      else if (value === "month") setData(campaignsOfLastMonth(campaigns));
+      else setData(data);
+    }
+
     setFilters((prev) => {
       return {
         ...prev,
-        [name ? name : id]: value,
+        [name || id]: value,
       };
     });
   }
@@ -149,7 +156,7 @@ const Home = () => {
       dataIndex: "name",
       key: "name",
       // width: "30%",
-      render: ({ text, record }) => (
+      render: (text, record) => (
         <Link to={`/campaigns/${record.id}`}>{text}</Link>
       ),
       searchable: true,
@@ -160,7 +167,7 @@ const Home = () => {
       key: "date",
       searchable: true,
       isObj: false,
-      render: ({ text }) => <span>{new Date(text).toLocaleDateString()}</span>,
+      render: (text) => <span>{new Date(text).toLocaleDateString()}</span>,
       // width: "30%",
     },
     {
@@ -169,7 +176,7 @@ const Home = () => {
       key: "brand",
       searchable: true,
       isObj: true,
-      render: ({ text }) => <span>{text?.name}</span>,
+      render: (text) => <span>{text?.name}</span>,
       // width: "30%",
     },
     {

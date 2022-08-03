@@ -143,7 +143,7 @@ const AddCampaign = () => {
     console.log({ res });
 
     if (res.status.toString().includes("20")) {
-      navigate(`/campaigns/${res.data.data._id}/select-artists`);
+      navigate(`/campaigns/${res.data.data._id}`);
     }
   }
 

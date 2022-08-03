@@ -18,11 +18,23 @@ function newSelectionArist(item, campaign) {
     key: item._id,
     _id: item._id,
     name: item.name,
-    link: item.link || "",
-    followers: item.followers,
-    averageViews: item.averageViews,
+    link: campaign.deliverable.includes("YT")
+      ? item.youtube?.link
+      : item.deliverable.includes("IG")
+      ? item.instagram?.link
+      : "NA",
+    followers: item.instagram ? item.instagram.followers : "NA",
+    averageViews: campaign.deliverable.includes("YT")
+      ? item.youtube?.averageViews
+      : item.deliverable.includes("IG")
+      ? item.instagram?.averageViews
+      : 0,
     deliverable: item.deliverable || campaign.deliverable || "NA",
-    commercialCreator: item.commercialCreator || 0,
+    commercialCreator: campaign.deliverable.includes("YT")
+      ? item.youtube?.commercial
+      : item.deliverable.includes("IG")
+      ? item.instagram?.reelCommercial
+      : 0,
     brandCommercial: item.brandCommercial || 0,
     cpvBrand: item.cpvBrand || 0,
     agencyFees:
@@ -217,14 +229,16 @@ const Campaign = () => {
             <div className={styles.flexRow}>
               <Button onClick={handleClickSave}>Save</Button>
             </div>
-            <CustomTable
-              columns={tableData.campaign_commercials.columns}
-              data={selectedRows}
-              isSelectable
-              setData={setSelectedRows}
-              onRowSelect={handleSelectRow}
-              selectedRows={campaign?.selectedArtists || []}
-            />
+            {selectedRows?.length > 0 && (
+              <CustomTable
+                columns={tableData.campaign_commercials.columns}
+                data={selectedRows}
+                // isSelectable
+                setData={setSelectedRows}
+                onRowSelect={handleSelectRow}
+                selectedRows={campaign?.selectedArtists || []}
+              />
+            )}
           </div>
         )}
         {location.pathname.includes("analytics") && (
@@ -232,14 +246,16 @@ const Campaign = () => {
             <div className={styles.flexRow}>
               <Button onClick={handleClickSave}>Save</Button>
             </div>
-            <CustomTable
-              columns={tableData.campaign_analytics.columns}
-              data={selectedRows}
-              isSelectable
-              setData={setSelectedRows}
-              onRowSelect={handleSelectRow}
-              selectedRows={campaign?.selectedArtists || []}
-            />
+            {selectedRows.length && (
+              <CustomTable
+                columns={tableData.campaign_analytics.columns}
+                data={selectedRows}
+                // isSelectable
+                setData={setSelectedRows}
+                onRowSelect={handleSelectRow}
+                selectedRows={campaign?.selectedArtists || []}
+              />
+            )}
           </div>
         )}
         {!location.pathname.includes("commercials") &&
@@ -268,35 +284,41 @@ const Campaign = () => {
               {/* )} */}
               <TabPanel value={tab} index={0}>
                 <div className={styles.tableContainer}>
-                  <CustomTable
-                    columns={tableData.campaign.main.columns}
-                    data={selectedRows}
-                    setData={setSelectedRows}
-                    onRowSelect={handleSelectRow}
-                    selectedRows={campaign?.selectedArtists || []}
-                  />
+                  {selectedRows?.length > 0 && (
+                    <CustomTable
+                      columns={tableData.campaign.main.columns}
+                      data={selectedRows}
+                      setData={setSelectedRows}
+                      onRowSelect={handleSelectRow}
+                      selectedRows={campaign?.selectedArtists || []}
+                    />
+                  )}
                 </div>
               </TabPanel>
               <TabPanel value={tab} index={1}>
                 <div className={styles.tableContainer}>
-                  <CustomTable
-                    columns={tableData.campaign.info.columns}
-                    data={selectedRows}
-                    setData={setSelectedRows}
-                    onRowSelect={handleSelectRow}
-                    selectedRows={campaign?.selectedArtists || []}
-                  />
+                  {selectedRows?.length > 0 && (
+                    <CustomTable
+                      columns={tableData.campaign.info.columns}
+                      data={selectedRows}
+                      setData={setSelectedRows}
+                      onRowSelect={handleSelectRow}
+                      selectedRows={campaign?.selectedArtists || []}
+                    />
+                  )}
                 </div>
               </TabPanel>
               <TabPanel value={tab} index={2}>
                 <div className={styles.tableContainer}>
-                  <CustomTable
-                    columns={tableData.campaign.phone.columns}
-                    data={selectedRows}
-                    setData={setSelectedRows}
-                    onRowSelect={handleSelectRow}
-                    selectedRows={campaign?.selectedArtists || []}
-                  />
+                  {selectedRows?.length > 0 && (
+                    <CustomTable
+                      columns={tableData.campaign.phone.columns}
+                      data={selectedRows}
+                      setData={setSelectedRows}
+                      onRowSelect={handleSelectRow}
+                      selectedRows={campaign?.selectedArtists || []}
+                    />
+                  )}
                 </div>
               </TabPanel>
             </>
