@@ -22,7 +22,7 @@ const CreatableSelect = ({
   value,
   id,
   setValue,
-  onAddOptionSubmit,
+  onAddModalSubmit,
   label,
   isMultiple = true,
 }) => {
@@ -49,7 +49,7 @@ const CreatableSelect = ({
     //       Value: parseInt(dialogValue.Value, 10),
     // } This is the new value
     event.preventDefault();
-    await onAddOptionSubmit(dialogValue);
+    await onAddModalSubmit(dialogValue);
     //And temporarily this setValue function will add that value to the autocomplete so in mean time add that value to the database
     setValue((prev) => {
       return [
@@ -194,19 +194,23 @@ const StyledDialog = styled(Dialog)(() => {
 
 const StyledAutocomplete = styled(Autocomplete)(() => {
   return {
+    width: "655px !important",
     label: {
       color: "white",
     },
-    "&.MuiOutlinedInput-notchedOutline.Mui-focused": {
-      borderColor: "rgba(255, 255, 255, 0.1)",
-      background: "red",
+    "&.Mui-focused": {
+      fieldset: {
+        borderColor: "var(--clr-primary) !important",
+      },
+    },
+    "& :hover": {
+      "&.MuiOutlinedInput-notchedOutline": {
+        borderColor: "green !important",
+      },
     },
     fieldset: {
       border: "2px solid rgba(255, 255, 255, 0.1)",
-
-      "& :hover": {
-        border: "2px solid rgba(255, 255, 255, 0.1)",
-      },
+      top: "0",
       legend: {
         display: "none",
       },
@@ -216,14 +220,13 @@ const StyledAutocomplete = styled(Autocomplete)(() => {
         fill: "rgba(255, 255, 255, 0.5)",
       },
     },
-    ".MuiFormControl-root": {
-      width: "300px",
-    },
+    ".MuiFormControl-root": {},
     ".MuiAutocomplete-input": {
       padding: "2rem",
     },
     input: {
       color: "white",
+      padding: "calc(0.7rem + 1px)  !important",
     },
     ".MuiChip-root": {
       color: "white",
@@ -243,17 +246,16 @@ const StyledAutocomplete = styled(Autocomplete)(() => {
 const Styledlabel = styled("label")(() => {
   return {
     color: "#898989",
+    margin: "0.5rem 0",
     fontSize: "0.8rem",
-    position: "absolute",
-    top: "-2rem",
   };
 });
 
 const StyledDiv = styled("div")(() => {
   return {
     position: "relative",
-    marginTop: "3rem",
-    marginBottom: "1rem",
+    display: "flex",
+    flexDirection: "column-reverse",
   };
 });
 

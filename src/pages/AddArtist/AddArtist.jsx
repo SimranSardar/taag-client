@@ -101,6 +101,7 @@ const AddArtist = () => {
   const [progress, setProgress] = useState(0.000001);
   const [value, setValue] = useState("");
   const [categories, setCategories] = useState([]);
+  const [languages, setLanguages] = useState([]);
   const [values, setValues] = useState({});
   useEffect(() => {
     console.log(categories);
@@ -108,6 +109,10 @@ const AddArtist = () => {
   const navigate = useNavigate();
 
   async function handleAddLanguage(valueToAdd) {
+    console.log(valueToAdd);
+  }
+
+  async function handleAddCategories(valueToAdd) {
     console.log(valueToAdd);
   }
 
@@ -197,45 +202,6 @@ const AddArtist = () => {
             value={values?.artistName}
             label={"Artist Name"}
           />
-          <CreatableSelect
-            value={categories}
-            setValue={setCategories}
-            label={"Categories"}
-            id="categories"
-            onAddOptionSubmit={handleAddLanguage}
-            options={sectorOptions}
-          />
-          <InputField
-            required
-            onChange={handleChange}
-            id="followers"
-            value={values?.followers}
-            label={"Followers"}
-          />
-          <InputSelect
-            required
-            name="categories"
-            label={"Categories"}
-            value={values?.categories}
-            onChange={handleChange}
-            options={sectorOptions}
-          />
-          <InputSelect
-            required
-            name="languages"
-            label={"Languages"}
-            value={values?.languages}
-            onChange={handleChange}
-            options={languageOptions}
-          />
-          <InputSelect
-            required
-            name="type"
-            label={"Type"}
-            value={values?.type}
-            onChange={handleChange}
-            options={typeOptions}
-          />
           <InputSelect
             required
             name="gender"
@@ -244,6 +210,41 @@ const AddArtist = () => {
             onChange={handleChange}
             options={genderOptions}
           />
+          <InputField
+            required
+            onChange={handleChange}
+            id="followers"
+            value={values?.followers}
+            label={"Followers"}
+          />
+          <CreatableSelect
+            required
+            name="languages"
+            label={"Languages"}
+            id="languages"
+            value={languages}
+            setValue={setLanguages}
+            options={languageOptions}
+            onAddModalSubmit={handleAddLanguage}
+          />
+
+          <InputSelect
+            required
+            name="type"
+            label={"Type"}
+            value={values?.type}
+            onChange={handleChange}
+            options={typeOptions}
+          />
+          <CreatableSelect
+            value={categories}
+            setValue={setCategories}
+            label={"Categories"}
+            id="categories"
+            onAddModalSubmit={handleAddCategories}
+            options={sectorOptions}
+          />
+
           <InputField
             required
             onChange={handleChange}
