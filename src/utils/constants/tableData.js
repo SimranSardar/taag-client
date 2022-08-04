@@ -112,7 +112,7 @@ export const tableData = {
           // width: "20%",
           // searchable: true,
           render: (link, record) => (
-            <span
+            <a
               style={{
                 maxWidth: "100px",
                 display: "block",
@@ -120,9 +120,12 @@ export const tableData = {
                 overflow: "hidden",
                 textOverflow: "ellipsis",
               }}
+              href={getLink(record) ?? ""}
+              target="_blank"
+              rel="noopener noreferrer"
             >
               {getLink(record) || "NA"}
-            </span>
+            </a>
           ),
           editable: false,
         },
@@ -138,8 +141,8 @@ export const tableData = {
             </span>
           ),
           // width: "20%",
-          sorter: (a, b) => a - b,
-          sortDirections: ["descend", "ascend"],
+          // sorter: (a, b) => a - b,
+          // sortDirections: ["descend", "ascend"],
         },
         {
           title: "Avg. Views",
