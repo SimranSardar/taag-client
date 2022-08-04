@@ -71,6 +71,7 @@ const onClickDownloadInvoice = async (record) => {
 };
 
 function getCommercial(record) {
+  console.log({ record });
   switch (record.deliverable) {
     case "YTVideo":
     case "YTShorts":
@@ -87,9 +88,27 @@ function getCommercial(record) {
 }
 
 function getLink(record) {
-  return record.deliverable?.includes("YT")
-    ? record.youtube?.link
+  let link = record.deliverable?.includes("YT")
+    ? record.youtube?.link || "NA"
     : record.instagram?.link || "NA";
+  return link && link !== "NA" ? (
+    <a
+      style={{
+        maxWidth: "100px",
+        display: "block",
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+      }}
+      href={link ?? ""}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {link}
+    </a>
+  ) : (
+    <span>"NA"</span>
+  );
 }
 
 export const tableData = {
@@ -111,22 +130,7 @@ export const tableData = {
           key: "link",
           // width: "20%",
           // searchable: true,
-          render: (link, record) => (
-            <a
-              style={{
-                maxWidth: "100px",
-                display: "block",
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-              href={getLink(record) ?? ""}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {getLink(record) || "NA"}
-            </a>
-          ),
+          render: (link, record) => getLink(record),
           editable: false,
         },
         {
@@ -141,8 +145,8 @@ export const tableData = {
             </span>
           ),
           // width: "20%",
-          // sorter: (a, b) => a - b,
-          // sortDirections: ["descend", "ascend"],
+          sorter: (a, b) => parseInt(a) - parseInt(b),
+          sortDirections: ["descend", "ascend"],
         },
         {
           title: "Avg. Views",
@@ -193,6 +197,9 @@ export const tableData = {
           title: "Agency Fees",
           dataIndex: "agencyFees",
           key: "agencyFees",
+          render: (text, record) => (
+            <span>{parseInt(text) < 0 ? "Brand Commercial NA" : text}</span>
+          ),
           // width: "20%",
         },
       ],
@@ -450,3 +457,82 @@ export const tableData = {
     ],
   },
 };
+
+export const selectArtistColumns = [
+  {
+    title: "Name",
+    fixed: "left",
+    dataIndex: "name",
+    key: "name",
+    // width: "30%",
+    searchable: true,
+    editable: true,
+  },
+  {
+    title: "Link",
+    dataIndex: "link",
+    key: "link",
+    // width: "20%",
+    // searchable: true,
+    render: (link, record) => (
+      <a
+        style={{
+          maxWidth: "100px",
+          display: "block",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        }}
+        href={getLink(record) ?? ""}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {getLink(record) || "NA"}
+      </a>
+    ),
+    editable: false,
+  },
+  {
+    title: "Followers",
+    dataIndex: "followers",
+    key: "followers",
+    render: (followers, record) => (
+      <span>
+        {KMBFormatter(record.instagram ? record.instagram.followers : "NA")}
+      </span>
+    ),
+    // width: "20%",
+    // sorter: (a, b) => a - b,
+    // sortDirections: ["descend", "ascend"],
+  },
+  {
+    title: "Avg. Views",
+    dataIndex: "averageViews",
+    key: "averageViews",
+    render: (views, record) => (
+      <span>
+        {KMBFormatter(
+          record.deliverable?.includes("YT")
+            ? record.youtube.averageViews
+            : record.instagram?.averageViews
+        )}
+      </span>
+    ),
+    // sorter: (a, b) => a - b,
+    // sortDirections: ["descend", "ascend"],
+  },
+  {
+    title: "Commercial Creator",
+    dataIndex: "commercialCreator",
+    key: "commercialCreator",
+    // editable: true,
+    render: (text, record) => <span>{getCommercial(record)}</span>,
+    // width: "20%",
+  },
+  {
+    title: "CPV Brand",
+    dataIndex: "cpvBrand",
+    key: "cpvBrand",
+    // width: "20%",
+  },
+];

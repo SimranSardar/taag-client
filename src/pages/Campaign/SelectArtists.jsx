@@ -15,6 +15,7 @@ import { TabIcon } from "../../assets";
 import styles from "./Campaign.module.scss";
 import { CampaignContext, CurrentContext } from "../../utils/contexts";
 import { tableData } from "../../utils/constants";
+import { selectArtistColumns } from "../../utils/constants/tableData";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -128,7 +129,7 @@ const SelectArtists = ({ open, handleClose, handleSave }) => {
         <TabPanel value={tab} index={0}>
           <div className={styles.tableContainer}>
             <CustomTable
-              columns={tableData.campaign.main.columns}
+              columns={selectArtistColumns}
               data={data}
               isSelectable
               setData={setCampaignMain}

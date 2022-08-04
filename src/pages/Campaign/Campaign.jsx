@@ -14,27 +14,28 @@ import SelectArtists from "./SelectArtists";
 import NewColumn from "./NewColumn";
 
 function newSelectionArist(item, campaign) {
+  console.log({ campaign }, campaign.deliverable);
   let newArtist = {
     ...item,
     key: item._id,
     _id: item._id,
     name: item.name,
-    link: campaign.deliverable.includes("YT")
+    link: campaign.deliverable?.includes("YT")
       ? item.youtube?.link
-      : item.deliverable.includes("IG")
+      : campaign.deliverable?.includes("IG")
       ? item.instagram?.link
       : "NA",
     followers: item.instagram ? item.instagram.followers : "NA",
-    averageViews: campaign.deliverable.includes("YT")
+    averageViews: campaign.deliverable?.includes("YT")
       ? item.youtube?.averageViews
-      : item.deliverable.includes("IG")
+      : campaign.deliverable?.includes("IG")
       ? item.instagram?.averageViews
       : 0,
     deliverable: item.deliverable || campaign.deliverable || "NA",
-    commercialCreator: campaign.deliverable.includes("YT")
-      ? item.youtube?.commercial
-      : item.deliverable.includes("IG")
-      ? item.instagram?.reelCommercial
+    commercialCreator: campaign.deliverable?.includes("YT")
+      ? item.youtube?.commercial || -1
+      : campaign.deliverable?.includes("IG")
+      ? item.instagram?.reelCommercial || -1
       : 0,
     brandCommercial: item.brandCommercial || 0,
     cpvBrand: item.cpvBrand || 0,
@@ -248,6 +249,8 @@ const Campaign = () => {
         {location.pathname.includes("commercials") && (
           <div className={styles.tableContainer}>
             <div className={styles.flexRow}>
+              <Button onClick={() => setModalOpen(true)}>Add Artists</Button>
+
               <Button onClick={handleClickSave}>Save</Button>
             </div>
             {selectedRows?.length > 0 && (
@@ -265,6 +268,8 @@ const Campaign = () => {
         {location.pathname.includes("analytics") && (
           <div className={styles.tableContainer}>
             <div className={styles.flexRow}>
+              <Button onClick={() => setModalOpen(true)}>Add Artists</Button>
+
               <Button onClick={handleClickSave}>Save</Button>
             </div>
             {selectedRows.length && (
@@ -298,7 +303,13 @@ const Campaign = () => {
                     // value={2}
                   />
                 </Tabs>
-                <Button onClick={handleClickSave}>Save</Button>
+                <div>
+                  <Button onClick={() => setModalOpen(true)}>
+                    Add Artists
+                  </Button>
+                  &nbsp; &nbsp; &nbsp; &nbsp;
+                  <Button onClick={handleClickSave}>Save</Button>
+                </div>
               </div>
 
               {/* </Box> */}
@@ -351,7 +362,6 @@ const Campaign = () => {
             </>
           )}
         <br />
-        <Button onClick={() => setModalOpen(true)}>Add Artists</Button>
       </div>
       <SelectArtists
         open={modalOpen}
