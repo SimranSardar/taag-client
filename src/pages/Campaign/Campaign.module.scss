@@ -46,3 +46,23 @@
     }
   }
 }
+.newColDrawer {
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  background: var(--clr-bg-dark);
+  h3 {
+    color: white;
+  }
+  input {
+    margin: 0.5rem 0;
+  }
+  button {
+    margin: 2rem 0;
+    width: 100%;
+    span {
+      text-align: center;
+      width: 100%;
+    }
+  }
+}

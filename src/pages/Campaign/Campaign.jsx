@@ -11,6 +11,7 @@ import { CurrentContext } from "../../utils/contexts";
 import { KMBFormatter } from "../../utils";
 import { tableData } from "../../utils/constants";
 import SelectArtists from "./SelectArtists";
+import NewColumn from "./NewColumn";
 
 function newSelectionArist(item, campaign) {
   return {
@@ -95,6 +96,7 @@ const Campaign = () => {
 
   const [selRows, setSelRows] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [newColOpen, setNewColOpen] = useState(false);
 
   const location = useLocation();
 
@@ -215,6 +217,7 @@ const Campaign = () => {
         totalAverageViews: KMBFormatter(campaign?.totalAverageViews || 0),
         totalCreator: campaign?.selectedArtists?.length.toString() || "0",
         averageROI: "0.4",
+        onClickAdd: () => setNewColOpen(true),
       }}
     >
       <div className={styles.tablesContainer}>
@@ -331,6 +334,7 @@ const Campaign = () => {
         handleClose={handleClose}
         handleSave={handleSave}
       />
+      <NewColumn open={newColOpen} handleClose={() => setNewColOpen(false)} />
     </MainLayout>
   );
 };
