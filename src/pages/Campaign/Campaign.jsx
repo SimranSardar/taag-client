@@ -5,7 +5,7 @@ import { MainLayout } from "../../layouts";
 import { CampaignContext } from "../../utils/contexts/CampaignContext";
 import styles from "./Campaign.module.scss";
 // import { TabContext, TabPanel, TabList } from "@mui/lab";
-import { Box, Tab, Tabs, styled } from "@mui/material";
+import { Box, Tab, Tabs, styled, Skeleton } from "@mui/material";
 import { TabIcon } from "../../assets";
 import { CurrentContext } from "../../utils/contexts";
 import { KMBFormatter } from "../../utils";
@@ -14,7 +14,7 @@ import SelectArtists from "./SelectArtists";
 import NewColumn from "./NewColumn";
 
 function newSelectionArist(item, campaign) {
-  return {
+  let newArtist = {
     ...item,
     key: item._id,
     _id: item._id,
@@ -59,6 +59,13 @@ function newSelectionArist(item, campaign) {
     comments: item.comments,
     roi: item.roi,
   };
+  if (campaign.extras?.length) {
+    campaign.extras.forEach((it) => {
+      newArtist[it.dataIndex] = item[it.dataIndex] || ".";
+    });
+  }
+
+  return newArtist;
 }
 
 function TabPanel(props) {
@@ -97,6 +104,7 @@ const Campaign = () => {
   const [selRows, setSelRows] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [newColOpen, setNewColOpen] = useState(false);
+  const [mainCols, setMainCols] = useState(tableData.campaign.main.columns);
 
   const location = useLocation();
 
@@ -130,6 +138,16 @@ const Campaign = () => {
 
   useEffect(() => {
     console.log({ campaign });
+    if (campaign.extras?.length) {
+      setMainCols([
+        ...tableData.campaign.main.columns,
+        ...campaign.extras.map((item) => ({
+          ...item,
+          searchable: true,
+          editable: true,
+        })),
+      ]);
+    }
     if (campaign?.selectedArtists) {
       setSelectedRows(
         campaign.selectedArtists.map((item) =>
@@ -287,20 +305,22 @@ const Campaign = () => {
               {/* )} */}
               <TabPanel value={tab} index={0}>
                 <div className={styles.tableContainer}>
-                  {selectedRows?.length > 0 && (
+                  {selectedRows?.length > 0 ? (
                     <CustomTable
-                      columns={tableData.campaign.main.columns}
+                      columns={mainCols}
                       data={selectedRows}
                       setData={setSelectedRows}
                       onRowSelect={handleSelectRow}
                       selectedRows={campaign?.selectedArtists || []}
                     />
+                  ) : (
+                    <Skeleton variant="rectangular" width="100%" height={200} />
                   )}
                 </div>
               </TabPanel>
               <TabPanel value={tab} index={1}>
                 <div className={styles.tableContainer}>
-                  {selectedRows?.length > 0 && (
+                  {selectedRows?.length > 0 ? (
                     <CustomTable
                       columns={tableData.campaign.info.columns}
                       data={selectedRows}
@@ -308,12 +328,14 @@ const Campaign = () => {
                       onRowSelect={handleSelectRow}
                       selectedRows={campaign?.selectedArtists || []}
                     />
+                  ) : (
+                    <Skeleton variant="rectangular" width="100%" height={200} />
                   )}
                 </div>
               </TabPanel>
               <TabPanel value={tab} index={2}>
                 <div className={styles.tableContainer}>
-                  {selectedRows?.length > 0 && (
+                  {selectedRows?.length > 0 ? (
                     <CustomTable
                       columns={tableData.campaign.phone.columns}
                       data={selectedRows}
@@ -321,6 +343,8 @@ const Campaign = () => {
                       onRowSelect={handleSelectRow}
                       selectedRows={campaign?.selectedArtists || []}
                     />
+                  ) : (
+                    <Skeleton variant="rectangular" width="100%" height={200} />
                   )}
                 </div>
               </TabPanel>

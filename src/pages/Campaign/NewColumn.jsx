@@ -2,6 +2,7 @@ import { Drawer } from "@mui/material";
 import axios from "axios";
 import { useContext, useState } from "react";
 import { Button, InputField } from "../../components";
+import { camelize, showAlert, titleCase } from "../../utils";
 import { CampaignContext, CurrentContext } from "../../utils/contexts";
 import styles from "./Campaign.module.scss";
 
@@ -20,7 +21,7 @@ const NewColumn = ({ open, handleClose }) => {
   const [name, setName] = useState("");
   const [type, setType] = useState("text");
 
-  const { campaign } = useContext(CurrentContext);
+  const { campaign, setCampaign } = useContext(CurrentContext);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -28,8 +29,9 @@ const NewColumn = ({ open, handleClose }) => {
     newCampaign.extras = [
       ...newCampaign.extras,
       {
-        name,
+        title: titleCase(name),
         type,
+        dataIndex: camelize(name),
       },
     ];
     const res = await axios.patch(
@@ -37,6 +39,8 @@ const NewColumn = ({ open, handleClose }) => {
       newCampaign
     );
     console.log({ res });
+    setCampaign(res.data.data);
+    showAlert("success", `Added new column ${titleCase(name)}`);
   }
 
   return (
@@ -44,11 +48,13 @@ const NewColumn = ({ open, handleClose }) => {
       <form onSubmit={handleSubmit} className={styles.newColDrawer}>
         <h3>Add New Column</h3>
         <InputField
+          required
           value={name}
           placeholder="Column Name"
           onChange={(e) => setName(e.target.value)}
         />
         <InputField
+          required
           value={type}
           placeholder="Column Type"
           onChange={(e) => setType(e.target.value)}
