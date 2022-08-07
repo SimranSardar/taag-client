@@ -1,7 +1,7 @@
 import styles from "./AddArtist.module.scss";
 import {
   Button,
-  CreatableSelect,
+  CreatableMultipleSelect,
   InputField,
   InputSelect,
   RadioButton,
@@ -217,7 +217,7 @@ const AddArtist = () => {
             value={values?.followers}
             label={"Followers"}
           />
-          <CreatableSelect
+          <CreatableMultipleSelect
             required
             name="languages"
             label={"Languages"}
@@ -236,7 +236,7 @@ const AddArtist = () => {
             onChange={handleChange}
             options={typeOptions}
           />
-          <CreatableSelect
+          <CreatableMultipleSelect
             value={categories}
             setValue={setCategories}
             label={"Categories"}

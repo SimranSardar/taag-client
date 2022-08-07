@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { MainLayout } from "../../layouts";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { CreatableSingleSelect } from "../../components";
 
 const sectorOptions = [
   {
@@ -68,11 +69,28 @@ const deliverableOptions = [
   },
 ];
 
+const brandOptions = [
+  {
+    name: "Nike",
+    value: "nike",
+  },
+  {
+    name: "Hello Kitty",
+    value: "helloKitty",
+  },
+  {
+    name: "Rolex",
+    value: "rolex",
+  },
+];
+
 const AddCampaign = () => {
   const totalNoOfFields = 11; //12 considering campaign name
   const [progress, setProgress] = useState(0.000001);
   const [value, setValue] = useState("");
   const [values, setValues] = useState({});
+  const [brand, setBrand] = useState("");
+  const [brandOptions, setBrandOptions] = useState([]);
 
   const navigate = useNavigate();
 
@@ -85,6 +103,28 @@ const AddCampaign = () => {
         [name ? name : id]: value,
       };
     });
+  }
+
+  async function createBrand(brandData) {
+    console.log(brandData);
+    let temp = await axios.post(
+      `${process.env.REACT_APP_API_URI}/brand/create`,
+      brandData
+    );
+    console.log({ res: temp });
+  }
+
+  async function getBrands() {
+    let temp = await axios.get(`${process.env.REACT_APP_API_URI}/brand/all`);
+    setBrandOptions(temp.data);
+  }
+  useEffect(() => {
+    getBrands();
+  }, []);
+
+  async function handleAddBrand(valueToAdd) {
+    const temp = await createBrand(valueToAdd);
+    console.log(temp);
   }
 
   function handleProgress() {}
@@ -165,12 +205,15 @@ const AddCampaign = () => {
       <form onSubmit={submitHandler}>
         <FormSection sectionName={"Brand / Agency"} sectionNumber={1}>
           <section className={styles.inputs}>
-            <InputField
+            <CreatableSingleSelect
               required
-              onChange={handleChange}
-              id="brandName"
-              value={values?.brandName}
+              name="brandName"
               label={"Brand Name"}
+              id="brandName"
+              value={brand}
+              setValue={setBrand}
+              options={brandOptions}
+              onAddModalSubmit={handleAddBrand}
             />
             <InputField
               required

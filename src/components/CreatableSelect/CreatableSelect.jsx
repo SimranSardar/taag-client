@@ -17,7 +17,7 @@ const filter = createFilterOptions();
 
 //If You are using this as multiple select then provide initial value of of the useState as an empty array "[]" and if single select then "null" is fine
 
-const CreatableSelect = ({
+export const CreatableMultipleSelect = ({
   options,
   value,
   id,
@@ -127,7 +127,7 @@ const CreatableSelect = ({
             {option.name}
           </li>
         )}
-        sx={{ width: 300 }}
+        sx={{ width: 655 }}
         freeSolo
         renderInput={(params) => <TextField {...params} />}
       />
@@ -155,7 +155,7 @@ const CreatableSelect = ({
               />
               <InputField
                 required
-                id="name"
+                id="value"
                 value={dialogValue.value}
                 onChange={(event) =>
                   setDialogValue({
@@ -178,10 +178,239 @@ const CreatableSelect = ({
   );
 };
 
+export const CreatableSingleSelect = ({
+  options,
+  value,
+  id,
+  setValue,
+  onAddModalSubmit,
+  label,
+  children,
+}) => {
+  const [open, toggleOpen] = useState(false);
+
+  const handleClose = () => {
+    setDialogValue({
+      name: "",
+      sector: "",
+      website: "",
+      PICId: "",
+      position: "",
+      email: "",
+      contact: "",
+    });
+
+    toggleOpen(false);
+  };
+
+  const [dialogValue, setDialogValue] = useState({
+    name: "",
+    sector: "",
+    website: "",
+    PICId: "",
+    position: "",
+    email: "",
+    contact: "",
+  });
+
+  const handleSubmit = async (event) => {
+    //The modal will be submitted here so call the api here
+    // {
+    //       name: dialogValue.name,
+    //       Value: parseInt(dialogValue.Value, 10),
+    // } This is the new value
+    event.preventDefault();
+    await onAddModalSubmit(dialogValue);
+    //And temporarily this setValue function will add that value to the autocomplete so in mean time add that value to the database
+    setValue((prev) => {
+      return dialogValue;
+    });
+
+    handleClose();
+  };
+  return (
+    <StyledDiv>
+      <StyledAutocomplete
+        value={value}
+        onChange={(event, newValue) => {
+          if (typeof newValue === "string") {
+            // timeout to avoid instant validation of the dialog's form.
+            setTimeout(() => {
+              toggleOpen(true);
+              setDialogValue((prev) => {
+                return { name: newValue, year: "" };
+              });
+            });
+          } else if (newValue && newValue.inputValue) {
+            toggleOpen(true);
+            setDialogValue((prev) => {
+              return { name: newValue.inputValue, year: "" };
+            });
+          } else {
+            setValue(newValue);
+          }
+        }}
+        filterOptions={(options, params) => {
+          const filtered = filter(options, params);
+          console.log(params.inputValue);
+          if (params.inputValue !== "") {
+            filtered.push({
+              inputValue: params.inputValue,
+              name: `Add "${params.inputValue}"`,
+            });
+          }
+
+          return filtered;
+        }}
+        id={id}
+        options={options}
+        getOptionLabel={(option) => {
+          // e.g value selected with enter, right from the input
+          if (typeof option === "string") {
+            return option;
+          }
+          if (option.inputValue) {
+            return option.inputValue;
+          }
+          return option.name;
+        }}
+        selectOnFocus
+        clearOnBlur
+        handleHomeEndKeys
+        renderOption={(props, option) => (
+          <li
+            style={{
+              color: "black",
+              fontWeight: "0.9rem",
+            }}
+            {...props}
+          >
+            {option.name}
+          </li>
+        )}
+        sx={{ width: 300 }}
+        freeSolo
+        renderInput={(params) => <TextField {...params} />}
+      />
+      <Styledlabel style={{}}>{label}</Styledlabel>
+      <StyledDialog open={open} onClose={handleClose}>
+        <form onSubmit={handleSubmit}>
+          <DialogTitle>Add new Brand</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Did you miss any Brand in our list? Please, add it!
+            </DialogContentText>
+            <InputsContainerDivForSS>
+              <InputField
+                required
+                style={{ margin: "0" }}
+                id="name"
+                value={dialogValue.name}
+                onChange={(event) =>
+                  setDialogValue({
+                    ...dialogValue,
+                    name: event.target.value,
+                  })
+                }
+                label="Name"
+              />
+              <InputField
+                required
+                style={{ margin: "0" }}
+                id="sector"
+                value={dialogValue.sector}
+                onChange={(event) =>
+                  setDialogValue({
+                    ...dialogValue,
+                    sector: event.target.value,
+                  })
+                }
+                label="Sector"
+              />
+              <InputField
+                required
+                style={{ margin: "0" }}
+                id="website"
+                value={dialogValue.website}
+                onChange={(event) =>
+                  setDialogValue({
+                    ...dialogValue,
+                    website: event.target.value,
+                  })
+                }
+                label="Website"
+              />
+              <InputField
+                required
+                style={{ margin: "0" }}
+                id="PICId"
+                value={dialogValue.PICId}
+                onChange={(event) =>
+                  setDialogValue({
+                    ...dialogValue,
+                    PICId: event.target.value,
+                  })
+                }
+                label="Person in Contact Id"
+              />
+              <InputField
+                required
+                style={{ margin: "0" }}
+                id="position"
+                value={dialogValue.position}
+                onChange={(event) =>
+                  setDialogValue({
+                    ...dialogValue,
+                    position: event.target.value,
+                  })
+                }
+                label="Position"
+              />
+              <InputField
+                required
+                style={{ margin: "0" }}
+                id="email"
+                type="email"
+                value={dialogValue.email}
+                onChange={(event) =>
+                  setDialogValue({
+                    ...dialogValue,
+                    email: event.target.value,
+                  })
+                }
+                label="Email"
+              />
+              <InputField
+                required
+                style={{ margin: "0" }}
+                id="contact"
+                value={dialogValue.contact}
+                onChange={(event) =>
+                  setDialogValue({
+                    ...dialogValue,
+                    contact: event.target.value,
+                  })
+                }
+                label="Contact"
+              />
+            </InputsContainerDivForSS>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button type="submit">Add</Button>
+          </DialogActions>
+        </form>
+      </StyledDialog>
+    </StyledDiv>
+  );
+};
+
 const StyledDialog = styled(Dialog)(() => {
   return {
     ".MuiPaper-root": {
       backgroundColor: "#1f2226",
+      maxWidth: "700px",
+
       h2: {
         color: "white",
       },
@@ -194,7 +423,6 @@ const StyledDialog = styled(Dialog)(() => {
 
 const StyledAutocomplete = styled(Autocomplete)(() => {
   return {
-    width: "655px !important",
     label: {
       color: "white",
     },
@@ -268,4 +496,12 @@ const InputsContainerDiv = styled("div")(() => {
   };
 });
 
-export default CreatableSelect;
+const InputsContainerDivForSS = styled("div")(() => {
+  return {
+    display: "flex",
+    flexWrap: "wrap",
+    ">div:nth-child(odd)": {
+      marginRight: "2rem",
+    },
+  };
+});
