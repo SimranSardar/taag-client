@@ -12,7 +12,12 @@ const UploadArtists = () => {
     console.log({ acceptedFiles });
     const response = await axios.post(
       `${process.env.REACT_APP_API_URI}/artist/bulk`,
-      formData
+      formData,
+      {
+        headers: {
+          AccessKey: localStorage.getItem("token"),
+        },
+      }
     );
     if (response.status.toString().includes("20")) {
       showAlert("success", "Artists uploaded successfully");

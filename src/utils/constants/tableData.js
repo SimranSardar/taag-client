@@ -70,23 +70,6 @@ const onClickDownloadInvoice = async (record) => {
   link.parentNode.removeChild(link);
 };
 
-function getCommercial(record) {
-  console.log({ record });
-  switch (record.deliverable) {
-    case "YTVideo":
-    case "YTShorts":
-      return record.youtube ? record.yotube?.commercial : "NA";
-    case "IGStatic":
-    case "IGReel":
-    case "IGVideo":
-      return record.instagram ? record.instagram.reelCommercial : "NA";
-    case "IGStory":
-      return record.instagram ? record.instagram.storyCommercial : "NA";
-    default:
-      return "NA";
-  }
-}
-
 function getLink(record) {
   let link = record.deliverable?.includes("YT")
     ? record.youtube?.link || "NA"
@@ -107,7 +90,7 @@ function getLink(record) {
       {link}
     </a>
   ) : (
-    <span>"NA"</span>
+    <span>NA</span>
   );
 }
 
@@ -122,7 +105,7 @@ export const tableData = {
           key: "name",
           // width: "30%",
           searchable: true,
-          editable: true,
+          // editable: true,
         },
         {
           title: "Link",
@@ -176,7 +159,7 @@ export const tableData = {
           dataIndex: "commercialCreator",
           key: "commercialCreator",
           // editable: true,
-          render: (text, record) => <span>{getCommercial(record)}</span>,
+          render: (text) => <span>{KMBFormatter(text)}</span>,
           // width: "20%",
         },
         {
@@ -184,6 +167,8 @@ export const tableData = {
           dataIndex: "brandCommercial",
           key: "brandCommercial",
           editable: true,
+          render: (text) => <span>{KMBFormatter(text)}</span>,
+          sorter: (a, b) => parseInt(a) - parseInt(b),
           // width: "20%",
           // searchable: true,
         },
@@ -198,7 +183,7 @@ export const tableData = {
           dataIndex: "agencyFees",
           key: "agencyFees",
           render: (text, record) => (
-            <span>{parseInt(text) < 0 ? "Brand Commercial NA" : text}</span>
+            <span>{parseInt(text) < 0 ? "NA" : KMBFormatter(text)}</span>
           ),
           // width: "20%",
         },
@@ -466,7 +451,7 @@ export const selectArtistColumns = [
     key: "name",
     // width: "30%",
     searchable: true,
-    editable: true,
+    // editable: true,
   },
   {
     title: "Link",
@@ -474,22 +459,7 @@ export const selectArtistColumns = [
     key: "link",
     // width: "20%",
     // searchable: true,
-    render: (link, record) => (
-      <a
-        style={{
-          maxWidth: "100px",
-          display: "block",
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-        }}
-        href={getLink(record) ?? ""}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {getLink(record) || "NA"}
-      </a>
-    ),
+    render: (link, record) => getLink(record),
     editable: false,
   },
   {
@@ -522,11 +492,33 @@ export const selectArtistColumns = [
     // sortDirections: ["descend", "ascend"],
   },
   {
-    title: "Commercial Creator",
-    dataIndex: "commercialCreator",
-    key: "commercialCreator",
+    title: "Commercial Creator (YT)",
+    dataIndex: "commercialCreatorYT",
+    key: "commercialCreatorYT",
     // editable: true,
-    render: (text, record) => <span>{getCommercial(record)}</span>,
+    render: (text, record) => (
+      <span>{KMBFormatter(record?.youtube?.commercial) ?? "NA"}</span>
+    ),
+    // width: "20%",
+  },
+  {
+    title: "Commercial Creator (Reel)",
+    dataIndex: "commercialCreatorIG",
+    key: "commercialCreatorIG",
+    // editable: true,
+    render: (text, record) => (
+      <span>{KMBFormatter(record?.instagram?.reelCommercial) ?? "NA"}</span>
+    ),
+    // width: "20%",
+  },
+  {
+    title: "Commercial Creator (IG Story)",
+    dataIndex: "commercialCreatorIG",
+    key: "commercialCreatorIG",
+    // editable: true,
+    render: (text, record) => (
+      <span>{KMBFormatter(record?.instagram?.storyCommercial) ?? "NA"}</span>
+    ),
     // width: "20%",
   },
   {

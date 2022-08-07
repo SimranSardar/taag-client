@@ -27,11 +27,13 @@ const CampaignContextProvider = ({ children }) => {
         return newObj;
       })
     );
+    console.log("Yahi hai sab kuch", res.data);
     const art = await axios.get(`${process.env.REACT_APP_API_URI}/artist/all`);
     setArtists(art.data);
   }
 
   async function fetchCampaign(id) {
+    console.log({ id });
     return await axios.get(
       `${process.env.REACT_APP_API_URI}/campaigns/single/`,
       {

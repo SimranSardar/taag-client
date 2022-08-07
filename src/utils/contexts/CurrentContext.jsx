@@ -31,10 +31,6 @@ const CurrentContextProvider = ({ children }) => {
           params: { id: campaignId },
         }
       );
-      temp.data.totalAverageViews = getTotal(
-        temp.data.selectedArtists,
-        "averageViews"
-      );
       temp.data.totalCreator = temp.data.selectedArtists.length.toString();
       temp.data.agencyFees = getTotal(temp.data.selectedArtists, "agencyFees");
       console.log({ temp });

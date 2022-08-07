@@ -8,13 +8,13 @@ import styles from "./Campaign.module.scss";
 import { Box, Tab, Tabs, styled, Skeleton } from "@mui/material";
 import { TabIcon } from "../../assets";
 import { CurrentContext } from "../../utils/contexts";
-import { KMBFormatter } from "../../utils";
+import { getCommercial, KMBFormatter } from "../../utils";
 import { tableData } from "../../utils/constants";
 import SelectArtists from "./SelectArtists";
 import NewColumn from "./NewColumn";
 
 function newSelectionArist(item, campaign) {
-  console.log({ campaign }, campaign.deliverable);
+  console.log({ item });
   let newArtist = {
     ...item,
     key: item._id,
@@ -32,12 +32,8 @@ function newSelectionArist(item, campaign) {
       ? item.instagram?.averageViews
       : 0,
     deliverable: item.deliverable || campaign.deliverable || "NA",
-    commercialCreator: campaign.deliverable?.includes("YT")
-      ? item.youtube?.commercial || -1
-      : campaign.deliverable?.includes("IG")
-      ? item.instagram?.reelCommercial || -1
-      : 0,
-    brandCommercial: item.brandCommercial || 0,
+    commercialCreator: getCommercial(campaign.deliverable, item),
+    brandCommercial: item.brandCommercial || "NA",
     cpvBrand: item.cpvBrand || 0,
     agencyFees:
       item.agencyFees ||
@@ -57,7 +53,7 @@ function newSelectionArist(item, campaign) {
     note: item.note || ".",
     deliverableLink: item.deliverableLink || "NA",
     views: item.views || "NA",
-    comments: item.comments,
+    comments: item.comments || "NA",
     roi: item.roi,
   };
   if (campaign.extras?.length) {
@@ -106,6 +102,7 @@ const Campaign = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [newColOpen, setNewColOpen] = useState(false);
   const [mainCols, setMainCols] = useState(tableData.campaign.main.columns);
+  const [totalAvgViews, setTotalAvgViews] = useState(0);
 
   const location = useLocation();
 
@@ -118,17 +115,11 @@ const Campaign = () => {
 
   const {
     campaign,
-    setCampaign,
     campaignMain,
     campaignInfo,
     campaignContact,
     campaignInvoice,
     campaignAnalytics,
-    setCampaignMain,
-    setCampaignInfo,
-    setCampaignContact,
-    setCampaignInvoice,
-    setCampaignAnalytics,
   } = useContext(CurrentContext);
   const { id } = useParams();
 
@@ -150,6 +141,7 @@ const Campaign = () => {
       ]);
     }
     if (campaign?.selectedArtists) {
+      console.log({ selected: campaign.selectedArtists });
       setSelectedRows(
         campaign.selectedArtists.map((item) =>
           newSelectionArist(item, campaign)
@@ -174,6 +166,14 @@ const Campaign = () => {
     campaignAnalytics,
   ]);
 
+  useEffect(() => {
+    if (selectedRows.length) {
+      setTotalAvgViews(
+        selectedRows.reduce((acc, item) => acc + item.averageViews, 0)
+      );
+    }
+  }, [selectedRows]);
+
   // useEffect(() => {
   //   async function fetchData() {
   //     const temp = await fetchCampaign(id);
@@ -190,12 +190,16 @@ const Campaign = () => {
     setSelRows(rows);
   }
 
-  function handleSave(rows) {
+  function handleSaveSelectedArtists(rows) {
     setSelectedRows(rows?.map((item) => newSelectionArist(item, campaign)));
-    updateCampaign({
+    let newCampaign = {
       ...campaign,
+      totalAverageViews: totalAvgViews || 0,
       selectedArtists: rows?.map((item) => newSelectionArist(item, campaign)),
-    });
+    };
+    console.log({ newCampaign });
+
+    updateCampaign(newCampaign);
     // setCampaign({
     //   ...campaign,
     //   selectedArtiss: rows?.map((item) => newSelectionArist(item, campaign)),
@@ -203,12 +207,15 @@ const Campaign = () => {
   }
 
   function handleClickSave() {
-    updateCampaign({
+    let newCampaign = {
       ...campaign,
+      totalAverageViews: totalAvgViews || 0,
       selectedArtists: selectedRows?.map((item) =>
         newSelectionArist(item, campaign)
       ),
-    });
+    };
+    console.log({ newCampaign });
+    updateCampaign(newCampaign);
   }
 
   // useEffect(() => {
@@ -233,7 +240,7 @@ const Campaign = () => {
         isVisible: true,
         agencyFees: campaign?.agencyFee,
         brandAmount: campaign?.brandAmount,
-        totalAverageViews: KMBFormatter(campaign?.totalAverageViews || 0),
+        totalAverageViews: KMBFormatter(totalAvgViews || 0),
         totalCreator: campaign?.selectedArtists?.length.toString() || "0",
         averageROI: "0.4",
         onClickAdd: () => setNewColOpen(true),
@@ -366,7 +373,7 @@ const Campaign = () => {
       <SelectArtists
         open={modalOpen}
         handleClose={handleClose}
-        handleSave={handleSave}
+        handleSave={handleSaveSelectedArtists}
       />
       <NewColumn open={newColOpen} handleClose={() => setNewColOpen(false)} />
     </MainLayout>

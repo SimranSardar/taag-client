@@ -286,7 +286,8 @@ const CustomTable = ({
     console.log({ newData, index, item, row });
     if (row?.commercialCreator || row?.brandCommercial) {
       row.agencyFees =
-        parseInt(row.brandCommercial) - parseInt(row.commercialCreator);
+        (parseInt(row.brandCommercial) || 0) -
+        (parseInt(row.commercialCreator) || 0);
     }
     if (row.dataIndex !== "deliverableLink") {
       delete item.dataIndex;

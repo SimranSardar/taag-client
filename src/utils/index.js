@@ -79,3 +79,20 @@ export function titleCase(str) {
   // Directly return the joined string
   return splitStr.join(" ");
 }
+
+export function getCommercial(deliverable, record) {
+  let del = deliverable || record.deliverable;
+  switch (del) {
+    case "YTVideo":
+    case "YTShorts":
+      return record.youtube?.commercial || "NA";
+    case "IGStatic":
+    case "IGReel":
+    case "IGVideo":
+      return record.instagram.reelCommercial || "NA";
+    case "IGStory":
+      return record.instagram.storyCommercial || "NA";
+    default:
+      return "NA";
+  }
+}
