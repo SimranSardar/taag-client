@@ -107,9 +107,23 @@ const AddCampaign = () => {
 
   async function createBrand(brandData) {
     console.log(brandData);
+    const { name, sector, website, picName, position, contact, email } =
+      brandData;
+    const finalData = {
+      name,
+      sector, // Beauty | Fashion | Health
+      website, // URL
+      poc: {
+        name: picName,
+        position,
+        contact, // +91xxxxxxxxxx
+        email,
+      },
+      campaigns: [],
+    };
     let temp = await axios.post(
       `${process.env.REACT_APP_API_URI}/brand/create`,
-      brandData
+      finalData
     );
     console.log({ res: temp });
   }
@@ -233,9 +247,9 @@ const AddCampaign = () => {
               <InputField
                 required
                 onChange={handleChange}
-                id="PICId"
-                value={values?.PICId}
-                label={"Person in Contact ID"}
+                id="PICName"
+                value={values?.PICName}
+                label={"Person in Contact Name"}
               />
               <InputField
                 required

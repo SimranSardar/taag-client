@@ -194,7 +194,7 @@ export const CreatableSingleSelect = ({
       name: "",
       sector: "",
       website: "",
-      PICId: "",
+      picName: "",
       position: "",
       email: "",
       contact: "",
@@ -207,7 +207,7 @@ export const CreatableSingleSelect = ({
     name: "",
     sector: "",
     website: "",
-    PICId: "",
+    picName: "",
     position: "",
     email: "",
     contact: "",
@@ -343,12 +343,12 @@ export const CreatableSingleSelect = ({
               <InputField
                 required
                 style={{ margin: "0" }}
-                id="PICId"
-                value={dialogValue.PICId}
+                id="picName"
+                value={dialogValue.picName}
                 onChange={(event) =>
                   setDialogValue({
                     ...dialogValue,
-                    PICId: event.target.value,
+                    picName: event.target.value,
                   })
                 }
                 label="Person in Contact Id"
