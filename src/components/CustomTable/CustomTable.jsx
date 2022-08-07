@@ -347,7 +347,7 @@ const CustomTable = ({
       sticky
       scroll={{
         x: 1500,
-        y: 600,
+        y: 350,
       }}
       loading={loading}
     />
