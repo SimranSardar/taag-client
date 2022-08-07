@@ -233,14 +233,14 @@ const AddCampaign = () => {
               required
               onChange={handleChange}
               id="brandSector"
-              value={values?.brandSector}
+              value={values?.brandSector ?? brand?.sector}
               label={"Sector"}
             />
             <InputField
               required
               onChange={handleChange}
               id="website"
-              value={values?.website}
+              value={values?.website ?? brand?.website}
               label={"Website"}
             />
             <div className={styles.personInContact}>
@@ -248,21 +248,21 @@ const AddCampaign = () => {
                 required
                 onChange={handleChange}
                 id="PICName"
-                value={values?.PICName}
+                value={values?.PICName ?? brand?.poc?.name}
                 label={"Person in Contact Name"}
               />
               <InputField
                 required
                 onChange={handleChange}
                 id="PICPosition"
-                value={values?.PICPosition}
+                value={values?.PICPosition ?? brand?.poc?.position}
                 label={"Position"}
               />
               <InputField
                 required
                 onChange={handleChange}
                 id="PICEmail"
-                value={values?.PICEmail}
+                value={values?.PICEmail ?? brand?.poc?.email}
                 type="email"
                 label={"Email Id"}
               />
@@ -270,7 +270,7 @@ const AddCampaign = () => {
                 required
                 onChange={handleChange}
                 id="PICContact"
-                value={values?.PICContact}
+                value={values?.PICContact ?? brand?.poc?.contact}
                 type="tel"
                 label={"Contact"}
               />
