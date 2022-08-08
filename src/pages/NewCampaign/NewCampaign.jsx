@@ -1,5 +1,11 @@
 import styles from "./NewCampaign.module.scss";
-import { Button, InputField, InputSelect, RadioButton } from "../../components";
+import {
+  Button,
+  CreatableMultipleSelect,
+  InputField,
+  InputSelect,
+  RadioButton,
+} from "../../components";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { MainLayout } from "../../layouts";
@@ -91,6 +97,7 @@ const AddCampaign = () => {
   const [values, setValues] = useState({});
   const [brand, setBrand] = useState("");
   const [brandOptions, setBrandOptions] = useState([]);
+  const [sector, setSector] = useState([]);
 
   const navigate = useNavigate();
 
@@ -139,6 +146,10 @@ const AddCampaign = () => {
   async function handleAddBrand(valueToAdd) {
     const temp = await createBrand(valueToAdd);
     console.log(temp);
+  }
+
+  function handleAddSector(newValue) {
+    console.log(newValue);
   }
 
   function handleProgress() {}
@@ -230,12 +241,14 @@ const AddCampaign = () => {
               options={brandOptions}
               onAddModalSubmit={handleAddBrand}
             />
-            <InputField
+            <CreatableMultipleSelect
               required
-              onChange={handleChange}
+              options={sectorOptions}
+              setValue={setSector}
               id="brandSector"
-              value={values?.brandSector ?? brand?.sector}
+              value={sector}
               label={"Sector"}
+              onAddModalSubmit={handleAddSector}
             />
             <InputField
               required
