@@ -72,7 +72,13 @@ const SelectArtists = ({ open, handleClose, handleSave }) => {
           ?.filter((artist) =>
             selected ? !selected.includes(artist._id) : artist
           )
-          ?.map((artist) => ({ ...artist, key: artist._id }))
+          ?.map((artist) => ({
+            ...artist,
+            key: artist._id,
+            commercialCreatorYT: artist.youtube?.commercial,
+            commercialCreatorIGReel: artist.instagram?.reelCommercial,
+            commercialCreatorIGStory: artist.instagram?.storyCommercial,
+          }))
       );
     }
   }, [artists, campaign]);

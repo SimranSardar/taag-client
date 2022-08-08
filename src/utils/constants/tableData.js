@@ -128,7 +128,8 @@ export const tableData = {
             </span>
           ),
           // width: "20%",
-          sorter: (a, b) => parseInt(a) - parseInt(b),
+          sorter: (a, b) =>
+            parseInt(a.instagram?.followers) - parseInt(b.instagram?.followers),
           sortDirections: ["descend", "ascend"],
         },
         {
@@ -139,7 +140,7 @@ export const tableData = {
             <span>
               {KMBFormatter(
                 record.deliverable?.includes("YT")
-                  ? record.youtube.averageViews
+                  ? record.youtube?.averageViews
                   : record.instagram?.averageViews
               )}
             </span>
@@ -160,6 +161,8 @@ export const tableData = {
           key: "commercialCreator",
           // editable: true,
           render: (text) => <span>{KMBFormatter(text)}</span>,
+          sorter: (a, b) =>
+            parseInt(a.commercialCreator) - parseInt(b.commercialCreator),
           // width: "20%",
         },
         {
@@ -168,7 +171,8 @@ export const tableData = {
           key: "brandCommercial",
           editable: true,
           render: (text) => <span>{KMBFormatter(text)}</span>,
-          sorter: (a, b) => parseInt(a) - parseInt(b),
+          sorter: (a, b) =>
+            parseInt(a.brandCommercial) - parseInt(b.brandCommercial),
           // width: "20%",
           // searchable: true,
         },
@@ -185,6 +189,7 @@ export const tableData = {
           render: (text, record) => (
             <span>{parseInt(text) < 0 ? "NA" : KMBFormatter(text)}</span>
           ),
+          sorter: (a, b) => parseInt(a.agencyFees) - parseInt(b.agencyFees),
           // width: "20%",
         },
       ],
@@ -230,7 +235,19 @@ export const tableData = {
           dataIndex: "gender",
           key: "gender",
           // width: "30%",
-          searchable: true,
+          // searchable: true,
+          filters: [
+            {
+              text: "Male",
+              value: "male",
+            },
+            {
+              text: "Female",
+              value: "female",
+            },
+          ],
+          onFilter: (value, record) =>
+            record.gender.toLowerCase().indexOf(value) === 0,
         },
         {
           title: "Location",
@@ -472,23 +489,30 @@ export const selectArtistColumns = [
       </span>
     ),
     // width: "20%",
-    // sorter: (a, b) => a - b,
+    sorter: (a, b) =>
+      parseInt(a.instagram?.followers) - parseInt(b.instagram?.followers),
     // sortDirections: ["descend", "ascend"],
   },
   {
-    title: "Avg. Views",
+    title: "Avg. Views (YT)",
     dataIndex: "averageViews",
     key: "averageViews",
     render: (views, record) => (
-      <span>
-        {KMBFormatter(
-          record.deliverable?.includes("YT")
-            ? record.youtube.averageViews
-            : record.instagram?.averageViews
-        )}
-      </span>
+      <span>{KMBFormatter(record.youtube?.averageViews)}</span>
     ),
-    // sorter: (a, b) => a - b,
+    sorter: (a, b) =>
+      parseInt(a.youtube?.averageViews) - parseInt(b.youtube?.averageViews),
+    // sortDirections: ["descend", "ascend"],
+  },
+  {
+    title: "Avg. Views (IG)",
+    dataIndex: "averageViews",
+    key: "averageViews",
+    render: (views, record) => (
+      <span>{KMBFormatter(record.instagram?.averageViews)}</span>
+    ),
+    sorter: (a, b) =>
+      parseInt(a.instagram?.averageViews) - parseInt(b.instagram?.averageViews),
     // sortDirections: ["descend", "ascend"],
   },
   {
@@ -496,29 +520,34 @@ export const selectArtistColumns = [
     dataIndex: "commercialCreatorYT",
     key: "commercialCreatorYT",
     // editable: true,
-    render: (text, record) => (
-      <span>{KMBFormatter(record?.youtube?.commercial) ?? "NA"}</span>
-    ),
+    render: (text, record) => <span>{KMBFormatter(text) ?? "NA"}</span>,
+    sorter: (a, b) =>
+      parseInt(a.youtube?.commercial) - parseInt(b.youtube?.commercial),
+    editable: true,
     // width: "20%",
   },
   {
     title: "Commercial Creator (Reel)",
-    dataIndex: "commercialCreatorIG",
+    dataIndex: "commercialCreatorIGReel",
     key: "commercialCreatorIG",
     // editable: true,
-    render: (text, record) => (
-      <span>{KMBFormatter(record?.instagram?.reelCommercial) ?? "NA"}</span>
-    ),
+    render: (text, record) => <span>{KMBFormatter(text) ?? "NA"}</span>,
+    sorter: (a, b) =>
+      parseInt(a.instagram?.reelCommercial) -
+      parseInt(b.instagram?.reelCommercial),
+    editable: true,
     // width: "20%",
   },
   {
     title: "Commercial Creator (IG Story)",
-    dataIndex: "commercialCreatorIG",
+    dataIndex: "commercialCreatorIGStory",
     key: "commercialCreatorIG",
     // editable: true,
-    render: (text, record) => (
-      <span>{KMBFormatter(record?.instagram?.storyCommercial) ?? "NA"}</span>
-    ),
+    render: (text, record) => <span>{KMBFormatter(text) ?? "NA"}</span>,
+    sorter: (a, b) =>
+      parseInt(a.instagram?.storyCommercial) -
+      parseInt(b.instagram?.storyCommercial),
+    editable: true,
     // width: "20%",
   },
   {

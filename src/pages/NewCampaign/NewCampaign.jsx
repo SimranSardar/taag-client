@@ -156,17 +156,18 @@ const AddCampaign = () => {
 
   async function submitHandler(e) {
     e.preventDefault();
+    console.log({ brand });
     let campaign = {
       name: values.name || "Test",
       brand: {
-        name: values.brandName,
-        sector: values.brandSector, // Beauty | Fashion | Health
-        website: values.website, // URL
+        name: brand.name,
+        sector: brand.sector, // Beauty | Fashion | Health
+        website: brand.website, // URL
         poc: {
-          id: values.PICId,
-          position: values.PICPosition,
-          email: values.PICEmail,
-          contact: values.PICContact, // +91xxxxxxxxxx
+          id: brand.poc.name,
+          position: brand.poc.position,
+          email: brand.poc.email,
+          contact: brand.poc.contact, // +91xxxxxxxxxx
         },
       },
       platform: values.platform, // youtube | instagram
@@ -204,7 +205,7 @@ const AddCampaign = () => {
   return (
     <MainLayout
       classes={[styles.container]}
-      isSideMenuVisible
+      // isSideMenuVisible
       navbarProps={{
         titleProps: {
           id: "name",
