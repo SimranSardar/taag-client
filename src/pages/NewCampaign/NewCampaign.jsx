@@ -91,7 +91,7 @@ const brandOptions = [
 ];
 
 const AddCampaign = () => {
-  const totalNoOfFields = 11; //12 considering campaign name
+  const totalNoOfFields = 12; //12 considering campaign name
   const [progress, setProgress] = useState(0.000001);
   const [value, setValue] = useState("");
   const [values, setValues] = useState({});
@@ -162,7 +162,17 @@ const AddCampaign = () => {
   }, [values]);
 
   useEffect(() => {
-    console.log(progress);
+    setValues((prev) => ({
+      ...prev,
+      brand: {
+        ...prev?.brand,
+        sector,
+      },
+    }));
+  }, [sector]);
+
+  useEffect(() => {
+    console.log(values);
   });
 
   async function submitHandler(e) {
@@ -172,7 +182,7 @@ const AddCampaign = () => {
       name: values.name || "Test",
       brand: {
         name: brand.name,
-        sector: brand.sector, // Beauty | Fashion | Health
+        sector: sector, // Beauty | Fashion | Health
         website: brand.website, // URL
         poc: {
           id: brand.poc.name,
