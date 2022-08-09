@@ -97,7 +97,8 @@ const AddCampaign = () => {
   const [values, setValues] = useState({});
   const [brand, setBrand] = useState("");
   const [brandOptions, setBrandOptions] = useState([]);
-  const [sector, setSector] = useState([]);
+  const [brandSector, setBrandSector] = useState([]);
+  const [platformSector, setPlatformSector] = useState([]);
 
   const navigate = useNavigate();
 
@@ -148,7 +149,10 @@ const AddCampaign = () => {
     console.log(temp);
   }
 
-  function handleAddSector(newValue) {
+  function handleAddBrandSector(newValue) {
+    console.log(newValue);
+  }
+  function handleAddPlatFormSector(newValue) {
     console.log(newValue);
   }
 
@@ -161,15 +165,24 @@ const AddCampaign = () => {
     );
   }, [values]);
 
-  useEffect(() => {
-    setValues((prev) => ({
-      ...prev,
-      brand: {
-        ...prev?.brand,
-        sector,
-      },
-    }));
-  }, [sector]);
+  // useEffect(() => {
+  //   setValues((prev) => ({
+  //     ...prev,
+  //     brand: {
+  //       ...prev?.brand,
+  //       sector:brandSector,
+  //     },
+  //   }));
+  // }, [brandSector]);
+  //  useEffect(() => {
+  //    setValues((prev) => ({
+  //      ...prev,
+  //      brand: {
+  //        ...prev?.brand,
+  //        sector: platformSector,
+  //      },
+  //    }));
+  //  }, [platformSector]);
 
   useEffect(() => {
     console.log(values);
@@ -182,7 +195,7 @@ const AddCampaign = () => {
       name: values.name || "Test",
       brand: {
         name: brand.name,
-        sector: sector, // Beauty | Fashion | Health
+        sector: brandSector, // Beauty | Fashion | Health
         website: brand.website, // URL
         poc: {
           id: brand.poc.name,
@@ -192,7 +205,7 @@ const AddCampaign = () => {
         },
       },
       platform: values.platform, // youtube | instagram
-      sector: values.sector, // Beauty | Fashion | Health | Lifestyle
+      sector: platformSector, // Beauty | Fashion | Health | Lifestyle
       deliverable: values.deliverable, // video | image
       brief: values.brief,
       // validity: {
@@ -251,15 +264,6 @@ const AddCampaign = () => {
               options={brandOptions}
               onAddModalSubmit={handleAddBrand}
             />
-            <CreatableMultipleSelect
-              required
-              options={sectorOptions}
-              setValue={setSector}
-              id="brandSector"
-              value={sector}
-              label={"Sector"}
-              onAddModalSubmit={handleAddSector}
-            />
             <InputField
               required
               onChange={handleChange}
@@ -267,6 +271,17 @@ const AddCampaign = () => {
               value={values?.website ?? brand?.website}
               label={"Website"}
             />
+            <CreatableMultipleSelect
+              required
+              options={sectorOptions}
+              width="650px"
+              setValue={setBrandSector}
+              id="brandSector"
+              value={brandSector}
+              label={"Sector"}
+              onAddModalSubmit={handleAddBrandSector}
+            />
+
             <div className={styles.personInContact}>
               <InputField
                 required
@@ -318,14 +333,6 @@ const AddCampaign = () => {
                 value={"instagram"}
                 onChange={handleChange}
               />
-              <InputSelect
-                required
-                name="sector"
-                label={"Sector"}
-                value={values?.sector}
-                onChange={handleChange}
-                options={sectorOptions}
-              />
             </div>
             <InputSelect
               required
@@ -336,6 +343,16 @@ const AddCampaign = () => {
               options={deliverableOptions.filter((del) =>
                 del.value.includes(values.platform === "youtube" ? "YT" : "IG")
               )}
+            />
+            <CreatableMultipleSelect
+              required
+              options={sectorOptions}
+              setValue={setPlatformSector}
+              id="platformSector"
+              width="650px"
+              value={platformSector}
+              label={"Sector"}
+              onAddModalSubmit={handleAddPlatFormSector}
             />
           </section>
         </FormSection>

@@ -25,6 +25,8 @@ export const CreatableMultipleSelect = ({
   onAddModalSubmit,
   label,
   isMultiple = true,
+  width,
+  ...remaining
 }) => {
   const [open, toggleOpen] = useState(false);
 
@@ -127,9 +129,10 @@ export const CreatableMultipleSelect = ({
             {option.name}
           </li>
         )}
-        sx={{ width: 655 }}
+        sx={{ width: width || 300 }}
         freeSolo
         renderInput={(params) => <TextField {...params} />}
+        {...remaining}
       />
       <Styledlabel style={{}}>{label}</Styledlabel>
       <StyledDialog open={open} onClose={handleClose}>

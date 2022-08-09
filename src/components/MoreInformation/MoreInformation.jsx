@@ -30,6 +30,8 @@ const MoreInformation = ({
     averageROI,
     onClickAdd,
     onClickShare,
+    totalViews,
+    totalComments,
   } = { ...moreInformationProps };
   const [showSearchInput, setShowSearchInput] = useState(false);
   const [search, setSearch] = useState("");
@@ -73,6 +75,16 @@ const MoreInformation = ({
           icon={purplePerson}
         />
         <InformationTag title={"Avg ROI"} value={averageROI} icon={purpleEye} />
+        <InformationTag
+          title={"Total Views"}
+          value={totalViews}
+          icon={purpleEye}
+        />
+        <InformationTag
+          title={"Total Comments"}
+          value={totalComments}
+          icon={purpleBrandPlaceholder}
+        />
       </div>
       <div className={styles.buttons}>
         {/* {showSearchInput ? (

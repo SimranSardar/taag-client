@@ -104,6 +104,8 @@ const Campaign = () => {
   const [newColOpen, setNewColOpen] = useState(false);
   const [mainCols, setMainCols] = useState(tableData.campaign.main.columns);
   const [totalAvgViews, setTotalAvgViews] = useState(0);
+  const [totalViews, setTotalViews] = useState(2);
+  const [totalComments, setTotalComments] = useState(3);
 
   const location = useLocation();
 
@@ -215,7 +217,7 @@ const Campaign = () => {
         newSelectionArist(item, campaign)
       ),
     };
-    console.log({ newCampaign });
+
     updateCampaign(newCampaign);
     showAlert("success", "Campaign Updated");
   }
@@ -239,7 +241,18 @@ const Campaign = () => {
     updateCampaign({ ...campaign, isSharedWithBrand: true });
     showAlert("success", "Campaign shared with brand");
   }
-
+  useEffect(() => {
+    const newTotalViews = campaign?.selectedArtists?.reduce(
+      (acc, item) => acc + (parseInt(item.views) || 0),
+      0
+    );
+    const newTotalComments = campaign?.selectedArtists?.reduce(
+      (acc, item) => acc + (parseInt(item.comments) || 0),
+      0
+    );
+    setTotalViews(newTotalViews);
+    setTotalComments(newTotalComments);
+  }, [campaign]);
   // useEffect(() => {
   //   setSelectedRows();
   // }, [selRows]);
@@ -260,13 +273,21 @@ const Campaign = () => {
       }}
       moreInformationProps={{
         isVisible: true,
-        agencyFees: campaign?.agencyFee,
-        brandAmount: campaign?.brandAmount,
-        totalAverageViews: KMBFormatter(totalAvgViews || 0),
-        totalCreator: campaign?.selectedArtists?.length.toString() || "0",
-        averageROI: "0.4",
+
         onClickAdd: () => setNewColOpen(true),
         onClickShare: handleClickShare,
+        ...(location.pathname.includes("analytics")
+          ? {
+              totalViews,
+              totalComments,
+            }
+          : {
+              agencyFees: campaign?.agencyFee,
+              brandAmount: campaign?.brandAmount,
+              totalAverageViews: KMBFormatter(totalAvgViews || 0),
+              totalCreator: campaign?.selectedArtists?.length.toString() || "0",
+              averageROI: "0.4",
+            }),
       }}
     >
       <div className={styles.tablesContainer}>
