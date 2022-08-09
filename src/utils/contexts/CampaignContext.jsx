@@ -29,6 +29,7 @@ const CampaignContextProvider = ({ children }) => {
     );
     console.log("Yahi hai sab kuch", res.data);
     const art = await axios.get(`${process.env.REACT_APP_API_URI}/artist/all`);
+
     setArtists(art.data);
   }
 
@@ -49,10 +50,10 @@ const CampaignContextProvider = ({ children }) => {
     );
   }
 
-  async function updateArtistGlobal(artist){
+  async function updateArtistsGlobal(artists) {
     return await axios.patch(
-      `${process.env.REACT_APP_API_URI}/artist/update/`,
-      artist
+      `${process.env.REACT_APP_API_URI}/artist/update/bulk`,
+      artists
     );
   }
 
@@ -62,7 +63,13 @@ const CampaignContextProvider = ({ children }) => {
 
   return (
     <CampaignContext.Provider
-      value={{ campaigns, fetchCampaign, artists, updateCampaign }}
+      value={{
+        campaigns,
+        fetchCampaign,
+        artists,
+        updateCampaign,
+        updateArtistsGlobal,
+      }}
     >
       {children}
     </CampaignContext.Provider>

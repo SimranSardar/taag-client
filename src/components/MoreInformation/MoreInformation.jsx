@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { icons } from "../../assets";
 import { InputField } from "../";
 import styles from "./MoreInformation.module.scss";
+import { Share } from "@mui/icons-material";
 
 const {
   purpleCoin,
@@ -28,6 +29,7 @@ const MoreInformation = ({
     totalCreator,
     averageROI,
     onClickAdd,
+    onClickShare,
   } = { ...moreInformationProps };
   const [showSearchInput, setShowSearchInput] = useState(false);
   const [search, setSearch] = useState("");
@@ -88,6 +90,9 @@ const MoreInformation = ({
             <img src={searchIcon} alt="Search" />
           </IconButton>
         )} */}
+        <IconButton onClick={onClickShare}>
+          <Share style={{ fill: "white" }} />
+        </IconButton>
         <IconButton onClick={onClickAdd}>
           <img src={addIcon} alt="Add" />
         </IconButton>

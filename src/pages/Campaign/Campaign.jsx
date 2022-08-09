@@ -93,7 +93,7 @@ const Campaign = () => {
   // const [campaign, setCampaign] = useState({});
   const { tabIndex, setTabIndex, table, setCampaignId } =
     useContext(CurrentContext);
-  const { updateCampaign } = useContext(CampaignContext);
+  const { updateCampaign, updateArtistsGlobal } = useContext(CampaignContext);
   const handleTabsChange = (event, newValue) => {
     setTabIndex(newValue);
     setTab(newValue);
@@ -219,6 +219,25 @@ const Campaign = () => {
     updateCampaign(newCampaign);
   }
 
+  async function handleSaveGlobal(selectedRows) {
+    let res = await updateArtistsGlobal(
+      selectedRows.map((item) => ({
+        _id: item._id,
+        youtube: { ...item.youtube, commercial: item.commercialCreatorYT },
+        instagram: {
+          ...item.instagram,
+          reelCommercial: item.commercialCreatorIGReel,
+          storyCommercial: item.commercialCreatorIGStory,
+        },
+      }))
+    );
+    console.log({ res });
+  }
+
+  function handleClickShare() {
+    updateCampaign({ ...campaign, isSharedWithBrand: true });
+  }
+
   // useEffect(() => {
   //   setSelectedRows();
   // }, [selRows]);
@@ -245,6 +264,7 @@ const Campaign = () => {
         totalCreator: campaign?.selectedArtists?.length.toString() || "0",
         averageROI: "0.4",
         onClickAdd: () => setNewColOpen(true),
+        onClickShare: handleClickShare,
       }}
     >
       <div className={styles.tablesContainer}>
@@ -380,6 +400,7 @@ const Campaign = () => {
         open={modalOpen}
         handleClose={handleClose}
         handleSave={handleSaveSelectedArtists}
+        handleSaveGlobal={handleSaveGlobal}
       />
       <NewColumn open={newColOpen} handleClose={() => setNewColOpen(false)} />
     </MainLayout>

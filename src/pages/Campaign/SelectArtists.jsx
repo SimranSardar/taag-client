@@ -117,7 +117,7 @@ const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
           <Mbutton
             style={{ marginLeft: "auto" }}
             color="inherit"
-            onClick={() => handleSaveGlobal(selectedRows)}
+            onClick={() => handleSaveGlobal(data)}
           >
             Save Global
           </Mbutton>
@@ -151,7 +151,7 @@ const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
               columns={selectArtistColumns}
               data={data}
               isSelectable
-              setData={setCampaignMain}
+              setData={setData}
               onRowSelect={handleSelectRow}
               //   selectedRows={campaign?.selectedArtists || []}
             />
@@ -163,7 +163,7 @@ const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
               columns={tableData.campaign.info.columns}
               data={data}
               isSelectable
-              setData={setCampaignInfo}
+              setData={setData}
               onRowSelect={handleSelectRow}
               //   selectedRows={campaign?.selectedArtists || []}
             />
@@ -175,7 +175,7 @@ const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
               columns={tableData.campaign.phone.columns}
               data={data}
               isSelectable
-              setData={setCampaignContact}
+              setData={setData}
               onRowSelect={handleSelectRow}
               //   selectedRows={campaign?.selectedArtists || []}
             />
