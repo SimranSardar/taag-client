@@ -8,13 +8,16 @@ import styles from "./Campaign.module.scss";
 import { Box, Tab, Tabs, styled, Skeleton } from "@mui/material";
 import { TabIcon } from "../../assets";
 import { CurrentContext } from "../../utils/contexts";
-import { getCommercial, KMBFormatter } from "../../utils";
+import { getCommercial, getROI, KMBFormatter } from "../../utils";
 import { tableData } from "../../utils/constants";
 import SelectArtists from "./SelectArtists";
 import NewColumn from "./NewColumn";
 
 function newSelectionArist(item, campaign) {
   console.log({ item });
+  const commercial = getCommercial(campaign.deliverable, item);
+  const brandCommercial =
+    item.brandCommercial || commercial + (20 * commercial) / 100 || "NA";
   let newArtist = {
     ...item,
     key: item._id,
@@ -32,13 +35,11 @@ function newSelectionArist(item, campaign) {
       ? item.instagram?.averageViews
       : 0,
     deliverable: item.deliverable || campaign.deliverable || "NA",
-    commercialCreator: getCommercial(campaign.deliverable, item),
-    brandCommercial: item.brandCommercial || "NA",
+    commercialCreator: commercial,
+    brandCommercial,
     cpvBrand: item.cpvBrand || 0,
     agencyFees:
-      item.agencyFees ||
-      parseInt(item.brandCommercial) - parseInt(item.commercialCreator) ||
-      0,
+      item.agencyFees || parseInt(brandCommercial) - parseInt(commercial) || 0,
     gender: item.gender,
     location: item.location,
     languages: item.languages,
@@ -54,7 +55,7 @@ function newSelectionArist(item, campaign) {
     deliverableLink: item.deliverableLink || "NA",
     views: item.views || "NA",
     comments: item.comments || "NA",
-    roi: item.roi,
+    roi: getROI(item),
   };
   if (campaign.extras?.length) {
     campaign.extras.forEach((it) => {
@@ -268,6 +269,7 @@ const Campaign = () => {
                 setData={setSelectedRows}
                 onRowSelect={handleSelectRow}
                 selectedRows={campaign?.selectedArtists || []}
+                campaign={campaign}
               />
             )}
           </div>
@@ -287,6 +289,7 @@ const Campaign = () => {
                 setData={setSelectedRows}
                 onRowSelect={handleSelectRow}
                 selectedRows={campaign?.selectedArtists || []}
+                campaign={campaign}
               />
             )}
           </div>
@@ -330,6 +333,7 @@ const Campaign = () => {
                       setData={setSelectedRows}
                       onRowSelect={handleSelectRow}
                       selectedRows={campaign?.selectedArtists || []}
+                      campaign={campaign}
                     />
                   ) : (
                     <Skeleton variant="rectangular" width="100%" height={200} />
@@ -345,6 +349,7 @@ const Campaign = () => {
                       setData={setSelectedRows}
                       onRowSelect={handleSelectRow}
                       selectedRows={campaign?.selectedArtists || []}
+                      campaign={campaign}
                     />
                   ) : (
                     <Skeleton variant="rectangular" width="100%" height={200} />
@@ -360,6 +365,7 @@ const Campaign = () => {
                       setData={setSelectedRows}
                       onRowSelect={handleSelectRow}
                       selectedRows={campaign?.selectedArtists || []}
+                      campaign={campaign}
                     />
                   ) : (
                     <Skeleton variant="rectangular" width="100%" height={200} />

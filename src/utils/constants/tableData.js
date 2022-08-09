@@ -94,6 +94,8 @@ function getLink(record) {
   );
 }
 
+function removeArtist(record) {}
+
 export const tableData = {
   campaign: {
     main: {
@@ -123,14 +125,16 @@ export const tableData = {
           render: (followers, record) => (
             <span>
               {KMBFormatter(
-                record.instagram ? record.instagram.followers : "NA"
+                record.deliverable?.includes("YT")
+                  ? record.youtube?.subscribers
+                  : record.instagram?.followers || "NA"
               )}
             </span>
           ),
           // width: "20%",
           sorter: (a, b) =>
             parseInt(a.instagram?.followers) - parseInt(b.instagram?.followers),
-          sortDirections: ["descend", "ascend"],
+          // sortDirections: ["descend", "ascend"],
         },
         {
           title: "Avg. Views",
@@ -192,6 +196,12 @@ export const tableData = {
           sorter: (a, b) => parseInt(a.agencyFees) - parseInt(b.agencyFees),
           // width: "20%",
         },
+        {
+          title: "Remove",
+          dataIndex: "remove",
+          // sorter: (a, b) => parseInt(a.agencyFees) - parseInt(b.agencyFees),
+          // width: "20%",
+        },
       ],
       data: [
         {
@@ -236,18 +246,19 @@ export const tableData = {
           key: "gender",
           // width: "30%",
           // searchable: true,
-          filters: [
-            {
-              text: "Male",
-              value: "male",
-            },
-            {
-              text: "Female",
-              value: "female",
-            },
-          ],
-          onFilter: (value, record) =>
-            record.gender.toLowerCase().indexOf(value) === 0,
+          // filters: [
+          //   {
+          //     text: "Male",
+          //     value: "male",
+          //   },
+          //   {
+          //     text: "Female",
+          //     value: "female",
+          //   },
+          // ],
+          // onFilter: (value, record) =>
+          //   record.gender.toLowerCase().indexOf(value) === 0,
+          sorter: (a, b) => a.gender.length - b.gender.length,
         },
         {
           title: "Location",
@@ -260,7 +271,11 @@ export const tableData = {
           title: "Language",
           dataIndex: "languages",
           key: "language",
-          render: (languages) => <span>{languages.join(", ")}</span>,
+          render: (languages) => (
+            <span style={{ textTransform: "capitalize" }}>
+              {languages.join(", ")}
+            </span>
+          ),
           // width: "30%",
           // searchable: true,
         },
@@ -441,7 +456,7 @@ export const tableData = {
       },
       {
         title: "ROI",
-        dataIndex: "ROI",
+        dataIndex: "roi",
         key: "ROI",
         // width: "30%",
         searchable: true,
@@ -485,7 +500,11 @@ export const selectArtistColumns = [
     key: "followers",
     render: (followers, record) => (
       <span>
-        {KMBFormatter(record.instagram ? record.instagram.followers : "NA")}
+        {KMBFormatter(
+          record.deliverable?.includes("YT")
+            ? record.youtube?.subscribers
+            : record.instagram?.followers || "NA"
+        )}
       </span>
     ),
     // width: "20%",

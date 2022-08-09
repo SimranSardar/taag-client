@@ -1,11 +1,18 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Button as AntButton, Form, Input, Space, Table } from "antd";
+import {
+  Button as AntButton,
+  Form,
+  Input,
+  Popconfirm,
+  Space,
+  Table,
+} from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import styles from "./CustomTable.module.scss";
 import "antd/dist/antd.css";
 import axios from "axios";
-import { getYoutubeId } from "../../utils";
+import { getROI, getYoutubeId, KMBFormatter } from "../../utils";
 
 const EditableContext = React.createContext(null);
 
@@ -96,6 +103,7 @@ const CustomTable = ({
   onRowSelect,
   selectedRows,
   isSelectable,
+  campaign,
 }) => {
   // const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -241,12 +249,29 @@ const CustomTable = ({
     //   ),
   });
 
+  function handleDelete(record) {
+    setData(data.filter((item) => item._id !== record._id));
+  }
+
   useEffect(() => {
     setLoading(true);
 
-    setCols(
-      columns?.map((col) => {
-        let finalCol = { ...col };
+    setCols([
+      ...columns?.map((col) => {
+        let finalCol = {
+          ...col,
+        };
+        if (col.dataIndex === "remove") {
+          finalCol.render = (_, record) =>
+            data.length >= 1 ? (
+              <Popconfirm
+                title="Sure to delete?"
+                onConfirm={() => handleDelete(record)}
+              >
+                <a>Delete</a>
+              </Popconfirm>
+            ) : null;
+        }
         if (col.editable) {
           finalCol = {
             ...finalCol,
@@ -270,8 +295,8 @@ const CustomTable = ({
           };
         }
         return finalCol;
-      })
-    );
+      }),
+    ]);
     setLoading(false);
   }, [columns]);
 
@@ -315,6 +340,7 @@ const CustomTable = ({
       let newItem = row;
       newItem.views = ytData.data.views;
       newItem.comments = ytData.data.comments;
+      newItem.roi = getROI(newItem);
       console.log({ ytData });
       newData.splice(index, 1, { ...item, ...newItem });
       console.log({ newData, index });

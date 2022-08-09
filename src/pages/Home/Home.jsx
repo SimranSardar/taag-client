@@ -232,13 +232,13 @@ const Home = () => {
           placeholder={"Search Campaign"}
         />
         <div>
-          <InputSelect
+          {/* <InputSelect
             label={"Sort By: Week/Month"}
             name={"sortBy"}
             onChange={handleChange}
             options={sortingOptions}
             value={filters?.sortBy ? filters.sortBy : ""}
-          />
+          /> */}
           <Button
             onClick={() => {
               navigate("/new-campaign");

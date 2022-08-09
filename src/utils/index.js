@@ -96,3 +96,16 @@ export function getCommercial(deliverable, record) {
       return "NA";
   }
 }
+
+export function getROI(item) {
+  if (item.roi && item.roi !== "NA") {
+    return item.roi;
+  }
+
+  return item.views && item.comments
+    ? (
+        parseInt(item.brandCommercial) /
+        (parseInt(item.views) + parseInt(item.comments))
+      ).toFixed(2) || "NA"
+    : "NA";
+}

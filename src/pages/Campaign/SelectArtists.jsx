@@ -37,7 +37,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const SelectArtists = ({ open, handleClose, handleSave }) => {
+const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
   const [tab, setTab] = useState(0);
   const [data, setData] = useState([]);
 
@@ -92,7 +92,13 @@ const SelectArtists = ({ open, handleClose, handleSave }) => {
       className={styles.dialog}
     >
       <AppBar sx={{ position: "relative" }}>
-        <Toolbar>
+        <Toolbar
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "flex-start",
+          }}
+        >
           <IconButton
             edge="start"
             color="inherit"
@@ -107,6 +113,13 @@ const SelectArtists = ({ open, handleClose, handleSave }) => {
             onClick={() => handleSave(selectedRows)}
           >
             save
+          </Mbutton>
+          <Mbutton
+            style={{ marginLeft: "auto" }}
+            color="inherit"
+            onClick={() => handleSaveGlobal(selectedRows)}
+          >
+            Save Global
           </Mbutton>
         </Toolbar>
       </AppBar>

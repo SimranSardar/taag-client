@@ -49,6 +49,13 @@ const CampaignContextProvider = ({ children }) => {
     );
   }
 
+  async function updateArtistGlobal(artist){
+    return await axios.patch(
+      `${process.env.REACT_APP_API_URI}/artist/update/`,
+      artist
+    );
+  }
+
   useEffect(() => {
     fetchCampaigns();
   }, [currentUser]);

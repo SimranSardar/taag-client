@@ -310,7 +310,9 @@ const AddCampaign = () => {
               label={"Deliverable"}
               value={values?.deliverable}
               onChange={handleChange}
-              options={deliverableOptions}
+              options={deliverableOptions.filter((del) =>
+                del.value.includes(values.platform === "youtube" ? "YT" : "IG")
+              )}
             />
           </section>
         </FormSection>
