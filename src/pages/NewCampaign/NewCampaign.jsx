@@ -1,5 +1,11 @@
 import styles from "./NewCampaign.module.scss";
-import { Button, InputField, InputSelect, RadioButton } from "../../components";
+import {
+  Button,
+  CreatableMultipleSelect,
+  InputField,
+  InputSelect,
+  RadioButton,
+} from "../../components";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { MainLayout } from "../../layouts";
@@ -85,12 +91,13 @@ const brandOptions = [
 ];
 
 const AddCampaign = () => {
-  const totalNoOfFields = 11; //12 considering campaign name
+  const totalNoOfFields = 12; //12 considering campaign name
   const [progress, setProgress] = useState(0.000001);
   const [value, setValue] = useState("");
   const [values, setValues] = useState({});
   const [brand, setBrand] = useState("");
   const [brandOptions, setBrandOptions] = useState([]);
+  const [sector, setSector] = useState([]);
 
   const navigate = useNavigate();
 
@@ -141,6 +148,10 @@ const AddCampaign = () => {
     console.log(temp);
   }
 
+  function handleAddSector(newValue) {
+    console.log(newValue);
+  }
+
   function handleProgress() {}
 
   useEffect(() => {
@@ -151,7 +162,17 @@ const AddCampaign = () => {
   }, [values]);
 
   useEffect(() => {
-    console.log(progress);
+    setValues((prev) => ({
+      ...prev,
+      brand: {
+        ...prev?.brand,
+        sector,
+      },
+    }));
+  }, [sector]);
+
+  useEffect(() => {
+    console.log(values);
   });
 
   async function submitHandler(e) {
@@ -161,7 +182,7 @@ const AddCampaign = () => {
       name: values.name || "Test",
       brand: {
         name: brand.name,
-        sector: brand.sector, // Beauty | Fashion | Health
+        sector: sector, // Beauty | Fashion | Health
         website: brand.website, // URL
         poc: {
           id: brand.poc.name,
@@ -230,12 +251,14 @@ const AddCampaign = () => {
               options={brandOptions}
               onAddModalSubmit={handleAddBrand}
             />
-            <InputField
+            <CreatableMultipleSelect
               required
-              onChange={handleChange}
+              options={sectorOptions}
+              setValue={setSector}
               id="brandSector"
-              value={values?.brandSector ?? brand?.sector}
+              value={sector}
               label={"Sector"}
+              onAddModalSubmit={handleAddSector}
             />
             <InputField
               required
