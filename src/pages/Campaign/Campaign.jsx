@@ -260,8 +260,8 @@ const Campaign = () => {
               totalComments,
             }
           : {
-              // agencyFees: campaign?.agencyFee,
-              // brandAmount: campaign?.brandAmount,
+              agencyFees: campaign?.agencyFee,
+              brandAmount: campaign?.brandAmount,
               totalAverageViews: KMBFormatter(totalAvgViews || 0),
               totalCreator: campaign?.selectedArtists?.length.toString() || "0",
               averageROI: "0.4",
