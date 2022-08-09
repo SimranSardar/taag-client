@@ -1,4 +1,4 @@
-import { IconButton } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { icons } from "../../assets";
 import { InputField } from "../";
@@ -90,12 +90,16 @@ const MoreInformation = ({
             <img src={searchIcon} alt="Search" />
           </IconButton>
         )} */}
-        <IconButton onClick={onClickShare}>
-          <Share style={{ fill: "white" }} />
-        </IconButton>
-        <IconButton onClick={onClickAdd}>
-          <img src={addIcon} alt="Add" />
-        </IconButton>
+        <Tooltip title="Share with Brand" placement="top">
+          <IconButton onClick={onClickShare}>
+            <Share style={{ fill: "white" }} />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Add Column" placement="top">
+          <IconButton onClick={onClickAdd}>
+            <img src={addIcon} alt="Add" />
+          </IconButton>
+        </Tooltip>
       </div>
     </div>
   );

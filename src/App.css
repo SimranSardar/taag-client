@@ -49,3 +49,6 @@ th:last-child {
 .ant-dropdown {
   z-index: 10000;
 }
+.ant-message {
+  z-index: 100000000;
+}

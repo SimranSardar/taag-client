@@ -8,7 +8,7 @@ import styles from "./Campaign.module.scss";
 import { Box, Tab, Tabs, styled, Skeleton } from "@mui/material";
 import { TabIcon } from "../../assets";
 import { CurrentContext } from "../../utils/contexts";
-import { getCommercial, getROI, KMBFormatter } from "../../utils";
+import { getCommercial, getROI, KMBFormatter, showAlert } from "../../utils";
 import { tableData } from "../../utils/constants";
 import SelectArtists from "./SelectArtists";
 import NewColumn from "./NewColumn";
@@ -217,6 +217,7 @@ const Campaign = () => {
     };
     console.log({ newCampaign });
     updateCampaign(newCampaign);
+    showAlert("success", "Campaign Updated");
   }
 
   async function handleSaveGlobal(selectedRows) {
@@ -231,11 +232,12 @@ const Campaign = () => {
         },
       }))
     );
-    console.log({ res });
+    showAlert("success", "Updated Artist(s) Successfully");
   }
 
   function handleClickShare() {
     updateCampaign({ ...campaign, isSharedWithBrand: true });
+    showAlert("success", "Campaign shared with brand");
   }
 
   // useEffect(() => {
