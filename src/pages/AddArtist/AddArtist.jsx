@@ -141,7 +141,7 @@ const AddArtist = () => {
       name: values.name || "Add ",
       brand: {
         name: values.brandName,
-        sector: values.brandSector, // Beauty | Fashion | Health
+        sectors: values.brandSector, // Beauty | Fashion | Health
         website: values.website, // URL
         poc: {
           id: values.PICId,
@@ -151,7 +151,7 @@ const AddArtist = () => {
         },
       },
       platform: values.platform, // youtube | instagram
-      sector: values.sector, // Beauty | Fashion | Health | Lifestyle
+      sectors: values.sectors, // Beauty | Fashion | Health | Lifestyle
       deliverable: values.deliverable, // video | image
       brief: values.brief,
       // validity: {

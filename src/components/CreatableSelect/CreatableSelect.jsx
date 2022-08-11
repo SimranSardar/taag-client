@@ -195,7 +195,7 @@ export const CreatableSingleSelect = ({
   const handleClose = () => {
     setDialogValue({
       name: "",
-      sector: "",
+      sectors: "",
       website: "",
       picName: "",
       position: "",
@@ -208,7 +208,7 @@ export const CreatableSingleSelect = ({
 
   const [dialogValue, setDialogValue] = useState({
     name: "",
-    sector: "",
+    sectors: "",
     website: "",
     picName: "",
     position: "",
@@ -320,15 +320,15 @@ export const CreatableSingleSelect = ({
               <InputField
                 required
                 style={{ margin: "0" }}
-                id="sector"
-                value={dialogValue.sector}
+                id="sectors"
+                value={dialogValue.sectors}
                 onChange={(event) =>
                   setDialogValue({
                     ...dialogValue,
-                    sector: event.target.value,
+                    sectors: event.target.value,
                   })
                 }
-                label="Sector"
+                label="Sectors"
               />
               <InputField
                 required

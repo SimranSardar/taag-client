@@ -85,27 +85,36 @@ export function getCommercial(deliverable, record) {
   switch (del) {
     case "YTVideo":
     case "YTShorts":
-      return record.youtube?.commercial || "NA";
+      return parseInt(record.youtube?.commercial) || 0;
     case "IGStatic":
     case "IGReel":
     case "IGVideo":
-      return record.instagram.reelCommercial || "NA";
+      return parseInt(record.instagram?.reelCommercial) || 0;
     case "IGStory":
-      return record.instagram.storyCommercial || "NA";
+      return parseInt(record.instagram?.storyCommercial) || 0;
     default:
-      return "NA";
+      return 0;
   }
 }
 
-export function getROI(item) {
+export function getROI(item, brandCommercial) {
   if (item.roi && item.roi !== "NA") {
-    return item.roi;
+    return parseInt(item.roi);
   }
 
   return item.views && item.comments
     ? (
-        parseInt(item.brandCommercial) /
+        parseInt(brandCommercial || item.brandCommercial) /
         (parseInt(item.views) + parseInt(item.comments))
-      ).toFixed(2) || "NA"
+      ).toFixed(2)
     : "NA";
+}
+
+export function formatIndianCurrency(amount) {
+  return (
+    amount?.toLocaleString("en-IN", {
+      style: "currency",
+      currency: "INR",
+    }) || 0
+  );
 }

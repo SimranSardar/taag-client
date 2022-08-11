@@ -97,8 +97,8 @@ const AddCampaign = () => {
   const [values, setValues] = useState({});
   const [brand, setBrand] = useState("");
   const [brandOptions, setBrandOptions] = useState([]);
-  const [brandSector, setBrandSector] = useState([]);
-  const [platformSector, setPlatformSector] = useState([]);
+  const [brandSectors, setBrandSectors] = useState([]);
+  const [platformSectors, setPlatformSectors] = useState([]);
 
   const navigate = useNavigate();
 
@@ -149,10 +149,10 @@ const AddCampaign = () => {
     console.log(temp);
   }
 
-  function handleAddBrandSector(newValue) {
+  function handleAddBrandSectors(newValue) {
     console.log(newValue);
   }
-  function handleAddPlatFormSector(newValue) {
+  function handleAddPlatFormSectors(newValue) {
     console.log(newValue);
   }
 
@@ -170,19 +170,19 @@ const AddCampaign = () => {
   //     ...prev,
   //     brand: {
   //       ...prev?.brand,
-  //       sector:brandSector,
+  //       sector:brandSectors,
   //     },
   //   }));
-  // }, [brandSector]);
+  // }, [brandSectors]);
   //  useEffect(() => {
   //    setValues((prev) => ({
   //      ...prev,
   //      brand: {
   //        ...prev?.brand,
-  //        sector: platformSector,
+  //        sector: platformSectors,
   //      },
   //    }));
-  //  }, [platformSector]);
+  //  }, [platformSectors]);
 
   useEffect(() => {
     console.log(values);
@@ -195,7 +195,7 @@ const AddCampaign = () => {
       name: values.name || "Test",
       brand: {
         name: brand.name,
-        sector: brandSector, // Beauty | Fashion | Health
+        sectors: brandSectors, // Beauty | Fashion | Health
         website: brand.website, // URL
         poc: {
           id: brand.poc.name,
@@ -205,7 +205,7 @@ const AddCampaign = () => {
         },
       },
       platform: values.platform, // youtube | instagram
-      sector: platformSector, // Beauty | Fashion | Health | Lifestyle
+      sectors: platformSectors, // Beauty | Fashion | Health | Lifestyle
       deliverable: values.deliverable, // video | image
       brief: values.brief,
       // validity: {
@@ -275,11 +275,11 @@ const AddCampaign = () => {
               required
               options={sectorOptions}
               width="650px"
-              setValue={setBrandSector}
-              id="brandSector"
-              value={brandSector}
-              label={"Sector"}
-              onAddModalSubmit={handleAddBrandSector}
+              setValue={setBrandSectors}
+              id="brandSectors"
+              value={brandSectors}
+              label={"Sectors"}
+              onAddModalSubmit={handleAddBrandSectors}
             />
 
             <div className={styles.personInContact}>
@@ -347,12 +347,12 @@ const AddCampaign = () => {
             <CreatableMultipleSelect
               required
               options={sectorOptions}
-              setValue={setPlatformSector}
-              id="platformSector"
+              setValue={setPlatformSectors}
+              id="platformSectors"
               width="650px"
-              value={platformSector}
-              label={"Sector"}
-              onAddModalSubmit={handleAddPlatFormSector}
+              value={platformSectors}
+              label={"Sectors"}
+              onAddModalSubmit={handleAddPlatFormSectors}
             />
           </section>
         </FormSection>

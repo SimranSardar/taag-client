@@ -148,7 +148,7 @@ const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
         <TabPanel value={tab} index={0}>
           <div className={styles.tableContainer}>
             <CustomTable
-              columns={selectArtistColumns}
+              columns={selectArtistColumns.main}
               data={data}
               isSelectable
               setData={setData}
@@ -160,7 +160,7 @@ const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
         <TabPanel value={tab} index={1}>
           <div className={styles.tableContainer}>
             <CustomTable
-              columns={tableData.campaign.info.columns}
+              columns={selectArtistColumns.info}
               data={data}
               isSelectable
               setData={setData}
@@ -172,7 +172,7 @@ const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
         <TabPanel value={tab} index={2}>
           <div className={styles.tableContainer}>
             <CustomTable
-              columns={tableData.campaign.phone.columns}
+              columns={selectArtistColumns.contact}
               data={data}
               isSelectable
               setData={setData}

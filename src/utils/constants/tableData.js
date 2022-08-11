@@ -1,4 +1,4 @@
-import { KMBFormatter, showAlert } from "..";
+import { formatIndianCurrency, KMBFormatter, showAlert } from "..";
 import { Button, message, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
@@ -101,6 +101,13 @@ export const tableData = {
     main: {
       columns: [
         {
+          title: "Remove",
+          dataIndex: "remove",
+          // sorter: (a, b) => parseInt(a.agencyFees) - parseInt(b.agencyFees),
+          // width: "20%",
+          fixed: "left",
+        },
+        {
           title: "Name",
           fixed: "left",
           dataIndex: "name",
@@ -164,7 +171,7 @@ export const tableData = {
           dataIndex: "commercialCreator",
           key: "commercialCreator",
           // editable: true,
-          render: (text) => <span>{KMBFormatter(text)}</span>,
+          render: (text) => <span>{formatIndianCurrency(text)}</span>,
           sorter: (a, b) =>
             parseInt(a.commercialCreator) - parseInt(b.commercialCreator),
           // width: "20%",
@@ -174,7 +181,7 @@ export const tableData = {
           dataIndex: "brandCommercial",
           key: "brandCommercial",
           editable: true,
-          render: (text) => <span>{KMBFormatter(text)}</span>,
+          render: (text) => <span>{formatIndianCurrency(text)}</span>,
           sorter: (a, b) =>
             parseInt(a.brandCommercial) - parseInt(b.brandCommercial),
           // width: "20%",
@@ -184,6 +191,7 @@ export const tableData = {
           title: "CPV Brand",
           dataIndex: "cpvBrand",
           key: "cpvBrand",
+          sorter: (a, b) => a.cpvBrand - b.cpvBrand,
           // width: "20%",
         },
         {
@@ -191,15 +199,11 @@ export const tableData = {
           dataIndex: "agencyFees",
           key: "agencyFees",
           render: (text, record) => (
-            <span>{parseInt(text) < 0 ? "NA" : KMBFormatter(text)}</span>
+            <span>
+              {parseInt(text) < 0 ? "NA" : formatIndianCurrency(text)}
+            </span>
           ),
           sorter: (a, b) => parseInt(a.agencyFees) - parseInt(b.agencyFees),
-          // width: "20%",
-        },
-        {
-          title: "Remove",
-          dataIndex: "remove",
-          // sorter: (a, b) => parseInt(a.agencyFees) - parseInt(b.agencyFees),
           // width: "20%",
         },
       ],
@@ -475,104 +479,223 @@ export const tableData = {
   },
 };
 
-export const selectArtistColumns = [
-  {
-    title: "Name",
-    fixed: "left",
-    dataIndex: "name",
-    key: "name",
-    // width: "30%",
-    searchable: true,
-    // editable: true,
-  },
-  {
-    title: "Link",
-    dataIndex: "link",
-    key: "link",
-    // width: "20%",
-    // searchable: true,
-    render: (link, record) => getLink(record),
-    editable: false,
-  },
-  {
-    title: "Followers",
-    dataIndex: "followers",
-    key: "followers",
-    render: (followers, record) => (
-      <span>
-        {KMBFormatter(
-          record.deliverable?.includes("YT")
-            ? record.youtube?.subscribers
-            : record.instagram?.followers || "NA"
-        )}
-      </span>
-    ),
-    // width: "20%",
-    sorter: (a, b) =>
-      parseInt(a.instagram?.followers) - parseInt(b.instagram?.followers),
-    // sortDirections: ["descend", "ascend"],
-  },
-  {
-    title: "Avg. Views (YT)",
-    dataIndex: "averageViews",
-    key: "averageViews",
-    render: (views, record) => (
-      <span>{KMBFormatter(record.youtube?.averageViews)}</span>
-    ),
-    sorter: (a, b) =>
-      parseInt(a.youtube?.averageViews) - parseInt(b.youtube?.averageViews),
-    // sortDirections: ["descend", "ascend"],
-  },
-  {
-    title: "Avg. Views (IG)",
-    dataIndex: "averageViews",
-    key: "averageViews",
-    render: (views, record) => (
-      <span>{KMBFormatter(record.instagram?.averageViews)}</span>
-    ),
-    sorter: (a, b) =>
-      parseInt(a.instagram?.averageViews) - parseInt(b.instagram?.averageViews),
-    // sortDirections: ["descend", "ascend"],
-  },
-  {
-    title: "Commercial Creator (YT)",
-    dataIndex: "commercialCreatorYT",
-    key: "commercialCreatorYT",
-    // editable: true,
-    render: (text, record) => <span>{KMBFormatter(text) ?? "NA"}</span>,
-    sorter: (a, b) =>
-      parseInt(a.youtube?.commercial) - parseInt(b.youtube?.commercial),
-    editable: true,
-    // width: "20%",
-  },
-  {
-    title: "Commercial Creator (Reel)",
-    dataIndex: "commercialCreatorIGReel",
-    key: "commercialCreatorIG",
-    // editable: true,
-    render: (text, record) => <span>{KMBFormatter(text) ?? "NA"}</span>,
-    sorter: (a, b) =>
-      parseInt(a.instagram?.reelCommercial) -
-      parseInt(b.instagram?.reelCommercial),
-    editable: true,
-    // width: "20%",
-  },
-  {
-    title: "Commercial Creator (IG Story)",
-    dataIndex: "commercialCreatorIGStory",
-    key: "commercialCreatorIG",
-    // editable: true,
-    render: (text, record) => <span>{KMBFormatter(text) ?? "NA"}</span>,
-    sorter: (a, b) =>
-      parseInt(a.instagram?.storyCommercial) -
-      parseInt(b.instagram?.storyCommercial),
-    editable: true,
-    // width: "20%",
-  },
-  {
-    title: "CPV Brand",
-    dataIndex: "cpvBrand",
-    key: "cpvBrand",
-    // width: "20%",
-  },
-];
+export const selectArtistColumns = {
+  main: [
+    {
+      title: "Name",
+      fixed: "left",
+      dataIndex: "name",
+      key: "name",
+      // width: "30%",
+      searchable: true,
+      // editable: true,
+    },
+    {
+      title: "Link",
+      dataIndex: "link",
+      key: "link",
+      // width: "20%",
+      // searchable: true,
+      render: (link, record) => getLink(record),
+      editable: false,
+    },
+    {
+      title: "Followers",
+      dataIndex: "followers",
+      key: "followers",
+      render: (followers, record) => (
+        <span>
+          {KMBFormatter(
+            record.deliverable?.includes("YT")
+              ? record.youtube?.subscribers
+              : record.instagram?.followers || "NA"
+          )}
+        </span>
+      ),
+      // width: "20%",
+      sorter: (a, b) =>
+        parseInt(a.instagram?.followers) - parseInt(b.instagram?.followers),
+      // sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: "Avg. Views (YT)",
+      dataIndex: "averageViews",
+      key: "averageViews",
+      render: (views, record) => (
+        <span>{KMBFormatter(record.youtube?.averageViews)}</span>
+      ),
+      sorter: (a, b) =>
+        parseInt(a.youtube?.averageViews) - parseInt(b.youtube?.averageViews),
+      // sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: "Avg. Views (IG)",
+      dataIndex: "averageViews",
+      key: "averageViews",
+      render: (views, record) => (
+        <span>{KMBFormatter(record.instagram?.averageViews)}</span>
+      ),
+      sorter: (a, b) =>
+        parseInt(a.instagram?.averageViews) -
+        parseInt(b.instagram?.averageViews),
+      // sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: "Commercial Creator (YT)",
+      dataIndex: "commercialCreatorYT",
+      key: "commercialCreatorYT",
+      // editable: true,
+      render: (text, record) => (
+        <span>{formatIndianCurrency(text) ?? "NA"}</span>
+      ),
+      sorter: (a, b) =>
+        parseInt(a.youtube?.commercial) - parseInt(b.youtube?.commercial),
+      editable: true,
+      // width: "20%",
+    },
+    {
+      title: "Commercial Creator (Reel)",
+      dataIndex: "commercialCreatorIGReel",
+      key: "commercialCreatorIG",
+      // editable: true,
+      render: (text, record) => (
+        <span>{formatIndianCurrency(text) ?? "NA"}</span>
+      ),
+      sorter: (a, b) =>
+        parseInt(a.instagram?.reelCommercial) -
+        parseInt(b.instagram?.reelCommercial),
+      editable: true,
+      // width: "20%",
+    },
+    {
+      title: "Commercial Creator (IG Story)",
+      dataIndex: "commercialCreatorIGStory",
+      key: "commercialCreatorIG",
+      // editable: true,
+      render: (text, record) => (
+        <span>{formatIndianCurrency(text) ?? "NA"}</span>
+      ),
+      sorter: (a, b) =>
+        parseInt(a.instagram?.storyCommercial) -
+        parseInt(b.instagram?.storyCommercial),
+      editable: true,
+      // width: "20%",
+    },
+    {
+      title: "CPV Brand",
+      dataIndex: "cpvBrand",
+      key: "cpvBrand",
+      // width: "20%",
+    },
+  ],
+  contact: [
+    {
+      title: "Name",
+      fixed: "left",
+      dataIndex: "name",
+      key: "name",
+      // width: "30%",
+      searchable: true,
+    },
+    {
+      title: "Agency Name",
+      dataIndex: "agencyName",
+      key: "agencyName",
+      // width: "30%",
+      searchable: true,
+      editable: true,
+    },
+    {
+      title: "Manager",
+      dataIndex: "manager",
+      key: "manager",
+      // width: "30%",
+      searchable: true,
+      editable: true,
+    },
+    {
+      title: "Contact",
+      dataIndex: "contact",
+      key: "contact",
+      // width: "30%",
+      searchable: true,
+      editable: true,
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+      // width: "30%",
+      searchable: true,
+      editable: true,
+    },
+  ],
+  info: [
+    {
+      title: "Name",
+      fixed: "left",
+      dataIndex: "name",
+      key: "name",
+      // width: "30%",
+      searchable: true,
+    },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+      // width: "30%",
+      // searchable: true,
+      // filters: [
+      //   {
+      //     text: "Male",
+      //     value: "male",
+      //   },
+      //   {
+      //     text: "Female",
+      //     value: "female",
+      //   },
+      // ],
+      // onFilter: (value, record) =>
+      //   record.gender.toLowerCase().indexOf(value) === 0,
+      sorter: (a, b) => a.gender.length - b.gender.length,
+    },
+    {
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
+      editable: true,
+      // width: "30%",
+      searchable: true,
+    },
+    {
+      title: "Language",
+      dataIndex: "languages",
+      key: "language",
+      editable: true,
+      render: (languages) => (
+        <span style={{ textTransform: "capitalize" }}>
+          {languages.join(", ")}
+        </span>
+      ),
+      // width: "30%",
+      // searchable: true,
+    },
+    {
+      title: "Category(Multiple#)",
+      dataIndex: "categories",
+      key: "categories",
+      editable: true,
+      render: (categories) => <span>{categories?.join(", ")}</span>,
+      // width: "30%",
+      // searchable: true,
+    },
+    {
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
+      editable: true,
+      // width: "30%",
+      searchable: true,
+    },
+  ],
+};

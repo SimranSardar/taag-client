@@ -8,7 +8,13 @@ import styles from "./Campaign.module.scss";
 import { Box, Tab, Tabs, styled, Skeleton } from "@mui/material";
 import { TabIcon } from "../../assets";
 import { CurrentContext } from "../../utils/contexts";
-import { getCommercial, getROI, KMBFormatter, showAlert } from "../../utils";
+import {
+  formatIndianCurrency,
+  getCommercial,
+  getROI,
+  KMBFormatter,
+  showAlert,
+} from "../../utils";
 import { tableData } from "../../utils/constants";
 import SelectArtists from "./SelectArtists";
 import NewColumn from "./NewColumn";
@@ -18,6 +24,7 @@ function newSelectionArist(item, campaign) {
   const commercial = getCommercial(campaign.deliverable, item);
   const brandCommercial =
     item.brandCommercial || commercial + (20 * commercial) / 100 || "NA";
+  console.log({ itBr: item.brandCommercial, brandCommercial });
   let newArtist = {
     ...item,
     key: item._id,
@@ -37,7 +44,9 @@ function newSelectionArist(item, campaign) {
     deliverable: item.deliverable || campaign.deliverable || "NA",
     commercialCreator: commercial,
     brandCommercial,
-    cpvBrand: item.cpvBrand || 0,
+    cpvBrand: (parseInt(brandCommercial) / parseInt(item.views) || 0).toFixed(
+      2
+    ),
     agencyFees:
       item.agencyFees || parseInt(brandCommercial) - parseInt(commercial) || 0,
     gender: item.gender,
@@ -55,7 +64,7 @@ function newSelectionArist(item, campaign) {
     deliverableLink: item.deliverableLink || "NA",
     views: item.views || "NA",
     comments: item.comments || "NA",
-    roi: getROI(item),
+    roi: getROI(item, brandCommercial),
   };
   if (campaign.extras?.length) {
     campaign.extras.forEach((it) => {
@@ -106,6 +115,8 @@ const Campaign = () => {
   const [totalAvgViews, setTotalAvgViews] = useState(0);
   const [totalViews, setTotalViews] = useState(2);
   const [totalComments, setTotalComments] = useState(3);
+  const [totalAgencyFees, setTotalAgencyFees] = useState(0);
+  const [totalBrandAmount, setTotalBrandAmount] = useState(0);
 
   const location = useLocation();
 
@@ -171,9 +182,23 @@ const Campaign = () => {
 
   useEffect(() => {
     if (selectedRows.length) {
-      setTotalAvgViews(
-        selectedRows.reduce((acc, item) => acc + item.averageViews, 0)
-      );
+      let tAvgViews = 0;
+      let tAgencyFees = 0;
+      let tBrandAmount = 0;
+      let tViews = 0;
+      let tComments = 0;
+      selectedRows.forEach((item) => {
+        tAvgViews += parseInt(item.averageViews || 0);
+        tAgencyFees += parseInt(item.agencyFees || 0);
+        tBrandAmount += parseInt(item.brandCommercial || 0);
+        tViews += parseInt(item.views) || 0;
+        tComments += parseInt(item.comments) || 0;
+      });
+      setTotalAvgViews(tAvgViews);
+      setTotalAgencyFees(tAgencyFees);
+      setTotalBrandAmount(tBrandAmount);
+      setTotalViews(tViews);
+      setTotalComments(tComments);
     }
   }, [selectedRows]);
 
@@ -241,18 +266,7 @@ const Campaign = () => {
     updateCampaign({ ...campaign, isSharedWithBrand: true });
     showAlert("success", "Campaign shared with brand");
   }
-  useEffect(() => {
-    const newTotalViews = campaign?.selectedArtists?.reduce(
-      (acc, item) => acc + (parseInt(item.views) || 0),
-      0
-    );
-    const newTotalComments = campaign?.selectedArtists?.reduce(
-      (acc, item) => acc + (parseInt(item.comments) || 0),
-      0
-    );
-    setTotalViews(newTotalViews);
-    setTotalComments(newTotalComments);
-  }, [campaign]);
+
   // useEffect(() => {
   //   setSelectedRows();
   // }, [selRows]);
@@ -278,12 +292,12 @@ const Campaign = () => {
         onClickShare: handleClickShare,
         ...(location.pathname.includes("analytics")
           ? {
-              totalViews,
-              totalComments,
+              totalViews: KMBFormatter(totalViews),
+              totalComments: KMBFormatter(totalComments),
             }
           : {
-              agencyFees: campaign?.agencyFee,
-              brandAmount: campaign?.brandAmount,
+              agencyFees: formatIndianCurrency(totalAgencyFees) || 0,
+              brandAmount: formatIndianCurrency(totalBrandAmount) || 0,
               totalAverageViews: KMBFormatter(totalAvgViews || 0),
               totalCreator: campaign?.selectedArtists?.length.toString() || "0",
               averageROI: "0.4",

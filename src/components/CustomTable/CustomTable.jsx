@@ -323,6 +323,26 @@ const CustomTable = ({
     if (item?.deliverableLink === row?.deliverableLink) {
       setData(newData);
     }
+    if (row.dataIndex === "categories") {
+      console.log({ row });
+      const newItem = {
+        ...item,
+        categories: row.categories.split(",").map((item) => item.trim()),
+      };
+      console.log({ newItem });
+      newData.splice(index, 1, { ...item, ...newItem });
+      setData(newData);
+    }
+    if (row.dataIndex === "languages") {
+      console.log({ row });
+      const newItem = {
+        ...item,
+        languages: row.languages.split(",").map((item) => item.trim()),
+      };
+      console.log({ newItem });
+      newData.splice(index, 1, { ...item, ...newItem });
+      setData(newData);
+    }
     // setData(newData);
     if (item?.deliverableLink !== row?.deliverableLink) {
       setLoading(true);

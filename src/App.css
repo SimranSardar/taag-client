@@ -52,3 +52,24 @@ th:last-child {
 .ant-message {
   z-index: 100000000;
 }
+.ant-pagination-item a {
+  color: white;
+}
+.ant-pagination.ant-pagination-mini
+  .ant-pagination-prev
+  .ant-pagination-item-link,
+.ant-pagination.ant-pagination-mini
+  .ant-pagination-next
+  .ant-pagination-item-link
+  svg {
+  fill: white;
+}
+.ant-pagination-item-link {
+  color: white !important;
+}
+.ant-pagination-item-link:disabled {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+.ant-pagination-item-active a {
+  color: black;
+}
