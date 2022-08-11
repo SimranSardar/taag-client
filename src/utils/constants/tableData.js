@@ -165,6 +165,7 @@ export const tableData = {
           key: "deliverable",
           // width: "20%",
           searchable: true,
+          editable: true,
         },
         {
           title: "Commercial Creator",

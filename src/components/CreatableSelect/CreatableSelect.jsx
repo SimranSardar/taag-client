@@ -201,6 +201,7 @@ export const CreatableSingleSelect = ({
       position: "",
       email: "",
       contact: "",
+      password: "",
     });
 
     toggleOpen(false);
@@ -369,6 +370,20 @@ export const CreatableSingleSelect = ({
                 }
                 label="Position"
               />
+
+              <InputField
+                required
+                style={{ margin: "0" }}
+                id="contact"
+                value={dialogValue.contact}
+                onChange={(event) =>
+                  setDialogValue({
+                    ...dialogValue,
+                    contact: event.target.value,
+                  })
+                }
+                label="Contact"
+              />
               <InputField
                 required
                 style={{ margin: "0" }}
@@ -386,15 +401,16 @@ export const CreatableSingleSelect = ({
               <InputField
                 required
                 style={{ margin: "0" }}
-                id="contact"
-                value={dialogValue.contact}
+                id="password"
+                type="password"
+                value={dialogValue.password}
                 onChange={(event) =>
                   setDialogValue({
                     ...dialogValue,
-                    contact: event.target.value,
+                    password: event.target.value,
                   })
                 }
-                label="Contact"
+                label="Password"
               />
             </InputsContainerDivForSS>
           </DialogContent>
