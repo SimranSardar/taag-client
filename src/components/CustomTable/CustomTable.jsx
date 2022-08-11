@@ -307,7 +307,7 @@ const CustomTable = ({
     const dat = JSON.parse(sessionStorage.getItem("data"));
     const newData = [...dat];
     const index = newData.findIndex((item) => row._id === item._id);
-    const item = newData[index];
+    let item = newData[index];
     console.log({ newData, index, item, row });
     if (row?.commercialCreator || row?.brandCommercial) {
       row.agencyFees =

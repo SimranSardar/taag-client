@@ -208,32 +208,6 @@ export const tableData = {
           // width: "20%",
         },
       ],
-      data: [
-        {
-          id: "1",
-          name: "Barkha",
-          link: "https://google.com",
-          followers: "1M",
-          avgViews: "400k",
-          deliverable: "IG Reel",
-          commercialCreator: "300k",
-          brandCommercial: "400k",
-          CPVBrand: "1",
-          agencyFees: "100k",
-        },
-        {
-          id: "2",
-          name: "John Brown",
-          link: "https://google.com",
-          followers: "20k",
-          avgViews: "100k",
-          deliverable: "YouTube",
-          commercialCreator: "150k",
-          brandCommercial: "400k",
-          CPVBrand: "1",
-          agencyFees: "100k",
-        },
-      ],
     },
     info: {
       columns: [
@@ -300,17 +274,6 @@ export const tableData = {
           searchable: true,
         },
       ],
-      data: [
-        {
-          id: "1",
-          name: "Barkha",
-          gender: "Female",
-          location: "Mumbai",
-          language: "English, Hindi",
-          category: "Comedy,Beauty,Travel",
-          type: "Macro",
-        },
-      ],
     },
     phone: {
       columns: [
@@ -349,16 +312,6 @@ export const tableData = {
           key: "email",
           // width: "30%",
           searchable: true,
-        },
-      ],
-      data: [
-        {
-          id: "1",
-          name: "Barkha",
-          agencyName: "agencyName",
-          manager: "manager",
-          contact: "1234567890",
-          email: "email@gmail.com",
         },
       ],
     },
@@ -414,16 +367,6 @@ export const tableData = {
         editable: true,
       },
     ],
-    data: [
-      {
-        id: "1",
-        name: "Barkha",
-        date: "01/01/2022",
-        invoiceUpload: "https://google.com",
-        uploadLink: "https://google.com",
-        note: "Some Note",
-      },
-    ],
   },
   campaign_analytics: {
     columns: [
@@ -465,16 +408,6 @@ export const tableData = {
         key: "ROI",
         // width: "30%",
         searchable: true,
-      },
-    ],
-    data: [
-      {
-        id: "1",
-        name: "Barkha",
-        uploadLink: "https://google.com",
-        views: "300k",
-        comments: "30k",
-        ROI: "0.3",
       },
     ],
   },

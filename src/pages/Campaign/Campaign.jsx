@@ -35,7 +35,11 @@ function newSelectionArist(item, campaign) {
       : campaign.deliverable?.includes("IG")
       ? item.instagram?.link
       : "NA",
-    followers: item.instagram ? item.instagram.followers : "NA",
+    followers: campaign.deliverable?.includes("YT")
+      ? item.youtube?.subscribers
+      : item.instagram
+      ? item.instagram.followers
+      : "NA",
     averageViews: campaign.deliverable?.includes("YT")
       ? item.youtube?.averageViews
       : campaign.deliverable?.includes("IG")

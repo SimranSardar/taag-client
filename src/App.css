@@ -77,7 +77,7 @@ th:last-child {
   color: black;
 }
 .ant-pagination li a,
-svg {
+.ant-pagination li svg {
   color: white !important;
 }
 .ant-pagination .ant-pagination-item-active a {
@@ -92,3 +92,13 @@ svg {
   border-color: var(--clr-primary) !important;
   color: white !important;
 }
+a {
+  color: pink;
+}
+.ant-message {
+  z-index: 1000000;
+}
+/* .ant-message div svg {
+  color: green !important;
+  fill: green !important;
+} */
