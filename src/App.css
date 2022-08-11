@@ -43,6 +43,9 @@ th:last-child {
       }
 
       / Handle on hover */
+            .ant-table-body::-webkit-scrollbar-thumb{
+              background: rgb(134, 134, 134);
+            }
 .ant-table-body::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
@@ -51,4 +54,19 @@ th:last-child {
 }
 .ant-message {
   z-index: 100000000;
+}
+.ant-pagination li a,svg{
+  color:white !important; 
+}
+.ant-pagination .ant-pagination-item-active a{
+  color:var(--clr-primary) !important;
+}
+.ant-pagination .ant-pagination-item-active{
+  background-color: var(--clr-bg-dark);
+  border-color: var(--clr-primary);
+}
+.ant-pagination-options-size-changer .ant-select-selector {
+  background-color: var(--clr-bg-dark) !important;
+  border-color: var(--clr-primary) !important;
+  color:white !important; 
 }

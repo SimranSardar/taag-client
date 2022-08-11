@@ -148,7 +148,10 @@ const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
         <TabPanel value={tab} index={0}>
           <div className={styles.tableContainer}>
             <CustomTable
-              columns={selectArtistColumns}
+              columns={selectArtistColumns?.map((item) => ({
+                ...item,
+                editable: true,
+              }))}
               data={data}
               isSelectable
               setData={setData}
@@ -160,7 +163,10 @@ const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
         <TabPanel value={tab} index={1}>
           <div className={styles.tableContainer}>
             <CustomTable
-              columns={tableData.campaign.info.columns}
+              columns={tableData.campaign.info.columns?.map((item) => ({
+                ...item,
+                editable: true,
+              }))}
               data={data}
               isSelectable
               setData={setData}
@@ -172,7 +178,10 @@ const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
         <TabPanel value={tab} index={2}>
           <div className={styles.tableContainer}>
             <CustomTable
-              columns={tableData.campaign.phone.columns}
+              columns={tableData.campaign.phone.columns?.map((item) => ({
+                ...item,
+                editable: true,
+              }))}
               data={data}
               isSelectable
               setData={setData}
