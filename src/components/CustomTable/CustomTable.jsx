@@ -104,6 +104,7 @@ const CustomTable = ({
   selectedRows,
   isSelectable,
   campaign,
+  width,
 }) => {
   // const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -393,7 +394,7 @@ const CustomTable = ({
       }}
       sticky
       scroll={{
-        x: 1500,
+        x: width || 1500,
         y: 350,
       }}
       loading={loading}
