@@ -12,68 +12,7 @@ import { MainLayout } from "../../layouts";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CreatableSingleSelect } from "../../components";
-
-const sectorOptions = [
-  {
-    name: "Vlog",
-    value: "vlog",
-  },
-  {
-    name: "Makeup",
-    value: "makeup",
-  },
-  {
-    name: "Genz",
-    value: "genz",
-  },
-  {
-    name: "Skincare",
-    value: "skincare",
-  },
-  {
-    name: "Fitness",
-    value: "fitness",
-  },
-  {
-    name: "Couple",
-    value: "couple",
-  },
-  {
-    name: "Dance",
-    value: "dance",
-  },
-  {
-    name: "Comedy",
-    value: "comedy",
-  },
-  {
-    name: "Music",
-    value: "music",
-  },
-];
-
-const deliverableOptions = [
-  {
-    name: "IG Video",
-    value: "IGVideo",
-  },
-  {
-    name: "IG Static",
-    value: "IGStatic",
-  },
-  {
-    name: "IG Story",
-    value: "IGStory",
-  },
-  {
-    name: "YT Video",
-    value: "YTVideo",
-  },
-  {
-    name: "YT Shorts",
-    value: "YTShorts",
-  },
-];
+import { deliverableOptions, sectorOptions } from "../../utils/constants";
 
 const brandOptions = [
   {
@@ -115,11 +54,21 @@ const AddCampaign = () => {
 
   async function createBrand(brandData) {
     console.log(brandData);
-    const { name, sector, website, picName, position, contact, email } =
-      brandData;
+
+    const {
+      name,
+      sectors,
+      website,
+      picName,
+      position,
+      contact,
+      email,
+      password,
+    } = brandData;
+
     const finalData = {
       name,
-      sector, // Beauty | Fashion | Health
+      sectors, // Beauty | Fashion | Health
       website, // URL
       poc: {
         name: picName,
@@ -128,11 +77,14 @@ const AddCampaign = () => {
         email,
       },
       campaigns: [],
+      password,
     };
     let temp = await axios.post(
       `${process.env.REACT_APP_API_URI}/brand/create`,
       finalData
     );
+    setBrand(finalData);
+    setBrandOptions((prev) => [...prev, temp.data]);
     console.log({ res: temp });
   }
 
@@ -144,9 +96,23 @@ const AddCampaign = () => {
     getBrands();
   }, []);
 
+  useEffect(() => {
+    if (brand?.name) {
+      setBrandSectors(brand.sectors);
+      setValues((prev) => ({
+        ...prev,
+        brandName: brand.name,
+        website: brand.website,
+        PICName: brand.poc.name,
+        PICPosition: brand.poc.position,
+        PICEmail: brand.poc.email,
+        PICContact: brand.poc.contact,
+      }));
+    }
+  }, [brand]);
+
   async function handleAddBrand(valueToAdd) {
-    const temp = await createBrand(valueToAdd);
-    console.log(temp);
+    await createBrand(valueToAdd);
   }
 
   function handleAddBrandSectors(newValue) {
@@ -159,30 +125,32 @@ const AddCampaign = () => {
   function handleProgress() {}
 
   useEffect(() => {
+    function flattenObject(obj) {
+      let result = {};
+      for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          if (typeof obj[key] === "object") {
+            let flatObject = flattenObject(obj[key]);
+            for (let i in flatObject) {
+              if (flatObject.hasOwnProperty(i)) {
+                result[key + "." + i] = flatObject[i];
+              }
+            }
+          } else {
+            result[key] = obj[key];
+          }
+        }
+      }
+      return result;
+    }
+    let ob = flattenObject(values);
+    console.log({ ob, values });
     setProgress(
-      (Object.values(values).filter((item) => item).length / totalNoOfFields) *
+      (Object.values(values).filter((item) => item.length).length /
+        totalNoOfFields) *
         100 || 0.0000001
     );
   }, [values]);
-
-  // useEffect(() => {
-  //   setValues((prev) => ({
-  //     ...prev,
-  //     brand: {
-  //       ...prev?.brand,
-  //       sector:brandSectors,
-  //     },
-  //   }));
-  // }, [brandSectors]);
-  //  useEffect(() => {
-  //    setValues((prev) => ({
-  //      ...prev,
-  //      brand: {
-  //        ...prev?.brand,
-  //        sector: platformSectors,
-  //      },
-  //    }));
-  //  }, [platformSectors]);
 
   useEffect(() => {
     console.log(values);
@@ -236,6 +204,10 @@ const AddCampaign = () => {
     }
   }
 
+  useEffect(() => {
+    setValues((prev) => ({ ...prev, brandSectors, platformSectors }));
+  }, [brandSectors, platformSectors]);
+
   return (
     <MainLayout
       classes={[styles.container]}
@@ -243,7 +215,7 @@ const AddCampaign = () => {
       navbarProps={{
         titleProps: {
           id: "name",
-          name: values?.name || "New Campaign",
+          name: values?.name,
           onChange: handleChange,
           isEditIconVisible: true,
           isBackIconVisible: true,
@@ -268,7 +240,7 @@ const AddCampaign = () => {
               required
               onChange={handleChange}
               id="website"
-              value={values?.website ?? brand?.website}
+              value={values?.website}
               label={"Website"}
             />
             <CreatableMultipleSelect
@@ -287,21 +259,21 @@ const AddCampaign = () => {
                 required
                 onChange={handleChange}
                 id="PICName"
-                value={values?.PICName ?? brand?.poc?.name}
+                value={values?.PICName}
                 label={"Person in Contact Name"}
               />
               <InputField
                 required
                 onChange={handleChange}
                 id="PICPosition"
-                value={values?.PICPosition ?? brand?.poc?.position}
+                value={values?.PICPosition}
                 label={"Position"}
               />
               <InputField
                 required
                 onChange={handleChange}
                 id="PICEmail"
-                value={values?.PICEmail ?? brand?.poc?.email}
+                value={values?.PICEmail}
                 type="email"
                 label={"Email Id"}
               />
@@ -309,7 +281,7 @@ const AddCampaign = () => {
                 required
                 onChange={handleChange}
                 id="PICContact"
-                value={values?.PICContact ?? brand?.poc?.contact}
+                value={values?.PICContact}
                 type="tel"
                 label={"Contact"}
               />

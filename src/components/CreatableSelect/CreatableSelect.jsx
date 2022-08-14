@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   TextField,
   Dialog,
@@ -12,10 +12,12 @@ import {
 } from "@mui/material";
 import { createFilterOptions } from "@mui/material/Autocomplete";
 import InputField from "../InputField/InputField";
+import { sectorOptions } from "../../utils/constants";
 
 const filter = createFilterOptions();
 
-//If You are using this as multiple select then provide initial value of of the useState as an empty array "[]" and if single select then "null" is fine
+// If You are using this as multiple select then provide initial value of
+// the useState as an empty array "[]" and if single select then "null" is fine
 
 export const CreatableMultipleSelect = ({
   options,
@@ -191,6 +193,7 @@ export const CreatableSingleSelect = ({
   children,
 }) => {
   const [open, toggleOpen] = useState(false);
+  const formRef = useRef(null);
 
   const handleClose = () => {
     setDialogValue({
@@ -298,7 +301,7 @@ export const CreatableSingleSelect = ({
       />
       <Styledlabel style={{}}>{label}</Styledlabel>
       <StyledDialog open={open} onClose={handleClose}>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} ref={formRef}>
           <DialogTitle>Add new Brand</DialogTitle>
           <DialogContent>
             <DialogContentText>
@@ -318,7 +321,7 @@ export const CreatableSingleSelect = ({
                 }
                 label="Name"
               />
-              <InputField
+              {/* <InputField
                 required
                 style={{ margin: "0" }}
                 id="sectors"
@@ -330,6 +333,21 @@ export const CreatableSingleSelect = ({
                   })
                 }
                 label="Sectors"
+              /> */}
+              <CreatableMultipleSelect
+                required
+                options={sectorOptions}
+                setValue={(values) =>
+                  setDialogValue({
+                    ...dialogValue,
+                    sectors: values?.map((val) => val.value),
+                  })
+                }
+                id="sectors"
+                width="650px"
+                value={dialogValue.sectors}
+                label={"Sectors"}
+                // onAddModalSubmit={handleAddPlatFormSectors}
               />
               <InputField
                 required
@@ -416,7 +434,18 @@ export const CreatableSingleSelect = ({
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
-            <Button type="submit">Add</Button>
+            <Button
+              onClick={(e) => {
+                e.preventDefault();
+                // formRef.current.dispatchEvent(
+                //   new Event("submit", { bubbles: false, cancelable: true })
+                // );
+                handleSubmit(e);
+                // formRef.current.submit();
+              }}
+            >
+              Add
+            </Button>
           </DialogActions>
         </form>
       </StyledDialog>
