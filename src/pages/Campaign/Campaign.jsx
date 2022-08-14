@@ -390,6 +390,7 @@ const Campaign = () => {
                   {selectedRows?.length > 0 ? (
                     <CustomTable
                       columns={mainCols}
+                      width={2200}
                       data={selectedRows}
                       setData={setSelectedRows}
                       onRowSelect={handleSelectRow}

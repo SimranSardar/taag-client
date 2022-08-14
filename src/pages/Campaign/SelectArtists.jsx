@@ -83,6 +83,10 @@ const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
     }
   }, [artists, campaign]);
 
+  useEffect(() => {
+    console.log({ data });
+  });
+
   return (
     <Dialog
       fullScreen
@@ -110,7 +114,10 @@ const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
           <Mbutton
             autoFocus
             color="inherit"
-            onClick={() => handleSave(selectedRows)}
+            onClick={() => {
+              handleSave(selectedRows);
+              handleClose();
+            }}
           >
             save
           </Mbutton>
@@ -151,6 +158,7 @@ const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
               columns={selectArtistColumns.main}
               data={data}
               isSelectable
+              width={2200}
               setData={setData}
               onRowSelect={handleSelectRow}
               //   selectedRows={campaign?.selectedArtists || []}

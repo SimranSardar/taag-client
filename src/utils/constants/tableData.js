@@ -423,6 +423,9 @@ export const selectArtistColumns = {
       // width: "30%",
       searchable: true,
       // editable: true,
+      render: (text) => {
+        return <span>{text ?? "NA"}</span>;
+      },
     },
     {
       title: "Link",
@@ -430,7 +433,7 @@ export const selectArtistColumns = {
       key: "link",
       // width: "20%",
       // searchable: true,
-      render: (link, record) => getLink(record),
+      render: (link, record) => getLink(record) ?? "NA",
       editable: false,
     },
     {
@@ -572,6 +575,9 @@ export const selectArtistColumns = {
       key: "name",
       // width: "30%",
       searchable: true,
+      render: (text) => {
+        return <span>{text ?? "NA"}</span>;
+      },
     },
     {
       title: "Gender",
@@ -592,6 +598,9 @@ export const selectArtistColumns = {
       // onFilter: (value, record) =>
       //   record.gender.toLowerCase().indexOf(value) === 0,
       sorter: (a, b) => a.gender.length - b.gender.length,
+      render: (text) => {
+        return <span>{text ?? "NA"}</span>;
+      },
     },
     {
       title: "Location",
@@ -619,7 +628,7 @@ export const selectArtistColumns = {
       dataIndex: "categories",
       key: "categories",
       editable: true,
-      render: (categories) => <span>{categories?.join(", ")}</span>,
+      render: (categories) => <span>{categories?.join(", ") ?? "NA"}</span>,
       // width: "30%",
       // searchable: true,
     },
@@ -630,6 +639,9 @@ export const selectArtistColumns = {
       editable: true,
       // width: "30%",
       searchable: true,
+      render: (text) => {
+        return <span>{text ?? "NA"}</span>;
+      },
     },
   ],
 };
