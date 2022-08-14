@@ -92,8 +92,14 @@ const Login = () => {
           <Button title="Submit" type="submit" disabled={loading}>
             Login
           </Button>
-          <p onClick={() => navigate("/register")}>New user? Register</p>
+          <p onClick={() => navigate("/reset-password")}>Forgot Password</p>
         </div>
+        <p
+          onClick={() => navigate("/register")}
+          style={{ marginTop: "2rem", color: "white" }}
+        >
+          New user? Register
+        </p>
         {!loading && error && <span className={styles.error}>{error}</span>}
         {!error && loading && <LinearProgress className={styles.loading} />}
       </form>

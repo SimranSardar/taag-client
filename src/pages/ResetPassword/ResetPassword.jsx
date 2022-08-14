@@ -4,7 +4,7 @@ import styles from "../Login/Login.module.scss";
 import { decodeToken } from "react-jwt";
 import axios from "axios";
 import { AuthContext } from "../../utils/auth/AuthContext";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { LinearProgress } from "@mui/material";
 import Logo from "../../components/Logo/Logo";
 import { showAlert } from "../../utils";
@@ -15,6 +15,9 @@ const Login = () => {
   const [values, setValues] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isValidURI, setIsValidURI] = useState(false);
+
+  const { token, id } = useParams();
 
   function handleChange(e) {
     const { id, value, name } = e.target;
@@ -28,18 +31,65 @@ const Login = () => {
   }
 
   useEffect(() => {
-    console.log(values);
-  });
+    async function confirmToken() {
+      console.log({ uri: window.location.href, id });
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_URI}/auth/verify-reset-token/`,
+          {
+            params: {
+              uri: window.location.href,
+              id,
+            },
+          }
+        );
+        if (res.status === 200) {
+          setIsValidURI(true);
+        } else {
+          return showAlert("error", "Invalid Reset Link");
+        }
+      } catch (error) {
+        showAlert("error", error.message);
+      }
+    }
+    if (token && id) {
+      confirmToken();
+    }
+  }, [token, id]);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
+
+    if (token && id) {
+      if (values.confirmPassword !== values.newPassword) {
+        return showAlert("error", "Passwords do not match");
+      }
+      try {
+        const res = await axios.post(
+          `${process.env.REACT_APP_API_URI}/auth/reset-password/`,
+          {
+            email: values.email,
+            newPassword: values.newPassword,
+            userType: "user",
+          }
+        );
+        setLoading(false);
+        showAlert("success", res.data.message);
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+      } catch (error) {
+        return showAlert("error", error.message);
+      }
+    }
 
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URI}/auth/request-password-reset/`,
         {
           email: values?.email,
+          userType: "user",
         }
       );
 
@@ -69,18 +119,31 @@ const Login = () => {
           type="text"
           disabled={loading}
         />
-        {/* <InputField
-          id="password"
-          label="Password"
-          required
-          value={values?.password}
-          onChange={handleChange}
-          type="password"
-          disabled={loading}
-        /> */}
+        {isValidURI && (
+          <InputField
+            id="newPassword"
+            label="New Password"
+            required
+            value={values?.newPassword}
+            onChange={handleChange}
+            type="password"
+            disabled={loading}
+          />
+        )}
+        {isValidURI && (
+          <InputField
+            id="confirmPassword"
+            label="Confirm Password"
+            required
+            value={values?.confirmPassword}
+            onChange={handleChange}
+            type="password"
+            disabled={loading}
+          />
+        )}
         <div className={styles.buttons}>
           <Button title="Submit" type="submit" disabled={loading}>
-            Send Link
+            {token && id ? "Submit" : "Send Link"}
           </Button>
         </div>
         {!loading && error && <span className={styles.error}>{error}</span>}
