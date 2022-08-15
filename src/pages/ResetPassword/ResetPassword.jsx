@@ -61,7 +61,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
 
-    if (token && id) {
+    if (token && id && isValidURI) {
       if (values.confirmPassword !== values.newPassword) {
         return showAlert("error", "Passwords do not match");
       }
@@ -84,25 +84,27 @@ const Login = () => {
       }
     }
 
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URI}/auth/request-password-reset/`,
-        {
-          email: values?.email,
-          userType: "user",
-        }
-      );
+    if (!token && !id && !isValidURI) {
+      try {
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URI}/auth/request-password-reset/`,
+          {
+            email: values?.email,
+            userType: "user",
+          }
+        );
 
-      if (response.status === 200) {
-        showAlert("success", "Reset Link sent");
+        if (response.status === 200) {
+          showAlert("success", "Reset Link sent on your email");
+          setLoading(false);
+          // navigate("/");
+        } else {
+        }
+      } catch (error) {
+        // console.log("True error", error.response);
+        setError(error.response.data.message);
         setLoading(false);
-        // navigate("/");
-      } else {
       }
-    } catch (error) {
-      // console.log("True error", error.response);
-      setError(error.response.data.message);
-      setLoading(false);
     }
   }
 
