@@ -152,6 +152,16 @@ const Campaign = () => {
   } = useContext(CurrentContext);
   const { id } = useParams();
 
+  function handleVisibilityColumn(item) {
+    return (e) => {
+      if (item.isVisible) {
+        //Hide
+      } else {
+        //Show
+      }
+    };
+  }
+
   useEffect(() => {
     setCampaignId(id);
     console.log("set id");
@@ -167,7 +177,7 @@ const Campaign = () => {
           title: (
             <span style={{ display: "flex" }}>
               {item.title}
-              <IconButton>
+              <IconButton onClick={handleVisibilityColumn(item)}>
                 {item?.isVisible ? (
                   <Tooltip title="Show to Brand">
                     <VisibilityIcon htmlColor="white" />
