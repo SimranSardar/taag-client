@@ -95,6 +95,7 @@ const Title = ({
           id={id}
           value={name}
           type="text"
+          placeholder="Enter Campaign Name"
           disabled={disabled}
           onChange={onChange}
           {...remaining}

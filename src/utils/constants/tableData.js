@@ -37,6 +37,7 @@ const handleChangeInvoice = async (e, record) => {
     `${process.env.REACT_APP_API_URI}/campaigns/upload`,
     formData
   );
+  showAlert("success", "Invoice Uploaded Successfully");
   console.log({ res });
 };
 

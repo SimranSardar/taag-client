@@ -8,6 +8,7 @@ import {
   Campaign,
   Campaigns,
   AddArtist,
+  ResetPassword,
 } from "./pages/";
 import SelectArtists from "./pages/SelectArtists/SelectArtists";
 import UploadArtists from "./pages/UploadArtists/UploadArtists";
@@ -24,6 +25,11 @@ const App = () => {
       <AuthContextProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route
+            path="/reset-password/:token/:id"
+            element={<ResetPassword />}
+          />
           <Route path="/register" element={<Register />} />
         </Routes>
         <CampaignContextProvider>
