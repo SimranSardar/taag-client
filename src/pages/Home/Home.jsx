@@ -224,13 +224,13 @@ const Home = () => {
         navigate={navigate}
       /> */}
       <div className={styles.header}>
-        <InputField
-          id="search"
-          type="search"
-          value={filters.search || ""}
-          onChange={handleChange}
-          placeholder={"Search Campaign"}
-        />
+        <Button
+          onClick={() => {
+            navigate("/upload-artists");
+          }}
+        >
+          Upload Artists (Bulk)
+        </Button>
         <div>
           {/* <InputSelect
             label={"Sort By: Week/Month"}
