@@ -44,10 +44,12 @@ const CampaignContextProvider = ({ children }) => {
   }
 
   async function updateCampaign(campaign) {
-    return await axios.patch(
+    const res = await axios.patch(
       `${process.env.REACT_APP_API_URI}/campaigns/update/`,
       campaign
     );
+
+    return res;
   }
 
   async function updateArtistsGlobal(artists) {

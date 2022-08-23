@@ -151,14 +151,24 @@ const Campaign = () => {
     campaignAnalytics,
   } = useContext(CurrentContext);
   const { id } = useParams();
-
-  function handleVisibilityColumn(item) {
-    return (e) => {
-      if (item.isVisible) {
-        //Hide
-      } else {
-        //Show
-      }
+  const [test, setTest] = useState(campaign);
+  useEffect(() => {
+    console.log({ campaign });
+  });
+  function handleVisibilityColumn(currentItem) {
+    return async (e) => {
+      console.log([campaign]);
+      const newCampaign = {
+        ...campaign,
+        extras: campaign?.extras?.map((item) => {
+          return item.dataIndex === currentItem.dataIndex
+            ? { ...item, isVisible: item?.isVisible ? false : true }
+            : item;
+        }),
+      };
+      // console.log({ campaign, newCampaign });
+      const res = await updateCampaign(newCampaign);
+      // console.log(res);
     };
   }
 
