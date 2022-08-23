@@ -40,7 +40,7 @@ const Navbar = ({ titleProps, progress, prevRoute }) => {
           />
         </div>
         <div className={styles.right}>
-          <BellButton newNotifications={true} />
+          {/* <BellButton newNotifications={true} /> */}
           <ProfileButton onClick={handleLogout} />
         </div>
       </div>

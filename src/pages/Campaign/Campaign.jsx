@@ -5,7 +5,15 @@ import { MainLayout } from "../../layouts";
 import { CampaignContext } from "../../utils/contexts/CampaignContext";
 import styles from "./Campaign.module.scss";
 // import { TabContext, TabPanel, TabList } from "@mui/lab";
-import { Box, Tab, Tabs, styled, Skeleton } from "@mui/material";
+import {
+  Box,
+  Tab,
+  Tabs,
+  styled,
+  Skeleton,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 import { TabIcon } from "../../assets";
 import { CurrentContext } from "../../utils/contexts";
 import {
@@ -18,6 +26,9 @@ import {
 import { tableData } from "../../utils/constants";
 import SelectArtists from "./SelectArtists";
 import NewColumn from "./NewColumn";
+import { RemoveRedEyeOutlined } from "@mui/icons-material";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 function newSelectionArist(item, campaign) {
   console.log({ item });
@@ -142,6 +153,26 @@ const Campaign = () => {
     campaignAnalytics,
   } = useContext(CurrentContext);
   const { id } = useParams();
+  const [test, setTest] = useState(campaign);
+  useEffect(() => {
+    console.log({ campaign });
+  });
+  function handleVisibilityColumn(currentItem) {
+    return async (e) => {
+      console.log([campaign]);
+      const newCampaign = {
+        ...campaign,
+        extras: campaign?.extras?.map((item) => {
+          return item.dataIndex === currentItem.dataIndex
+            ? { ...item, isVisible: item?.isVisible ? false : true }
+            : item;
+        }),
+      };
+      // console.log({ campaign, newCampaign });
+      const res = await updateCampaign(newCampaign);
+      // console.log(res);
+    };
+  }
 
   useEffect(() => {
     setCampaignId(id);
@@ -155,6 +186,22 @@ const Campaign = () => {
         ...tableData.campaign.main.columns,
         ...campaign.extras.map((item) => ({
           ...item,
+          title: (
+            <span style={{ display: "flex" }}>
+              {item.title}
+              <IconButton onClick={handleVisibilityColumn(item)}>
+                {item?.isVisible ? (
+                  <Tooltip title="Show to Brand">
+                    <VisibilityIcon htmlColor="white" />
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Hide from Brand">
+                    <VisibilityOffIcon htmlColor="white" />
+                  </Tooltip>
+                )}
+              </IconButton>
+            </span>
+          ),
           searchable: true,
           editable: true,
         })),

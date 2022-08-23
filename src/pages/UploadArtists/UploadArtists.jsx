@@ -28,7 +28,15 @@ const UploadArtists = () => {
   return (
     <MainLayout classes={[styles.container]}>
       <div>
-        <h3>Upload Artists (xlsx)</h3>
+        <h3>
+          Upload Artists (xlsx){" "}
+          <a
+            href="https://docs.google.com/spreadsheets/d/1jSqCSslvup7ngy8Kcd-49zv18N-2EcUmN2a2JLZPqPg/edit#gid=0"
+            target="blank"
+          >
+            View Sample
+          </a>{" "}
+        </h3>
       </div>
       <Dropzone onDrop={(acceptedFiles) => onSubmit(acceptedFiles)}>
         {({ getRootProps, getInputProps }) => (
