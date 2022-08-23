@@ -121,6 +121,8 @@ const Campaign = () => {
   const [totalComments, setTotalComments] = useState(3);
   const [totalAgencyFees, setTotalAgencyFees] = useState(0);
   const [totalBrandAmount, setTotalBrandAmount] = useState(0);
+  const [languages, setLanguages] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const location = useLocation();
 
@@ -191,18 +193,25 @@ const Campaign = () => {
       let tBrandAmount = 0;
       let tViews = 0;
       let tComments = 0;
+      let tCategories = [];
+      let tLanguages = [];
       selectedRows.forEach((item) => {
-        tAvgViews += parseInt(item.averageViews || 0);
-        tAgencyFees += parseInt(item.agencyFees || 0);
-        tBrandAmount += parseInt(item.brandCommercial || 0);
+        tAvgViews += parseInt(item.averageViews) || 0;
+        tAgencyFees += parseInt(item.agencyFees) || 0;
+        tBrandAmount += parseInt(item.brandCommercial) || 0;
         tViews += parseInt(item.views) || 0;
         tComments += parseInt(item.comments) || 0;
+        tCategories = [...tCategories, ...item.categories];
+        tLanguages = [...tLanguages, ...item.languages];
       });
       setTotalAvgViews(tAvgViews);
       setTotalAgencyFees(tAgencyFees);
       setTotalBrandAmount(tBrandAmount);
       setTotalViews(tViews);
       setTotalComments(tComments);
+      setCategories([...new Set(tCategories)]);
+      setLanguages([...new Set(tLanguages)]);
+      console.log({ tCategories, tLanguages });
     }
   }, [selectedRows]);
 
@@ -223,7 +232,10 @@ const Campaign = () => {
   }
 
   function handleSaveSelectedArtists(rows) {
-    setSelectedRows(rows?.map((item) => newSelectionArist(item, campaign)));
+    setSelectedRows([
+      ...selectedRows,
+      ...rows?.map((item) => newSelectionArist(item, campaign)),
+    ]);
     let newCampaign = {
       ...campaign,
       totalAverageViews: totalAvgViews || 0,
@@ -408,6 +420,8 @@ const Campaign = () => {
                     <CustomTable
                       columns={tableData.campaign.info.columns}
                       data={selectedRows}
+                      languages={languages}
+                      categories={categories}
                       setData={setSelectedRows}
                       onRowSelect={handleSelectRow}
                       selectedRows={campaign?.selectedArtists || []}

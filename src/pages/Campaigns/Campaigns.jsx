@@ -29,6 +29,7 @@ const Campaigns = () => {
       headerName: "Campaign Name",
       field: "name",
       key: "name",
+      sorter: (a, b) => a.name.localeCompare(b.name),
       // width: "30%",
       // ...getColumnSearchProps("name"),
     },
