@@ -226,11 +226,19 @@ const Home = () => {
       <div className={styles.header}>
         <Button
           onClick={() => {
+            navigate("/add-artist");
+          }}
+        >
+          Add Artist
+        </Button>
+        <Button
+          onClick={() => {
             navigate("/upload-artists");
           }}
         >
           Upload Artists (Bulk)
         </Button>
+
         <div>
           {/* <InputSelect
             label={"Sort By: Week/Month"}

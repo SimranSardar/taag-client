@@ -100,6 +100,8 @@ const AddArtist = () => {
   const totalNoOfFields = 13;
   const [progress, setProgress] = useState(0.000001);
   const [value, setValue] = useState("");
+  const [instagram, setInstagram] = useState({});
+  const [youtube, setYoutube] = useState({});
   const [categories, setCategories] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [values, setValues] = useState({});
@@ -126,57 +128,34 @@ const AddArtist = () => {
     });
   }
 
-  function handleProgress() {}
-
   useEffect(() => {
-    setProgress(
-      (Object.values(values).filter((item) => item).length / totalNoOfFields) *
-        100 || 0.0000001
-    );
+    setValues((prev) => ({
+      ...prev,
+      instagram,
+      youtube,
+      categories,
+      languages,
+    }));
+  }, [instagram, youtube, categories, languages]);
+
+  function handleInstagram(param) {
+    return (e) => {
+      setInstagram((prev) => ({ ...prev, [param]: e.target.value }));
+    };
+  }
+  function handleYoutube(param) {
+    return (e) => {
+      setYoutube((prev) => ({ ...prev, [param]: e.target.value }));
+    };
+  }
+  useEffect(() => {
+    console.log(values);
   }, [values]);
+
+  function handleProgress() {}
 
   async function submitHandler(e) {
     e.preventDefault();
-    let campaign = {
-      name: values.name || "Add ",
-      brand: {
-        name: values.brandName,
-        sectors: values.brandSector, // Beauty | Fashion | Health
-        website: values.website, // URL
-        poc: {
-          id: values.PICId,
-          position: values.PICPosition,
-          email: values.PICEmail,
-          contact: values.PICContact, // +91xxxxxxxxxx
-        },
-      },
-      platform: values.platform, // youtube | instagram
-      sectors: values.sectors, // Beauty | Fashion | Health | Lifestyle
-      deliverable: values.deliverable, // video | image
-      brief: values.brief,
-      // validity: {
-      //   from: { type: String, required: true }, //  ISOString
-      //   to: { type: String, required: true }, //  ISOString
-      // },
-      selectedArtists: [],
-      brandAmount: 0,
-      currency: "INR", // INR | USD
-      agencyFee: 0,
-      totalCreators: 0,
-      totalAverageViews: 0,
-      status: "draft", // draft | locked | finished
-      sharedWith: [],
-      createdAt: new Date().toISOString(), // ISOString
-      updatedAt: new Date().toISOString(), // ISOString
-    };
-    const res = await axios.post(
-      `${process.env.REACT_APP_API_URI}/campaigns/create`,
-      campaign
-    );
-
-    if (res.status.toString().includes("20")) {
-      navigate(`/campaigns/${res.data.data._id}/select-artists`);
-    }
   }
 
   return (
@@ -190,117 +169,156 @@ const AddArtist = () => {
           name: "Add Artist",
           isBackIconVisible: true,
         },
-        progress,
       }}
     >
       <form onSubmit={submitHandler}>
         <section className={styles.inputs}>
-          <InputField
-            required
-            onChange={handleChange}
-            id="artistName"
-            value={values?.artistName}
-            label={"Artist Name"}
-          />
-          <InputSelect
-            required
-            name="gender"
-            label={"Gender"}
-            value={values?.gender}
-            onChange={handleChange}
-            options={genderOptions}
-          />
-          <InputField
-            required
-            onChange={handleChange}
-            id="followers"
-            value={values?.followers}
-            label={"Followers"}
-          />
-          <CreatableMultipleSelect
-            required
-            name="languages"
-            label={"Languages"}
-            id="languages"
-            value={languages}
-            setValue={setLanguages}
-            options={languageOptions}
-            onAddModalSubmit={handleAddLanguage}
-          />
-
-          <InputSelect
-            required
-            name="type"
-            label={"Type"}
-            value={values?.type}
-            onChange={handleChange}
-            options={typeOptions}
-          />
-          <CreatableMultipleSelect
-            value={categories}
-            setValue={setCategories}
-            label={"Categories"}
-            id="categories"
-            onAddModalSubmit={handleAddCategories}
-            options={sectorOptions}
-          />
-
-          <InputField
-            required
-            onChange={handleChange}
-            id="type"
-            value={values?.link}
-            label={"Social Link"}
-          />
-          <InputField
-            required
-            onChange={handleChange}
-            id="Location"
-            value={values?.location}
-            label={"Location"}
-          />
-          <InputField
-            required
-            onChange={handleChange}
-            id="agencyName"
-            value={values?.agencyName}
-            label={"Agency Name"}
-          />
-          <InputField
-            required
-            onChange={handleChange}
-            id="averageViews"
-            value={values?.averageViews}
-            type="tel"
-            label={"Average Views"}
-          />
-          <InputField
-            required
-            onChange={handleChange}
-            id="manager"
-            value={values?.manager}
-            type="tel"
-            label={"Manager"}
-          />
-          <InputField
-            required
-            onChange={handleChange}
-            id="contact"
-            value={values?.contact}
-            type="tel"
-            label={"Contact"}
-          />
-          <InputField
-            required
-            onChange={handleChange}
-            id="email"
-            value={values?.email}
-            type="email"
-            label={"Email"}
-          />
+          <FormSection sectionName={"Artist Information"} sectionNumber={1}>
+            <InputField
+              required
+              onChange={handleChange}
+              id="artistName"
+              value={values?.artistName}
+              label={"Artist Name"}
+            />
+            <CreatableMultipleSelect
+              value={categories}
+              width={"950px"}
+              setValue={setCategories}
+              label={"Categories"}
+              id="categories"
+              onAddModalSubmit={handleAddCategories}
+              options={sectorOptions}
+            />
+            <CreatableMultipleSelect
+              required
+              width={"900px"}
+              name="languages"
+              label={"Languages"}
+              id="languages"
+              value={languages}
+              setValue={setLanguages}
+              options={languageOptions}
+              onAddModalSubmit={handleAddLanguage}
+            />
+            <InputSelect
+              required
+              name="type"
+              label={"Type"}
+              value={values?.type}
+              onChange={handleChange}
+              options={typeOptions}
+            />
+            <InputSelect
+              required
+              name="gender"
+              label={"Gender"}
+              value={values?.gender}
+              onChange={handleChange}
+              options={genderOptions}
+            />
+            <InputField
+              required
+              onChange={handleChange}
+              id="location"
+              value={values?.location}
+              label={"Location"}
+            />
+          </FormSection>
+          <FormSection sectionName={"Instagram"} sectionNumber={2}>
+            <InputField
+              required
+              onChange={handleInstagram("followers")}
+              value={instagram?.followers}
+              label={"Followers"}
+            />
+            <InputField
+              required
+              onChange={handleInstagram("link")}
+              value={instagram?.link}
+              label={"Link"}
+            />
+            <InputField
+              required
+              onChange={handleInstagram("reelCommercial")}
+              value={instagram?.reelCommercial}
+              label={"Reel Commercial"}
+            />
+            <InputField
+              required
+              onChange={handleInstagram("storyCommercial")}
+              value={instagram?.storyCommercial}
+              label={"Story Commercial"}
+            />
+            <InputField
+              required
+              onChange={handleInstagram("averageViews")}
+              value={instagram?.averageViews}
+              label={"Average Views"}
+            />
+          </FormSection>
+          <FormSection sectionName={"Youtube"} sectionNumber={3}>
+            <InputField
+              required
+              onChange={handleYoutube("subscriber")}
+              value={youtube?.subscriber}
+              label={"Subscriber"}
+            />
+            <InputField
+              required
+              onChange={handleYoutube("link")}
+              value={youtube?.link}
+              label={"Link"}
+            />
+            <InputField
+              required
+              onChange={handleYoutube("commercial")}
+              value={youtube?.commercial}
+              label={"Commercial"}
+            />
+            <InputField
+              required
+              onChange={handleYoutube("averageViews")}
+              value={youtube?.averageViews}
+              label={"Average Views"}
+            />
+          </FormSection>
+          <FormSection sectionName={"Other"} sectionNumber={4}>
+            <InputField
+              required
+              onChange={handleChange}
+              id="agencyName"
+              value={values?.agencyName}
+              label={"Agency Name"}
+            />
+            <InputField
+              required
+              onChange={handleChange}
+              id="manager"
+              value={values?.manager}
+              type="tel"
+              label={"Manager"}
+            />
+            <InputField
+              required
+              onChange={handleChange}
+              id="contact"
+              value={values?.contact}
+              type="tel"
+              label={"Contact"}
+            />
+            <InputField
+              required
+              onChange={handleChange}
+              id="email"
+              value={values?.email}
+              type="email"
+              label={"Email"}
+            />
+          </FormSection>
         </section>
-        <Button disabled={progress < 1} type="submit">
-          Continue
+        <Button style={{ margin: "1rem 0" }} type="submit">
+          Submit
         </Button>
       </form>
     </MainLayout>
