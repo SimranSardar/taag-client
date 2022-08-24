@@ -13,6 +13,7 @@ import styles from "./CustomTable.module.scss";
 import "antd/dist/antd.css";
 import axios from "axios";
 import { getROI, getYoutubeId, KMBFormatter } from "../../utils";
+import { DeleteOutlined } from "@mui/icons-material";
 
 const EditableContext = React.createContext(null);
 
@@ -104,6 +105,8 @@ const CustomTable = ({
   selectedRows,
   isSelectable,
   campaign,
+  languages,
+  categories,
   width,
 }) => {
   // const [dataSource, setDataSource] = useState([]);
@@ -257,49 +260,70 @@ const CustomTable = ({
   useEffect(() => {
     setLoading(true);
 
-    setCols([
-      ...columns?.map((col) => {
-        let finalCol = {
-          ...col,
-        };
-        if (col.dataIndex === "remove") {
-          finalCol.render = (_, record) =>
-            data.length >= 1 ? (
-              <Popconfirm
-                title="Sure to delete?"
-                onConfirm={() => handleDelete(record)}
-              >
-                <a>Delete</a>
-              </Popconfirm>
-            ) : null;
-        }
-        if (col.editable) {
-          finalCol = {
-            ...finalCol,
-            onCell: (record) => ({
-              record,
-              editable: col.editable,
-              dataIndex: col.dataIndex,
-              title: col.title,
-              handleSave,
-            }),
+    if (data) {
+      setCols([
+        ...columns?.map((col) => {
+          let finalCol = {
+            ...col,
           };
-        }
-        if (col.searchable) {
-          finalCol = {
-            ...finalCol,
-            ...getColumnSearchProps(
-              col.dataIndex,
-              col.render,
-              col.isObj ? {} : { [col.dataIndex]: "" }
-            ),
-          };
-        }
-        return finalCol;
-      }),
-    ]);
+          if (col.dataIndex === "remove") {
+            finalCol.render = (_, record) =>
+              data.length >= 1 ? (
+                <Popconfirm
+                  title="Sure to delete?"
+                  onConfirm={() => handleDelete(record)}
+                >
+                  <a>
+                    <DeleteOutlined />
+                  </a>
+                </Popconfirm>
+              ) : null;
+          }
+          if (col.dataIndex === "categories") {
+            finalCol.filters = categories?.map((cat) => ({
+              text: cat,
+              value: cat,
+            }));
+            finalCol.onFilter = (value, record) =>
+              record.categories.indexOf(value) === 0;
+          }
+          if (col.dataIndex === "languages") {
+            finalCol.filters = languages?.map((lang) => ({
+              text: lang,
+              value: lang,
+            }));
+            finalCol.onFilter = (value, record) =>
+              record.languages.indexOf(value) === 0;
+          }
+          if (col.editable) {
+            finalCol = {
+              ...finalCol,
+              onCell: (record) => ({
+                record,
+                editable: col.editable,
+                dataIndex: col.dataIndex,
+                title: col.title,
+                handleSave,
+              }),
+            };
+          }
+          if (col.searchable) {
+            finalCol = {
+              ...finalCol,
+              ...getColumnSearchProps(
+                col.dataIndex,
+                col.render,
+                col.isObj ? {} : { [col.dataIndex]: "" }
+              ),
+            };
+          }
+          return finalCol;
+        }),
+      ]);
+    }
+
     setLoading(false);
-  }, [columns]);
+  }, [columns, data]);
 
   const handleSave = async (row) => {
     setLoading(true);

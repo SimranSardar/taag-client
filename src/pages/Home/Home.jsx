@@ -159,6 +159,7 @@ const Home = () => {
       render: (text, record) => (
         <Link to={`/campaigns/${record.id}`}>{text}</Link>
       ),
+      sorter: (a, b) => a.name.localeCompare(b.name),
       searchable: true,
     },
     {

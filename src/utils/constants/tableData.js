@@ -102,10 +102,10 @@ export const tableData = {
     main: {
       columns: [
         {
-          title: "Remove",
+          title: "Del",
           dataIndex: "remove",
           // sorter: (a, b) => parseInt(a.agencyFees) - parseInt(b.agencyFees),
-          // width: "20%",
+          width: "4%",
           fixed: "left",
         },
         {
@@ -148,16 +148,8 @@ export const tableData = {
           title: "Avg. Views",
           dataIndex: "averageViews",
           key: "averageViews",
-          render: (views, record) => (
-            <span>
-              {KMBFormatter(
-                record.deliverable?.includes("YT")
-                  ? record.youtube?.averageViews
-                  : record.instagram?.averageViews
-              )}
-            </span>
-          ),
-          // sorter: (a, b) => a - b,
+          render: (views, record) => <span>{KMBFormatter(views)}</span>,
+          sorter: (a, b) => parseInt(a.averageViews) - parseInt(b.averageViews),
           // sortDirections: ["descend", "ascend"],
         },
         {
@@ -393,6 +385,7 @@ export const tableData = {
         key: "views",
         // width: "30%",
         searchable: true,
+        sorter: (a, b) => parseInt(a.views) - parseInt(b.views),
         render: (text) => <span>{KMBFormatter(text)}</span>,
       },
       {
@@ -401,6 +394,7 @@ export const tableData = {
         key: "comments",
         // width: "30%",
         searchable: true,
+        sorter: (a, b) => parseInt(a.comments) - parseInt(b.comments),
         render: (text) => <span>{KMBFormatter(text)}</span>,
       },
       {
