@@ -26,7 +26,19 @@ const UploadArtists = () => {
   }
 
   return (
-    <MainLayout classes={[styles.container]}>
+    <MainLayout
+      classes={[styles.container]}
+      isSideMenuVisible={false}
+      navbarProps={{
+        titleProps: {
+          disabled: true,
+          // id: "name",
+          name: "Upload Artists (Bulk)",
+          isBackIconVisible: true,
+          isEditIconVisible: false,
+        },
+      }}
+    >
       <div>
         <h3>
           Upload Artists (xlsx){" "}

@@ -234,6 +234,11 @@ const Campaign = () => {
   ]);
 
   useEffect(() => {
+    setTotalAvgViews(0);
+    setTotalAgencyFees(0);
+    setTotalBrandAmount(0);
+    setTotalViews(0);
+    setTotalComments(0);
     if (selectedRows.length) {
       let tAvgViews = 0;
       let tAgencyFees = 0;

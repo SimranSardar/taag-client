@@ -11,6 +11,8 @@ import { styled } from "@mui/system";
 import { icons, images } from "../../assets";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Dropdown, Button as AButton, Menu } from "antd";
+import { DownOutlined, LogoutOutlined } from "@ant-design/icons";
 
 const { bell, editing, back } = icons;
 const { profile } = images;
@@ -41,7 +43,10 @@ const Navbar = ({ titleProps, progress, prevRoute }) => {
         </div>
         <div className={styles.right}>
           {/* <BellButton newNotifications={true} /> */}
-          <ProfileButton onClick={handleLogout} />
+          <ProfileButton
+            onClick={handleLogout}
+            handleClickLogout={handleLogout}
+          />
         </div>
       </div>
       {progress ? <MUILinearProgress progress={progress} /> : ""}
@@ -49,12 +54,37 @@ const Navbar = ({ titleProps, progress, prevRoute }) => {
   );
 };
 
-const ProfileButton = ({ ...remaining }) => {
+const ProfileButton = ({ handleClickLogout, ...remaining }) => {
+  function handleClickProfile(e) {
+    if (e.key === "logout") {
+      handleClickLogout();
+    }
+  }
+
+  const menu = (
+    <Menu
+      onClick={handleClickProfile}
+      items={[
+        {
+          label: "Logout",
+          key: "logout",
+          icon: <LogoutOutlined />,
+        },
+      ]}
+    />
+  );
+
   return (
     <div className={styles.profile}>
-      <IconButton {...remaining}>
-        <img src={profile} alt="Profile" />
-      </IconButton>
+      <Dropdown overlay={menu}>
+        <AButton
+          icon={<img src={profile} alt="Profile" />}
+          className="ant-icon-btn"
+        >
+          {/* Logout
+          <DownOutlined /> */}
+        </AButton>
+      </Dropdown>
     </div>
   );
 };
@@ -88,7 +118,10 @@ const Title = ({
       className={styles.title}
     >
       <div className={styles.top}>
-        <div className={styles.fixedWidth}>
+        <div
+          className={styles.fixedWidth}
+          style={{ width: !isBackIconVisible ? 0 : "50px" }}
+        >
           {isBackIconVisible && <Breadcrumb prevRoute={prevRoute} />}
         </div>
         <input

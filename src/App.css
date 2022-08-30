@@ -102,3 +102,22 @@ a {
   color: green !important;
   fill: green !important;
 } */
+.ant-btn {
+  /* background: var(--clr-primary);
+  color: white; */
+}
+.ant-btn:hover,
+.ant-btn:focus {
+  color: var(--clr-primary);
+  /* border-color: var(--clr-primary); */
+  background-color: var(--clr-primary);
+  color: white;
+}
+.ant-icon-btn {
+  background: none;
+  border: none !important;
+}
+.ant-icon-btn:hover {
+  background: none;
+  border: none !important;
+}

@@ -3,10 +3,11 @@
 .container {
   // width: calc( 100% + 2*(1rem));
   position: -webkit-sticky;
+  position: sticky;
   position: fixed;
   width: 100%;
   top: 0;
-  left:0;
+  left: 0;
   z-index: 10;
   background-color: var(--clr-bg-dark);
 
@@ -41,19 +42,19 @@
       }
       .fixedWidth {
         @extend .flexRow;
-        width: 50px;
         height: 50px;
         cursor: pointer;
       }
-    }input {
+    }
+    input {
       margin: 0;
       text-overflow: ellipsis;
       background-color: transparent;
-      color:white;
+      color: white;
       font-weight: bold;
       font-size: 1.17em;
-      border:none;
-      padding:0.8rem 1rem;
+      border: none;
+      padding: 0.8rem 1rem;
     }
     p {
       margin-left: 5.5rem;

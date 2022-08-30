@@ -13,6 +13,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CreatableSingleSelect } from "../../components";
 import { deliverableOptions, sectorOptions } from "../../utils/constants";
+import { showAlert } from "../../utils";
 
 const brandOptions = [
   {
@@ -158,6 +159,11 @@ const AddCampaign = () => {
 
   async function submitHandler(e) {
     e.preventDefault();
+
+    if (!values.name) {
+      return showAlert("error", "Campaign name is required");
+    }
+
     console.log({ brand });
     let campaign = {
       name: values.name || "Test",

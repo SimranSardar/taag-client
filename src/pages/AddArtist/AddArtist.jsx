@@ -182,15 +182,16 @@ const AddArtist = () => {
   return (
     <MainLayout
       classes={[styles.container]}
-      isSideMenuVisible
+      isSideMenuVisible={false}
       navbarProps={{
         titleProps: {
           disabled: true,
           id: "name",
           name: "Add Artist",
           isBackIconVisible: true,
+          isEditIconVisible: false,
         },
-        progress,
+        // progress,
       }}
     >
       <form onSubmit={submitHandler}>

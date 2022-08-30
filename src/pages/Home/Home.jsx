@@ -9,6 +9,13 @@ import {
   CampgaignContext,
 } from "../../utils/contexts/CampaignContext";
 import { campaignsOfLast7Days, campaignsOfLastMonth } from "../../utils";
+import { Dropdown, Menu } from "antd";
+import {
+  DownOutlined,
+  UserOutlined,
+  UsergroupAddOutlined,
+} from "@ant-design/icons";
+import { Button as AButton } from "antd";
 
 const data = [
   {
@@ -209,6 +216,32 @@ const Home = () => {
     // },
   ];
 
+  function handleClickUploadArtist({ key }) {
+    if (key === "single") {
+      navigate("/add-artist");
+    } else if (key === "bulk") {
+      navigate("/upload-artists");
+    }
+  }
+
+  const menu = (
+    <Menu
+      onClick={handleClickUploadArtist}
+      items={[
+        {
+          label: "Single",
+          key: "single",
+          icon: <UserOutlined />,
+        },
+        {
+          label: "Bulk",
+          key: "bulk",
+          icon: <UsergroupAddOutlined />,
+        },
+      ]}
+    />
+  );
+
   return (
     <MainLayout
       classes={[styles.container]}
@@ -225,13 +258,23 @@ const Home = () => {
         navigate={navigate}
       /> */}
       <div className={styles.header}>
-        <Button
+        <Dropdown overlay={menu}>
+          <AButton
+          // onClick={() => {
+          //   navigate("/upload-artists");
+          // }}
+          >
+            Upload Artists
+            <DownOutlined />
+          </AButton>
+        </Dropdown>
+        {/* <Button
           onClick={() => {
             navigate("/upload-artists");
           }}
         >
           Upload Artists (Bulk)
-        </Button>
+        </Button> */}
         <div>
           {/* <InputSelect
             label={"Sort By: Week/Month"}
