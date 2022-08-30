@@ -252,11 +252,6 @@ const Home = () => {
         },
       }}
     >
-      {/* <Header
-        filters={filters}
-        handleChange={handleChange}
-        navigate={navigate}
-      /> */}
       <div className={styles.header}>
         <Dropdown overlay={menu}>
           <AButton
@@ -268,21 +263,7 @@ const Home = () => {
             <DownOutlined />
           </AButton>
         </Dropdown>
-        {/* <Button
-          onClick={() => {
-            navigate("/upload-artists");
-          }}
-        >
-          Upload Artists (Bulk)
-        </Button> */}
         <div>
-          {/* <InputSelect
-            label={"Sort By: Week/Month"}
-            name={"sortBy"}
-            onChange={handleChange}
-            options={sortingOptions}
-            value={filters?.sortBy ? filters.sortBy : ""}
-          /> */}
           <Button
             onClick={() => {
               navigate("/new-campaign");
