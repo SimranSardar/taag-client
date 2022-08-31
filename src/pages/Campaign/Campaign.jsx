@@ -12,7 +12,9 @@ import {
   styled,
   Skeleton,
   IconButton,
-  Tooltip,Switch, FormControlLabel
+  Tooltip,
+  Switch,
+  FormControlLabel,
 } from "@mui/material";
 import { TabIcon } from "../../assets";
 import { CurrentContext } from "../../utils/contexts";
@@ -117,7 +119,8 @@ const Campaign = () => {
   // const [campaign, setCampaign] = useState({});
   const { tabIndex, setTabIndex, table, setCampaignId } =
     useContext(CurrentContext);
-  const { updateCampaign, updateArtistsGlobal ,updateBrand} = useContext(CampaignContext);
+  const { updateCampaign, updateArtistsGlobal, updateBrand } =
+    useContext(CampaignContext);
   const handleTabsChange = (event, newValue) => {
     setTabIndex(newValue);
     setTab(newValue);
@@ -132,6 +135,7 @@ const Campaign = () => {
   const [totalComments, setTotalComments] = useState(3);
   const [totalAgencyFees, setTotalAgencyFees] = useState(0);
   const [totalBrandAmount, setTotalBrandAmount] = useState(0);
+  const [averageROI, setAverageROI] = useState(0.0);
   const [languages, setLanguages] = useState([]);
   const [categories, setCategories] = useState([]);
 
@@ -150,7 +154,8 @@ const Campaign = () => {
     campaignInfo,
     campaignContact,
     campaignInvoice,
-    campaignAnalytics,setCampaign
+    campaignAnalytics,
+    setCampaign,
   } = useContext(CurrentContext);
   const { id } = useParams();
   const [test, setTest] = useState(campaign);
@@ -160,20 +165,21 @@ const Campaign = () => {
   function handleVisibilityColumn(currentItem) {
     return async (e) => {
       console.log([campaign]);
-      try{const newCampaign = {
-        ...campaign,
-        extras: campaign?.extras?.map((item) => {
-          return item.dataIndex === currentItem.dataIndex
-            ? { ...item, isVisible: item?.isVisible ? false : true }
-            : item;
-        }),
-      };
-      // console.log({ campaign, newCampaign });
-      const res = await updateCampaign(newCampaign);
-      setCampaign(res?.data?.data)
-    }
-      catch(err
-        ){console.log({ err });}
+      try {
+        const newCampaign = {
+          ...campaign,
+          extras: campaign?.extras?.map((item) => {
+            return item.dataIndex === currentItem.dataIndex
+              ? { ...item, isVisible: item?.isVisible ? false : true }
+              : item;
+          }),
+        };
+        // console.log({ campaign, newCampaign });
+        const res = await updateCampaign(newCampaign);
+        setCampaign(res?.data?.data);
+      } catch (err) {
+        console.log({ err });
+      }
     };
   }
 
@@ -203,7 +209,15 @@ const Campaign = () => {
                   </Tooltip>
                 )}
               </IconButton> */}
-              <FormControlLabel control={<Switch checked={item?.isVisible} onChange={handleVisibilityColumn(item)}/>} label="Visible"/>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={item?.isVisible}
+                    onChange={handleVisibilityColumn(item)}
+                  />
+                }
+                label="Visible"
+              />
             </span>
           ),
           searchable: true,
@@ -243,6 +257,7 @@ const Campaign = () => {
     setTotalBrandAmount(0);
     setTotalViews(0);
     setTotalComments(0);
+    setAverageROI(0.0);
     if (selectedRows.length) {
       let tAvgViews = 0;
       let tAgencyFees = 0;
@@ -251,6 +266,7 @@ const Campaign = () => {
       let tComments = 0;
       let tCategories = [];
       let tLanguages = [];
+      let tRoi = 0;
       selectedRows.forEach((item) => {
         tAvgViews += parseInt(item.averageViews) || 0;
         tAgencyFees += parseInt(item.agencyFees) || 0;
@@ -259,6 +275,7 @@ const Campaign = () => {
         tComments += parseInt(item.comments) || 0;
         tCategories = [...tCategories, ...item.categories];
         tLanguages = [...tLanguages, ...item.languages];
+        tRoi += parseFloat(item.roi) || 0;
       });
       setTotalAvgViews(tAvgViews);
       setTotalAgencyFees(tAgencyFees);
@@ -267,6 +284,7 @@ const Campaign = () => {
       setTotalComments(tComments);
       setCategories([...new Set(tCategories)]);
       setLanguages([...new Set(tLanguages)]);
+      setAverageROI(tRoi / selectedRows.length);
       console.log({ tCategories, tLanguages });
     }
   }, [selectedRows]);
@@ -288,14 +306,15 @@ const Campaign = () => {
   }
 
   function handleSaveSelectedArtists(rows) {
-    setSelectedRows([
+    let newArtists = [
       ...selectedRows,
       ...rows?.map((item) => newSelectionArist(item, campaign)),
-    ]);
+    ];
+    setSelectedRows(newArtists);
     let newCampaign = {
       ...campaign,
       totalAverageViews: totalAvgViews || 0,
-      selectedArtists: rows?.map((item) => newSelectionArist(item, campaign)),
+      selectedArtists: newArtists,
     };
     console.log({ newCampaign });
 
@@ -336,7 +355,7 @@ const Campaign = () => {
 
   function handleClickShare() {
     updateCampaign({ ...campaign, isSharedWithBrand: true });
-    updateBrand(campaign?.brand?.poc?.email,campaign._id)
+    updateBrand(campaign?.brand?.poc?.email, campaign._id);
     showAlert("success", "Campaign shared with brand");
   }
 
@@ -373,7 +392,7 @@ const Campaign = () => {
               brandAmount: formatIndianCurrency(totalBrandAmount) || 0,
               totalAverageViews: KMBFormatter(totalAvgViews || 0),
               totalCreator: campaign?.selectedArtists?.length.toString() || "0",
-              averageROI: "0.4",
+              averageROI: averageROI.toFixed(2),
             }),
       }}
     >
@@ -411,7 +430,7 @@ const Campaign = () => {
 
               <Button onClick={handleClickSave}>Save</Button>
             </div>
-            {selectedRows.length && (
+            {selectedRows.length ? (
               <CustomTable
                 columns={tableData.campaign_analytics.columns}
                 data={selectedRows}
@@ -421,7 +440,7 @@ const Campaign = () => {
                 selectedRows={campaign?.selectedArtists || []}
                 campaign={campaign}
               />
-            )}
+            ) : null}
           </div>
         )}
         {!location.pathname.includes("commercials") &&
