@@ -182,19 +182,19 @@ console.log({hello:temp.data.data,finalData})
     if (!values.name) {
       return showAlert("error", "Campaign name is required");
     }
-
+const finalBrand=brand || newBrand;
     console.log({ brand });
     let campaign = {
       name: values.name || "Test",
       brand: {
-        name: brand.name,
+        name: finalBrand.name,
         sectors: brandSectors, // Beauty | Fashion | Health
-        website: brand.website, // URL
+        website: finalBrand.website, // URL
         poc: {
-          id: brand.poc.name,
-          position: brand.poc.position,
-          email: brand.poc.email,
-          contact: brand.poc.contact, // +91xxxxxxxxxx
+          id: finalBrand.poc.name,
+          position: finalBrand.poc.position,
+          email: finalBrand.poc.email,
+          contact: finalBrand.poc.contact, // +91xxxxxxxxxx
         },
       },
       platform: values.platform, // youtube | instagram
