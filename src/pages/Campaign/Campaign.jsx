@@ -12,7 +12,7 @@ import {
   styled,
   Skeleton,
   IconButton,
-  Tooltip,
+  Tooltip,Switch, FormControlLabel
 } from "@mui/material";
 import { TabIcon } from "../../assets";
 import { CurrentContext } from "../../utils/contexts";
@@ -117,7 +117,7 @@ const Campaign = () => {
   // const [campaign, setCampaign] = useState({});
   const { tabIndex, setTabIndex, table, setCampaignId } =
     useContext(CurrentContext);
-  const { updateCampaign, updateArtistsGlobal } = useContext(CampaignContext);
+  const { updateCampaign, updateArtistsGlobal ,updateBrand} = useContext(CampaignContext);
   const handleTabsChange = (event, newValue) => {
     setTabIndex(newValue);
     setTab(newValue);
@@ -150,7 +150,7 @@ const Campaign = () => {
     campaignInfo,
     campaignContact,
     campaignInvoice,
-    campaignAnalytics,
+    campaignAnalytics,setCampaign
   } = useContext(CurrentContext);
   const { id } = useParams();
   const [test, setTest] = useState(campaign);
@@ -160,7 +160,7 @@ const Campaign = () => {
   function handleVisibilityColumn(currentItem) {
     return async (e) => {
       console.log([campaign]);
-      const newCampaign = {
+      try{const newCampaign = {
         ...campaign,
         extras: campaign?.extras?.map((item) => {
           return item.dataIndex === currentItem.dataIndex
@@ -170,7 +170,10 @@ const Campaign = () => {
       };
       // console.log({ campaign, newCampaign });
       const res = await updateCampaign(newCampaign);
-      // console.log(res);
+      setCampaign(res?.data?.data)
+    }
+      catch(err
+        ){console.log({ err });}
     };
   }
 
@@ -189,7 +192,7 @@ const Campaign = () => {
           title: (
             <span style={{ display: "flex" }}>
               {item.title}
-              <IconButton onClick={handleVisibilityColumn(item)}>
+              {/* <IconButton onClick={handleVisibilityColumn(item)}>
                 {item?.isVisible ? (
                   <Tooltip title="Show to Brand">
                     <VisibilityIcon htmlColor="white" />
@@ -199,7 +202,8 @@ const Campaign = () => {
                     <VisibilityOffIcon htmlColor="white" />
                   </Tooltip>
                 )}
-              </IconButton>
+              </IconButton> */}
+              <FormControlLabel control={<Switch checked={item?.isVisible} onChange={handleVisibilityColumn(item)}/>} label="Visible"/>
             </span>
           ),
           searchable: true,
@@ -332,6 +336,7 @@ const Campaign = () => {
 
   function handleClickShare() {
     updateCampaign({ ...campaign, isSharedWithBrand: true });
+    updateBrand(campaign?.brand?.poc?.email,campaign._id)
     showAlert("success", "Campaign shared with brand");
   }
 

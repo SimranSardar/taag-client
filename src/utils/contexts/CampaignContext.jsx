@@ -9,13 +9,14 @@ const CampaignContextProvider = ({ children }) => {
   const [artists, setArtists] = useState([]);
 
   const { currentUser } = useContext(AuthContext);
-
+useEffect(() => {console.log({currentUser})}, [currentUser])
   async function fetchCampaigns(status = "all") {
     const res = await axios.get(
-      `${process.env.REACT_APP_API_URI}/campaigns/all`,
+      `${process.env.REACT_APP_API_URI}/campaigns/all-by-user`,
       {
         params: {
           status,
+          userId: currentUser.id,
         },
       }
     );
@@ -52,6 +53,15 @@ const CampaignContextProvider = ({ children }) => {
     return res;
   }
 
+  async function updateBrand(brandEmail,campaignId) {
+    const res = await axios.post(
+      `${process.env.REACT_APP_API_URI}/brand/push-campaign/`,
+      {campaignId,email:brandEmail}
+    );
+
+    return res;
+  }
+
   async function updateArtistsGlobal(artists) {
     return await axios.patch(
       `${process.env.REACT_APP_API_URI}/artist/update/bulk`,
@@ -71,6 +81,7 @@ const CampaignContextProvider = ({ children }) => {
         artists,
         updateCampaign,
         updateArtistsGlobal,
+        updateBrand,
       }}
     >
       {children}

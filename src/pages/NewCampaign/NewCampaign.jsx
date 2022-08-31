@@ -6,7 +6,7 @@ import {
   InputSelect,
   RadioButton,
 } from "../../components";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import clsx from "clsx";
 import { MainLayout } from "../../layouts";
 import axios from "axios";
@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { CreatableSingleSelect } from "../../components";
 import { deliverableOptions, sectorOptions } from "../../utils/constants";
 import { showAlert } from "../../utils";
+import { AuthContext } from "../../utils/auth/AuthContext";
 
 const brandOptions = [
   {
@@ -35,11 +36,12 @@ const AddCampaign = () => {
   const [progress, setProgress] = useState(0.000001);
   const [value, setValue] = useState("");
   const [values, setValues] = useState({});
-  const [brand, setBrand] = useState("");
+  const [brand, setBrand] = useState({name:''});
+  const [newBrand,setNewBrand] = useState({name:''});
   const [brandOptions, setBrandOptions] = useState([]);
   const [brandSectors, setBrandSectors] = useState([]);
   const [platformSectors, setPlatformSectors] = useState([]);
-
+const {currentUser} = useContext(AuthContext)
   const navigate = useNavigate();
 
   function handleChange(e) {
@@ -84,7 +86,8 @@ const AddCampaign = () => {
       `${process.env.REACT_APP_API_URI}/brand/create`,
       finalData
     );
-    setBrand(finalData);
+console.log({hello:temp.data.data,finalData})
+    setNewBrand(temp.data.data);
     setBrandOptions((prev) => [...prev, temp.data]);
     console.log({ res: temp });
   }
@@ -98,7 +101,8 @@ const AddCampaign = () => {
   }, []);
 
   useEffect(() => {
-    if (brand?.name) {
+    console.log({brand});
+    if (brand?.name && brand?.poc) {
       setBrandSectors(brand.sectors);
       setValues((prev) => ({
         ...prev,
@@ -111,6 +115,21 @@ const AddCampaign = () => {
       }));
     }
   }, [brand]);
+  useEffect(() => {
+    console.log({brand});
+    if (newBrand?.name && newBrand?.poc) {
+      setBrandSectors(newBrand.sectors);
+      setValues((prev) => ({
+        ...prev,
+        brandName: newBrand.name,
+        website: newBrand.website,
+        PICName: newBrand.poc.name,
+        PICPosition: newBrand.poc.position,
+        PICEmail: newBrand.poc.email,
+        PICContact: newBrand.poc.contact,
+      }));
+    }
+  }, [newBrand]);
 
   async function handleAddBrand(valueToAdd) {
     await createBrand(valueToAdd);
@@ -196,6 +215,10 @@ const AddCampaign = () => {
       sharedWith: [],
       createdAt: new Date().toISOString(), // ISOString
       updatedAt: new Date().toISOString(), // ISOString
+      createdBy:{
+        id: currentUser.id,
+        userType:currentUser.userType
+      }
     };
     // console.log({ campaign });
     const res = await axios.post(

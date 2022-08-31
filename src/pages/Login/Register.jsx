@@ -69,7 +69,7 @@ const Register = () => {
       const res = await axios.post(
         `${process.env.REACT_APP_API_URI}/user/create/`,
         {
-          ...values,
+          ...values,userType:"team"
         }
       );
       console.log({ res });
