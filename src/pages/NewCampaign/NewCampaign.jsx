@@ -36,12 +36,12 @@ const AddCampaign = () => {
   const [progress, setProgress] = useState(0.000001);
   const [value, setValue] = useState("");
   const [values, setValues] = useState({});
-  const [brand, setBrand] = useState({name:''});
-  const [newBrand,setNewBrand] = useState({name:''});
+  const [brand, setBrand] = useState({ name: "" });
+  const [newBrand, setNewBrand] = useState({ name: "" });
   const [brandOptions, setBrandOptions] = useState([]);
   const [brandSectors, setBrandSectors] = useState([]);
   const [platformSectors, setPlatformSectors] = useState([]);
-const {currentUser} = useContext(AuthContext)
+  const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   function handleChange(e) {
@@ -86,7 +86,7 @@ const {currentUser} = useContext(AuthContext)
       `${process.env.REACT_APP_API_URI}/brand/create`,
       finalData
     );
-console.log({hello:temp.data.data,finalData})
+    console.log({ hello: temp.data.data, finalData });
     setNewBrand(temp.data.data);
     setBrandOptions((prev) => [...prev, temp.data]);
     console.log({ res: temp });
@@ -101,7 +101,7 @@ console.log({hello:temp.data.data,finalData})
   }, []);
 
   useEffect(() => {
-    console.log({brand});
+    console.log({ brand });
     if (brand?.name && brand?.poc) {
       setBrandSectors(brand.sectors);
       setValues((prev) => ({
@@ -116,7 +116,7 @@ console.log({hello:temp.data.data,finalData})
     }
   }, [brand]);
   useEffect(() => {
-    console.log({brand});
+    console.log({ brand });
     if (newBrand?.name && newBrand?.poc) {
       setBrandSectors(newBrand.sectors);
       setValues((prev) => ({
@@ -182,7 +182,7 @@ console.log({hello:temp.data.data,finalData})
     if (!values.name) {
       return showAlert("error", "Campaign name is required");
     }
-const finalBrand=brand || newBrand;
+    const finalBrand = brand?.poc ? brand : newBrand;
     console.log({ brand });
     let campaign = {
       name: values.name || "Test",
@@ -215,10 +215,10 @@ const finalBrand=brand || newBrand;
       sharedWith: [],
       createdAt: new Date().toISOString(), // ISOString
       updatedAt: new Date().toISOString(), // ISOString
-      createdBy:{
+      createdBy: {
         id: currentUser.id,
-        userType:currentUser.userType
-      }
+        userType: currentUser.userType,
+      },
     };
     // console.log({ campaign });
     const res = await axios.post(
