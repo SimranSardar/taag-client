@@ -108,6 +108,7 @@ const CustomTable = ({
   languages,
   categories,
   width,
+  setModifiedArtists,
 }) => {
   // const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -389,6 +390,9 @@ const CustomTable = ({
       console.log({ ytData });
       newData.splice(index, 1, { ...item, ...newItem });
       console.log({ newData, index });
+      if (setModifiedArtists) {
+        setModifiedArtists((prev) => ({ ...prev, [row._id]: newItem }));
+      }
       setData(newData);
     }
 

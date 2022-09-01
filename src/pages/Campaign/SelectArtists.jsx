@@ -40,6 +40,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
   const [tab, setTab] = useState(0);
   const [data, setData] = useState([]);
+  const [modifiedArtists, setModifiedArtists] = useState({});
 
   const { setTabIndex } = useContext(CurrentContext);
   const { artists } = useContext(CampaignContext);
@@ -124,7 +125,7 @@ const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
           <Mbutton
             style={{ marginLeft: "auto" }}
             color="inherit"
-            onClick={() => handleSaveGlobal(data)}
+            onClick={() => handleSaveGlobal(modifiedArtists)}
           >
             Save Global
           </Mbutton>
@@ -160,6 +161,7 @@ const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
               isSelectable
               width={2200}
               setData={setData}
+              setModifiedArtists={setModifiedArtists}
               onRowSelect={handleSelectRow}
               //   selectedRows={campaign?.selectedArtists || []}
             />
@@ -172,6 +174,7 @@ const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
               data={data}
               isSelectable
               setData={setData}
+              setModifiedArtists={setModifiedArtists}
               onRowSelect={handleSelectRow}
               //   selectedRows={campaign?.selectedArtists || []}
             />
@@ -184,6 +187,7 @@ const SelectArtists = ({ open, handleClose, handleSave, handleSaveGlobal }) => {
               data={data}
               isSelectable
               setData={setData}
+              setModifiedArtists={setModifiedArtists}
               onRowSelect={handleSelectRow}
               //   selectedRows={campaign?.selectedArtists || []}
             />

@@ -338,9 +338,12 @@ const Campaign = () => {
     showAlert("success", "Campaign Updated");
   }
 
-  async function handleSaveGlobal(selectedRows) {
+  async function handleSaveGlobal(modifiedArtists) {
+    if (!Object.values(modifiedArtists).length) {
+      return;
+    }
     let res = await updateArtistsGlobal(
-      selectedRows.map((item) => ({
+      Object.values(modifiedArtists).map((item) => ({
         _id: item._id,
         youtube: { ...item.youtube, commercial: item.commercialCreatorYT },
         instagram: {
@@ -350,6 +353,7 @@ const Campaign = () => {
         },
       }))
     );
+    console.log("Updated Global", res);
     showAlert("success", "Updated Artist(s) Successfully");
   }
 
