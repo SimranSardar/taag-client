@@ -83,6 +83,7 @@ const Login = () => {
           navigate("/login");
         }, 1000);
       } catch (error) {
+        setLoading(false);
         return showAlert("error", error.message);
       }
     }
