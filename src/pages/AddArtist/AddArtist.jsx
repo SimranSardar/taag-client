@@ -157,7 +157,19 @@ const AddArtist = () => {
   async function submitHandler(e) {
     e.preventDefault();
   }
-
+useEffect(()=>{
+  async function getSubsribers(){
+    const res=await axios.get(process.env.REACT_APP_API_URI + '/youtube/subscribers',{
+      params:{
+        youtubeURI:values?.youtube?.link
+      }
+    })
+    setYoutube((prev)=>({...prev,subscribers:res?.data?.subscribers}))
+  }
+  if(values?.youtube?.link){
+    getSubsribers()
+  }
+},[values?.youtube?.link])
   return (
     <MainLayout
       classes={[styles.container]}
@@ -227,18 +239,19 @@ const AddArtist = () => {
             />
           </FormSection>
           <FormSection sectionName={"Instagram"} sectionNumber={2}>
+          <InputField
+              required
+              onChange={handleInstagram("link")}
+              value={instagram?.link}
+              label={"Link"}
+            />
             <InputField
               required
               onChange={handleInstagram("followers")}
               value={instagram?.followers}
               label={"Followers"}
             />
-            <InputField
-              required
-              onChange={handleInstagram("link")}
-              value={instagram?.link}
-              label={"Link"}
-            />
+            
             <InputField
               required
               onChange={handleInstagram("reelCommercial")}
@@ -259,18 +272,20 @@ const AddArtist = () => {
             />
           </FormSection>
           <FormSection sectionName={"Youtube"} sectionNumber={3}>
-            <InputField
-              required
-              onChange={handleYoutube("subscriber")}
-              value={youtube?.subscriber}
-              label={"Subscriber"}
-            />
-            <InputField
+          <InputField
               required
               onChange={handleYoutube("link")}
               value={youtube?.link}
               label={"Link"}
             />
+            <InputField
+              required
+              onChange={handleYoutube("subscribers")}
+              value={youtube?.subscribers}
+              label={"Subscribers"}
+              disabled
+            />
+            
             <InputField
               required
               onChange={handleYoutube("commercial")}

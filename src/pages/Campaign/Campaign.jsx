@@ -324,7 +324,6 @@ const Campaign = () => {
     //   selectedArtiss: rows?.map((item) => newSelectionArist(item, campaign)),
     // });
   }
-
   function handleClickSave() {
     let newCampaign = {
       ...campaign,
@@ -375,6 +374,7 @@ const Campaign = () => {
           isBackIconVisible: true,
           name: campaign?.name,
         },
+        brandName: campaign?.brand?.name,
         prevRoute: "/",
       }}
       moreInformationProps={{
