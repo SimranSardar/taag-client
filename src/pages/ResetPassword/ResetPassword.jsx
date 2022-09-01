@@ -115,15 +115,18 @@ const Login = () => {
     <div className={styles.container}>
       <Logo withText />
       <form onSubmit={handleSubmit}>
-        <InputField
-          id="email"
-          label="Email"
-          required
-          value={values?.email}
-          onChange={handleChange}
-          type="text"
-          disabled={loading}
-        />
+        {!isValidURI && (
+          <InputField
+            id="email"
+            label="Email"
+            required
+            value={values?.email}
+            onChange={handleChange}
+            type="text"
+            disabled={loading}
+          />
+        )}
+
         {isValidURI && (
           <InputField
             id="newPassword"
