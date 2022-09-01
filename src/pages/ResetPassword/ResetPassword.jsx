@@ -66,6 +66,7 @@ const Login = () => {
 
     if (token && user?.userId && isValidURI) {
       if (values.confirmPassword !== values.newPassword) {
+        setLoading(false);
         return showAlert("error", "Passwords do not match");
       }
       try {
