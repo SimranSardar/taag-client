@@ -343,7 +343,7 @@ const CustomTable = ({
     if (row.dataIndex !== "deliverableLink") {
       delete item.dataIndex;
       if (setModifiedArtists) {
-        setModifiedArtists((prev) => ({ ...prev, [row._id]: item }));
+        setModifiedArtists((prev) => ({ ...prev, [row._id]: row }));
       }
       setData(newData);
     }
@@ -351,7 +351,7 @@ const CustomTable = ({
     console.log({ newData });
     if (item?.deliverableLink === row?.deliverableLink) {
       if (setModifiedArtists) {
-        setModifiedArtists((prev) => ({ ...prev, [row._id]: item }));
+        setModifiedArtists((prev) => ({ ...prev, [row._id]: row }));
       }
       setData(newData);
     }
