@@ -16,8 +16,9 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isValidURI, setIsValidURI] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const { token, id } = useParams();
+  const { token } = useParams();
 
   function handleChange(e) {
     const { id, value, name } = e.target;
@@ -32,14 +33,14 @@ const Login = () => {
 
   useEffect(() => {
     async function confirmToken() {
-      console.log({ uri: window.location.href, id });
+      // console.log({ uri: window.location.href, id });
       try {
         const res = await axios.get(
           `${process.env.REACT_APP_API_URI}/auth/verify-reset-token/`,
           {
             params: {
               uri: window.location.href,
-              id,
+              token,
             },
           }
         );
@@ -52,16 +53,18 @@ const Login = () => {
         showAlert("error", error.message);
       }
     }
-    if (token && id) {
+    if (token) {
+      let tempUser = decodeToken(token);
+      setUser(tempUser);
       confirmToken();
     }
-  }, [token, id]);
+  }, [token]);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
 
-    if (token && id && isValidURI) {
+    if (token && user?.userId && isValidURI) {
       if (values.confirmPassword !== values.newPassword) {
         return showAlert("error", "Passwords do not match");
       }
@@ -69,9 +72,9 @@ const Login = () => {
         const res = await axios.post(
           `${process.env.REACT_APP_API_URI}/auth/reset-password/`,
           {
-            email: values.email,
+            email: user.email,
             newPassword: values.newPassword,
-            userType: "user",
+            userType: "team",
           }
         );
         setLoading(false);
@@ -84,13 +87,13 @@ const Login = () => {
       }
     }
 
-    if (!token && !id && !isValidURI) {
+    if (!token && !user?.userId && !isValidURI) {
       try {
         const response = await axios.post(
           `${process.env.REACT_APP_API_URI}/auth/request-password-reset/`,
           {
             email: values?.email,
-            userType: "user",
+            userType: "team",
           }
         );
 
@@ -145,7 +148,7 @@ const Login = () => {
         )}
         <div className={styles.buttons}>
           <Button title="Submit" type="submit" disabled={loading}>
-            {token && id ? "Submit" : "Send Link"}
+            {token && user?.userId ? "Submit" : "Send Link"}
           </Button>
         </div>
         {!loading && error && <span className={styles.error}>{error}</span>}
