@@ -108,6 +108,7 @@ const CustomTable = ({
   languages,
   categories,
   width,
+  setModifiedArtists,
 }) => {
   // const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -341,11 +342,17 @@ const CustomTable = ({
     }
     if (row.dataIndex !== "deliverableLink") {
       delete item.dataIndex;
+      if (setModifiedArtists) {
+        setModifiedArtists((prev) => ({ ...prev, [row._id]: item }));
+      }
       setData(newData);
     }
     newData.splice(index, 1, { ...item, ...row });
     console.log({ newData });
     if (item?.deliverableLink === row?.deliverableLink) {
+      if (setModifiedArtists) {
+        setModifiedArtists((prev) => ({ ...prev, [row._id]: item }));
+      }
       setData(newData);
     }
     if (row.dataIndex === "categories") {
@@ -356,6 +363,9 @@ const CustomTable = ({
       };
       console.log({ newItem });
       newData.splice(index, 1, { ...item, ...newItem });
+      if (setModifiedArtists) {
+        setModifiedArtists((prev) => ({ ...prev, [row._id]: newItem }));
+      }
       setData(newData);
     }
     if (row.dataIndex === "languages") {
@@ -366,6 +376,9 @@ const CustomTable = ({
       };
       console.log({ newItem });
       newData.splice(index, 1, { ...item, ...newItem });
+      if (setModifiedArtists) {
+        setModifiedArtists((prev) => ({ ...prev, [row._id]: newItem }));
+      }
       setData(newData);
     }
     // setData(newData);
@@ -389,6 +402,9 @@ const CustomTable = ({
       console.log({ ytData });
       newData.splice(index, 1, { ...item, ...newItem });
       console.log({ newData, index });
+      if (setModifiedArtists) {
+        setModifiedArtists((prev) => ({ ...prev, [row._id]: newItem }));
+      }
       setData(newData);
     }
 
