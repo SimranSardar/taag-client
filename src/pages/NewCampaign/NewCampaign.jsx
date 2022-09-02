@@ -83,7 +83,7 @@ const AddCampaign = () => {
       campaigns: [],
       password,
     };
-    let temp = await API_ALL.post(`/brand/create`, finalData);
+    let temp = await API_ALL().post(`/brand/create`, finalData);
     console.log({ hello: temp.data.data, finalData });
     setNewBrand(temp.data.data);
     setBrandOptions((prev) => [...prev, temp.data]);
@@ -91,7 +91,7 @@ const AddCampaign = () => {
   }
 
   async function getBrands() {
-    let temp = await API_ALL.get(`/brand/all`);
+    let temp = await API_ALL().get(`/brand/all`);
     setBrandOptions(temp.data);
   }
   useEffect(() => {
@@ -219,7 +219,7 @@ const AddCampaign = () => {
       },
     };
     // console.log({ campaign });
-    const res = await API_CAMPAIGN.post(`/create`, campaign);
+    const res = await API_CAMPAIGN().post(`/create`, campaign);
 
     console.log({ res });
 

@@ -160,7 +160,7 @@ const AddArtist = () => {
   }
   useEffect(() => {
     async function getSubsribers() {
-      const res = await API_ALL.get("/youtube/subscribers", {
+      const res = await API_ALL().get("/youtube/subscribers", {
         params: {
           youtubeURI: values?.youtube?.link,
         },

@@ -14,7 +14,7 @@ const CampaignContextProvider = ({ children }) => {
     console.log({ currentUser });
   }, [currentUser]);
   async function fetchCampaigns(status = "all") {
-    const res = await API_CAMPAIGN.get(`/all-by-user`, {
+    const res = await API_CAMPAIGN().get(`/all-by-user`, {
       params: {
         status,
         userId: currentUser.id,
@@ -29,26 +29,26 @@ const CampaignContextProvider = ({ children }) => {
       })
     );
     console.log("Yahi hai sab kuch", res.data);
-    const art = await API_ARTIST.get(`/all`);
+    const art = await API_ARTIST().get(`/all`);
 
     setArtists(art.data);
   }
 
   async function fetchCampaign(id) {
     console.log({ id });
-    return await API_CAMPAIGN.get(`/single/`, {
+    return await API_CAMPAIGN().get(`/single/`, {
       params: { id },
     });
   }
 
   async function updateCampaign(campaign) {
-    const res = await API_CAMPAIGN.patch(`/update/`, campaign);
+    const res = await API_CAMPAIGN().patch(`/update/`, campaign);
 
     return res;
   }
 
   async function updateBrand(brandEmail, campaignId) {
-    const res = await API_ALL.post(`/brand/push-campaign/`, {
+    const res = await API_ALL().post(`/brand/push-campaign/`, {
       campaignId,
       email: brandEmail,
     });
@@ -57,7 +57,7 @@ const CampaignContextProvider = ({ children }) => {
   }
 
   async function updateArtistsGlobal(artists) {
-    return await API_ARTIST.patch(`/update/bulk`, artists);
+    return await API_ARTIST().patch(`/update/bulk`, artists);
   }
 
   useEffect(() => {

@@ -35,7 +35,7 @@ const NewColumn = ({ open, handleClose }) => {
         dataIndex: camelize(name),
       },
     ];
-    const res = await API_CAMPAIGN.patch(`/update`, newCampaign);
+    const res = await API_CAMPAIGN().patch(`/update`, newCampaign);
     console.log({ res });
     setCampaign(res.data.data);
     showAlert("success", `Added new column ${titleCase(name)}`);

@@ -101,7 +101,7 @@ const SelectArtists = () => {
 
   async function onClickContinue() {
     console.log({ selectedArtists });
-    const res = await API_CAMPAIGN.patch(
+    const res = await API_CAMPAIGN().patch(
       `/update/${id}`,
 
       { selectedArtists }

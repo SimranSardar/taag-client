@@ -26,7 +26,7 @@ const CurrentContextProvider = ({ children }) => {
 
   useEffect(() => {
     async function fetchData() {
-      let temp = await API_CAMPAIGN.get(`/single/`, {
+      let temp = await API_CAMPAIGN().get(`/single/`, {
         params: { id: campaignId },
       });
       temp.data.totalCreator = temp.data.selectedArtists.length.toString();
