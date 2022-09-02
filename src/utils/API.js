@@ -1,5 +1,5 @@
 import axios from "axios";
-import { TAAG_TEAM_TOKEN } from "./constants";
+import { TAAG_TEAM_TOKEN } from "./constants/constants";
 
 export const API_ALL = axios.create({
   baseURL: `${process.env.REACT_APP_API_URI}`,

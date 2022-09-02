@@ -9,8 +9,8 @@ import logo from "../../assets/icons/logo.svg";
 import { LinearProgress } from "@mui/material";
 import Logo from "../../components/Logo/Logo";
 import { showAlert } from "../../utils";
-import { TAAG_TEAM_TOKEN } from "../../utils/constants";
 import { API_AUTH } from "../../utils/API";
+import { TAAG_TEAM_TOKEN } from "../../utils/constants/constants";
 
 const Login = () => {
   const navigate = useNavigate();
