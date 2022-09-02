@@ -17,6 +17,7 @@ const Register = () => {
   const [values, setValues] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
   function handleChange(e) {
     const { id, value, name } = e.target;
     // console.log(id, value, name);
@@ -27,41 +28,6 @@ const Register = () => {
       };
     });
   }
-
-  // const { setCurrentUser } = useContext(AuthContext);
-
-  // async function handleSubmit(e) {
-  //   e.preventDefault();
-  //   setLoading(true);
-
-  //   try {
-  //     const response = await axios.post(
-  //       `${process.env.REACT_APP_API_URI}/auth/login/`,
-  //       {
-  //         email,
-  //         password,
-  //       }
-  //     );
-
-  //     console.log({ decoded: decodeToken(response.data.token), response });
-
-  //     if (response.status === 200) {
-  //       let decoded = decodeToken(response.data.token);
-  //       setCurrentUser({
-  //         id: decoded.id,
-  //         email: decoded.email,
-  //       });
-  //       localStorage.setItem("token", response.data.token);
-  //       setLoading(false);
-  //       navigate("/");
-  //     } else {
-  //     }
-  //   } catch (error) {
-  //     // console.log("True error", error.response);
-  //     setError(error.response.data.message);
-  //     setLoading(false);
-  //   }
-  // }
 
   async function handleSubmit(e) {
     e.preventDefault();

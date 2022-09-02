@@ -9,6 +9,8 @@ import logo from "../../assets/icons/logo.svg";
 import { LinearProgress } from "@mui/material";
 import Logo from "../../components/Logo/Logo";
 import { showAlert } from "../../utils";
+import { TAAG_TEAM_TOKEN } from "../../utils/constants";
+import { API_AUTH } from "../../utils/API";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -40,14 +42,11 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URI}/auth/login/`,
-        {
-          email: values?.email,
-          password: values?.password,
-          userType: "team",
-        }
-      );
+      const response = await API_AUTH.post(`/auth/login/`, {
+        email: values?.email,
+        password: values?.password,
+        userType: "team",
+      });
 
       console.log({ decoded: decodeToken(response.data.token), response });
 
@@ -57,7 +56,7 @@ const Login = () => {
           id: decoded.id,
           email: decoded.email,
         });
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem(TAAG_TEAM_TOKEN, response.data.token);
         setLoading(false);
         navigate("/");
       } else {
