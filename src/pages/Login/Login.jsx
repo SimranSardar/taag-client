@@ -42,7 +42,7 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await API_AUTH.post(`/login/`, {
+      const response = await API_AUTH().post(`/login/`, {
         email: values?.email,
         password: values?.password,
         userType: "team",
