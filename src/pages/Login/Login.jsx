@@ -42,7 +42,7 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await API_AUTH.post(`/auth/login/`, {
+      const response = await API_AUTH.post(`/login/`, {
         email: values?.email,
         password: values?.password,
         userType: "team",
@@ -79,7 +79,7 @@ const Login = () => {
           required
           value={values?.email}
           onChange={handleChange}
-          type="text"
+          type="email"
           disabled={loading}
         />
         <InputField

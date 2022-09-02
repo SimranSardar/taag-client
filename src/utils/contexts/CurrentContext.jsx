@@ -1,6 +1,7 @@
 import axios from "axios";
 import { createContext, useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
+import { API_CAMPAIGN } from "../API";
 import { tableData } from "../constants";
 import { CampaignContext } from "./CampaignContext";
 
@@ -25,12 +26,9 @@ const CurrentContextProvider = ({ children }) => {
 
   useEffect(() => {
     async function fetchData() {
-      let temp = await axios.get(
-        `${process.env.REACT_APP_API_URI}/campaigns/single/`,
-        {
-          params: { id: campaignId },
-        }
-      );
+      let temp = await API_CAMPAIGN.get(`/single/`, {
+        params: { id: campaignId },
+      });
       temp.data.totalCreator = temp.data.selectedArtists.length.toString();
       temp.data.agencyFees = getTotal(temp.data.selectedArtists, "agencyFees");
       console.log({ temp });

@@ -15,7 +15,7 @@ import { CreatableSingleSelect } from "../../components";
 import { deliverableOptions, sectorOptions } from "../../utils/constants";
 import { showAlert } from "../../utils";
 import { AuthContext } from "../../utils/auth/AuthContext";
-import { API_ALL } from "../../utils/API";
+import { API_ALL, API_CAMPAIGN } from "../../utils/API";
 
 const brandOptions = [
   {
@@ -219,10 +219,7 @@ const AddCampaign = () => {
       },
     };
     // console.log({ campaign });
-    const res = await axios.post(
-      `${process.env.REACT_APP_API_URI}/campaigns/create`,
-      campaign
-    );
+    const res = await API_CAMPAIGN.post(`/create`, campaign);
 
     console.log({ res });
 

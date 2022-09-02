@@ -14,15 +14,12 @@ const CampaignContextProvider = ({ children }) => {
     console.log({ currentUser });
   }, [currentUser]);
   async function fetchCampaigns(status = "all") {
-    const res = await axios.get(
-      `${process.env.REACT_APP_API_URI}/campaigns/all-by-user`,
-      {
-        params: {
-          status,
-          userId: currentUser.id,
-        },
-      }
-    );
+    const res = await API_CAMPAIGN.get(`/all-by-user`, {
+      params: {
+        status,
+        userId: currentUser.id,
+      },
+    });
     setCampaigns(
       res.data?.map((campaign) => {
         let newObj = { ...campaign };

@@ -68,14 +68,11 @@ const Login = () => {
         return showAlert("error", "Passwords do not match");
       }
       try {
-        const res = await axios.post(
-          `${process.env.REACT_APP_API_URI}/auth/reset-password/`,
-          {
-            email: user.email,
-            newPassword: values.newPassword,
-            userType: "team",
-          }
-        );
+        const res = await API_AUTH.post(`/reset-password/`, {
+          email: user.email,
+          newPassword: values.newPassword,
+          userType: "team",
+        });
         setLoading(false);
         showAlert("success", res.data.message);
         setTimeout(() => {
@@ -119,7 +116,7 @@ const Login = () => {
             required
             value={values?.email}
             onChange={handleChange}
-            type="text"
+            type="email"
             disabled={loading}
           />
         )}
