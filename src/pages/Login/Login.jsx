@@ -8,6 +8,7 @@ import { useNavigate } from "react-router";
 import logo from "../../assets/icons/logo.svg";
 import { LinearProgress } from "@mui/material";
 import Logo from "../../components/Logo/Logo";
+import { showAlert } from "../../utils";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -36,6 +37,7 @@ const Login = () => {
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
+    setError("");
 
     try {
       const response = await axios.post(
@@ -43,6 +45,7 @@ const Login = () => {
         {
           email: values?.email,
           password: values?.password,
+          userType: "team",
         }
       );
 
@@ -61,7 +64,8 @@ const Login = () => {
       }
     } catch (error) {
       // console.log("True error", error.response);
-      setError(error.toString());
+      // setError(error.toString());
+      showAlert("error", "Error: " + error.response.data.message);
       setLoading(false);
     }
   }

@@ -59,4 +59,7 @@ export const deliverableOptions = [
     value: "YTShorts",
   },
 ];
+
+export const TAAG_TEAM_TOKEN = "TAAG_TEAM_TOKEN";
+
 export { tableData } from "./tableData";

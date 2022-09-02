@@ -328,6 +328,9 @@ const Campaign = () => {
     let newCampaign = {
       ...campaign,
       totalAverageViews: totalAvgViews || 0,
+      agencyFee: totalAgencyFees || 0,
+      brandAmount: totalBrandAmount || 0,
+      averageROI: averageROI || 0,
       selectedArtists: selectedRows?.map((item) =>
         newSelectionArist(item, campaign)
       ),

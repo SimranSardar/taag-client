@@ -9,6 +9,7 @@ import logo from "../../assets/icons/logo.svg";
 import { LinearProgress } from "@mui/material";
 import Logo from "../../components/Logo/Logo";
 import { showAlert } from "../../utils";
+import { API_ALL } from "../../utils/API";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -66,12 +67,10 @@ const Register = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API_URI}/user/create/`,
-        {
-          ...values,userType:"team"
-        }
-      );
+      const res = await API_ALL.post(`/user/create/`, {
+        ...values,
+        userType: "team",
+      });
       console.log({ res });
       showAlert("success", "You have successfully registered");
       setValues({});
