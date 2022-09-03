@@ -15,6 +15,7 @@ import { Dropdown, Button as AButton, Menu } from "antd";
 import { DownOutlined, LogoutOutlined } from "@ant-design/icons";
 import clsx from "clsx";
 import { TAAG_TEAM_TOKEN } from "../../utils/constants/constants";
+import { AuthContext } from "../../utils/auth/AuthContext";
 
 const { bell, editing, back } = icons;
 const { profile } = images;
@@ -22,7 +23,7 @@ const { profile } = images;
 const Navbar = ({ titleProps, progress, prevRoute, brandName }) => {
   const navigate = useNavigate();
 
-  const { setCurrentUser } = useContext;
+  const { setCurrentUser } = useContext(AuthContext);
 
   function handleLogout() {
     setCurrentUser(null);
