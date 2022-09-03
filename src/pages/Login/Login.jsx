@@ -34,7 +34,8 @@ const Login = () => {
     console.log(values);
   });
 
-  const { setCurrentUser } = useContext(AuthContext);
+  const { setCurrentUser, setLoading: setGlobalLoading } =
+    useContext(AuthContext);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -48,22 +49,21 @@ const Login = () => {
         userType: "team",
       });
 
-      console.log({ decoded: decodeToken(response.data.token), response });
-
       if (response.status === 200) {
         let decoded = decodeToken(response.data.token);
         setCurrentUser({
-          id: decoded.id,
-          email: decoded.email,
+          ...decoded,
         });
         localStorage.setItem(TAAG_TEAM_TOKEN, response.data.token);
         setLoading(false);
+        setGlobalLoading(false);
         navigate("/");
       } else {
       }
     } catch (error) {
       // console.log("True error", error.response);
       // setError(error.toString());
+      setGlobalLoading(false);
       showAlert("error", "Error: " + error.response.data.message);
       setLoading(false);
     }

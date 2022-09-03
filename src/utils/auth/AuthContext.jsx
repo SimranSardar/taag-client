@@ -6,16 +6,21 @@ export const AuthContext = createContext({});
 
 const AuthContextProvider = (props) => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const user = localStorage.getItem(TAAG_TEAM_TOKEN);
     if (user) {
+      console.log("Yes");
       setCurrentUser(decodeToken(user));
+      setLoading(false);
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ currentUser, setCurrentUser }}>
+    <AuthContext.Provider
+      value={{ currentUser, setCurrentUser, loading, setLoading }}
+    >
       {props.children}
     </AuthContext.Provider>
   );

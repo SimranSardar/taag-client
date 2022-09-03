@@ -9,7 +9,7 @@ import {
 import { Breadcrumb } from "../";
 import { styled } from "@mui/system";
 import { icons, images } from "../../assets";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dropdown, Button as AButton, Menu } from "antd";
 import { DownOutlined, LogoutOutlined } from "@ant-design/icons";
@@ -21,7 +21,11 @@ const { profile } = images;
 
 const Navbar = ({ titleProps, progress, prevRoute, brandName }) => {
   const navigate = useNavigate();
+
+  const { setCurrentUser } = useContext;
+
   function handleLogout() {
+    setCurrentUser(null);
     localStorage.removeItem(TAAG_TEAM_TOKEN);
     navigate("/login");
   }
