@@ -4,6 +4,7 @@ import { icons } from "../../assets";
 import { InputField } from "../";
 import styles from "./MoreInformation.module.scss";
 import { Share } from "@mui/icons-material";
+import { Popconfirm } from "antd";
 
 const {
   purpleCoin,
@@ -102,11 +103,13 @@ const MoreInformation = ({
             <img src={searchIcon} alt="Search" />
           </IconButton>
         )} */}
-        <Tooltip title="Share with Brand" placement="top">
-          <IconButton onClick={onClickShare}>
-            <Share style={{ fill: "white" }} />
-          </IconButton>
-        </Tooltip>
+        <Popconfirm title="Sure, share with brand?" onConfirm={onClickShare}>
+          <Tooltip title="Share with Brand" placement="top">
+            <IconButton>
+              <Share style={{ fill: "white" }} />
+            </IconButton>
+          </Tooltip>
+        </Popconfirm>
         <Tooltip title="Add Column" placement="top">
           <IconButton onClick={onClickAdd}>
             <img src={addIcon} alt="Add" />

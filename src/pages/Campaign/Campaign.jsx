@@ -126,11 +126,20 @@ const Campaign = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [newColOpen, setNewColOpen] = useState(false);
   const [mainCols, setMainCols] = useState(tableData.campaign.main.columns);
-  const [totalAvgViews, setTotalAvgViews] = useState(0);
-  const [totalViews, setTotalViews] = useState(2);
-  const [totalComments, setTotalComments] = useState(3);
-  const [totalAgencyFees, setTotalAgencyFees] = useState(0);
-  const [totalBrandAmount, setTotalBrandAmount] = useState(0);
+  // const [totalAvgViews, setTotalAvgViews] = useState(0);
+  // const [totalViews, setTotalViews] = useState(2);
+  // const [totalComments, setTotalComments] = useState(3);
+  // const [totalAgencyFees, setTotalAgencyFees] = useState(0);
+  // const [totalBrandAmount, setTotalBrandAmount] = useState(0);
+  const [headerData, setHeaderData] = useState({
+    totalAvgViews: 0,
+    totalViews: 0,
+    totalComments: 0,
+    totalAgencyFees: 0,
+    totalBrandAmount: 0,
+    averageROI: 0,
+    totalArtists: 0,
+  });
   const [averageROI, setAverageROI] = useState(0.0);
   const [languages, setLanguages] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -175,7 +184,7 @@ const Campaign = () => {
         };
         // console.log({ campaign, newCampaign });
         const res = await updateCampaign(newCampaign);
-        // setCampaign({...campaign, extras: res?.data?.data?.extras});
+        setCampaign(res?.data?.data);
       } catch (err) {
         console.log({ err });
       }
@@ -233,12 +242,15 @@ const Campaign = () => {
   }, [campaign]);
 
   useEffect(() => {
-    setTotalAvgViews(0);
-    setTotalAgencyFees(0);
-    setTotalBrandAmount(0);
-    setTotalViews(0);
-    setTotalComments(0);
-    setAverageROI(0.0);
+    setHeaderData({
+      totalAvgViews: 0,
+      totalViews: 0,
+      totalComments: 0,
+      totalAgencyFees: 0,
+      totalBrandAmount: 0,
+      averageROI: 0.0,
+      totalArtists: 0,
+    });
     if (selectedRows.length) {
       let tAvgViews = 0;
       let tAgencyFees = 0;
@@ -248,6 +260,7 @@ const Campaign = () => {
       let tCategories = [];
       let tLanguages = [];
       let tRoi = 0;
+
       selectedRows.forEach((item) => {
         tAvgViews += parseInt(item.averageViews) || 0;
         tAgencyFees += parseInt(item.agencyFees) || 0;
@@ -258,28 +271,22 @@ const Campaign = () => {
         tLanguages = [...tLanguages, ...item.languages];
         tRoi += parseFloat(item.roi) || 0;
       });
-      setTotalAvgViews(tAvgViews);
-      setTotalAgencyFees(tAgencyFees);
-      setTotalBrandAmount(tBrandAmount);
-      setTotalViews(tViews);
-      setTotalComments(tComments);
+
       setCategories([...new Set(tCategories)]);
       setLanguages([...new Set(tLanguages)]);
       setAverageROI(tRoi / selectedRows.length);
+      setHeaderData({
+        totalAvgViews: tAvgViews,
+        totalViews: tViews,
+        totalComments: tComments,
+        totalAgencyFees: tAgencyFees,
+        totalBrandAmount: tBrandAmount,
+        averageROI: tRoi / selectedRows.length,
+        totalArtists: selectedRows.length,
+      });
       console.log({ tCategories, tLanguages });
     }
   }, [selectedRows]);
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const temp = await fetchCampaign(id);
-  //     setCampaign(temp.data);
-  //     console.log({ temp });
-  //   }
-  //   if (id) {
-  //     fetchData();
-  //   }
-  // }, [id]);
 
   function handleSelectRow(rows) {
     // setCampaign({ ...campaign, selectedArtists: rows });
@@ -294,7 +301,7 @@ const Campaign = () => {
     setSelectedRows(newArtists);
     let newCampaign = {
       ...campaign,
-      totalAverageViews: totalAvgViews || 0,
+      totalAverageViews: headerData?.totalAvgViews || 0,
       selectedArtists: newArtists,
     };
     console.log({ newCampaign });
@@ -308,9 +315,9 @@ const Campaign = () => {
   function handleClickSave() {
     let newCampaign = {
       ...campaign,
-      totalAverageViews: totalAvgViews || 0,
-      agencyFee: totalAgencyFees || 0,
-      brandAmount: totalBrandAmount || 0,
+      totalAverageViews: headerData?.totalAvgViews || 0,
+      agencyFee: headerData?.totalAgencyFees || 0,
+      brandAmount: headerData?.totalBrandAmount || 0,
       averageROI: averageROI || 0,
       selectedArtists: selectedRows?.map((item) =>
         newSelectionArist(item, campaign)
@@ -386,14 +393,16 @@ const Campaign = () => {
         onClickShare: handleClickShare,
         ...(location.pathname.includes("analytics")
           ? {
-              totalViews: KMBFormatter(totalViews),
-              totalComments: KMBFormatter(totalComments),
+              totalViews: KMBFormatter(headerData?.totalViews),
+              totalComments: KMBFormatter(headerData?.totalComments),
             }
           : {
-              agencyFees: formatIndianCurrency(totalAgencyFees) || 0,
-              brandAmount: formatIndianCurrency(totalBrandAmount) || 0,
-              totalAverageViews: KMBFormatter(totalAvgViews || 0),
-              totalCreator: campaign?.selectedArtists?.length.toString() || "0",
+              agencyFees:
+                formatIndianCurrency(headerData?.totalAgencyFees) || 0,
+              brandAmount:
+                formatIndianCurrency(headerData?.totalBrandAmount) || 0,
+              totalAverageViews: KMBFormatter(headerData?.totalAvgViews || 0),
+              totalCreator: headerData?.totalArtists || "0",
               averageROI: averageROI.toFixed(2),
             }),
       }}

@@ -39,6 +39,8 @@ const NewColumn = ({ open, handleClose }) => {
     console.log({ res });
     setCampaign(res.data.data);
     showAlert("success", `Added new column ${titleCase(name)}`);
+    // onClose();
+    handleClose();
   }
 
   return (
