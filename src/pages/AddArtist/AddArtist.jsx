@@ -11,6 +11,7 @@ import clsx from "clsx";
 import { MainLayout } from "../../layouts";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_ALL } from "../../utils/API";
 
 const sectorOptions = [
   {
@@ -157,19 +158,19 @@ const AddArtist = () => {
   async function submitHandler(e) {
     e.preventDefault();
   }
-useEffect(()=>{
-  async function getSubsribers(){
-    const res=await axios.get(process.env.REACT_APP_API_URI + '/youtube/subscribers',{
-      params:{
-        youtubeURI:values?.youtube?.link
-      }
-    })
-    setYoutube((prev)=>({...prev,subscribers:res?.data?.subscribers}))
-  }
-  if(values?.youtube?.link){
-    getSubsribers()
-  }
-},[values?.youtube?.link])
+  useEffect(() => {
+    async function getSubsribers() {
+      const res = await API_ALL().get("/youtube/subscribers", {
+        params: {
+          youtubeURI: values?.youtube?.link,
+        },
+      });
+      setYoutube((prev) => ({ ...prev, subscribers: res?.data?.subscribers }));
+    }
+    if (values?.youtube?.link) {
+      getSubsribers();
+    }
+  }, [values?.youtube?.link]);
   return (
     <MainLayout
       classes={[styles.container]}
@@ -239,7 +240,7 @@ useEffect(()=>{
             />
           </FormSection>
           <FormSection sectionName={"Instagram"} sectionNumber={2}>
-          <InputField
+            <InputField
               required
               onChange={handleInstagram("link")}
               value={instagram?.link}
@@ -251,7 +252,7 @@ useEffect(()=>{
               value={instagram?.followers}
               label={"Followers"}
             />
-            
+
             <InputField
               required
               onChange={handleInstagram("reelCommercial")}
@@ -272,7 +273,7 @@ useEffect(()=>{
             />
           </FormSection>
           <FormSection sectionName={"Youtube"} sectionNumber={3}>
-          <InputField
+            <InputField
               required
               onChange={handleYoutube("link")}
               value={youtube?.link}
@@ -285,7 +286,7 @@ useEffect(()=>{
               label={"Subscribers"}
               disabled
             />
-            
+
             <InputField
               required
               onChange={handleYoutube("commercial")}

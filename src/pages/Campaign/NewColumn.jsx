@@ -3,6 +3,7 @@ import axios from "axios";
 import { useContext, useState } from "react";
 import { Button, InputField } from "../../components";
 import { camelize, showAlert, titleCase } from "../../utils";
+import { API_CAMPAIGN } from "../../utils/API";
 import { CampaignContext, CurrentContext } from "../../utils/contexts";
 import styles from "./Campaign.module.scss";
 
@@ -34,10 +35,7 @@ const NewColumn = ({ open, handleClose }) => {
         dataIndex: camelize(name),
       },
     ];
-    const res = await axios.patch(
-      `${process.env.REACT_APP_API_URI}/campaigns/update`,
-      newCampaign
-    );
+    const res = await API_CAMPAIGN().patch(`/update`, newCampaign);
     console.log({ res });
     setCampaign(res.data.data);
     showAlert("success", `Added new column ${titleCase(name)}`);

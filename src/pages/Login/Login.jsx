@@ -8,6 +8,9 @@ import { useNavigate } from "react-router";
 import logo from "../../assets/icons/logo.svg";
 import { LinearProgress } from "@mui/material";
 import Logo from "../../components/Logo/Logo";
+import { showAlert } from "../../utils";
+import { API_AUTH } from "../../utils/API";
+import { TAAG_TEAM_TOKEN } from "../../utils/constants/constants";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -31,37 +34,37 @@ const Login = () => {
     console.log(values);
   });
 
-  const { setCurrentUser } = useContext(AuthContext);
+  const { setCurrentUser, setLoading: setGlobalLoading } =
+    useContext(AuthContext);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
+    setError("");
 
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URI}/auth/login/`,
-        {
-          email: values?.email,
-          password: values?.password,
-        }
-      );
-
-      console.log({ decoded: decodeToken(response.data.token), response });
+      const response = await API_AUTH().post(`/login/`, {
+        email: values?.email,
+        password: values?.password,
+        userType: "team",
+      });
 
       if (response.status === 200) {
         let decoded = decodeToken(response.data.token);
         setCurrentUser({
-          id: decoded.id,
-          email: decoded.email,
+          ...decoded,
         });
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem(TAAG_TEAM_TOKEN, response.data.token);
         setLoading(false);
+        setGlobalLoading(false);
         navigate("/");
       } else {
       }
     } catch (error) {
       // console.log("True error", error.response);
-      setError(error.toString());
+      // setError(error.toString());
+      setGlobalLoading(false);
+      showAlert("error", "Error: " + error.response.data.message);
       setLoading(false);
     }
   }
@@ -76,7 +79,7 @@ const Login = () => {
           required
           value={values?.email}
           onChange={handleChange}
-          type="text"
+          type="email"
           disabled={loading}
         />
         <InputField

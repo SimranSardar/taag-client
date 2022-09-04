@@ -1,6 +1,8 @@
 import axios from "axios";
 import { createContext, useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
+import { API_CAMPAIGN } from "../API";
+import { AuthContext } from "../auth/AuthContext";
 import { tableData } from "../constants";
 import { CampaignContext } from "./CampaignContext";
 
@@ -20,85 +22,92 @@ const CurrentContextProvider = ({ children }) => {
   const [campaignContact, setCampaignContact] = useState([]);
   const [campaignInvoice, setCampaignInvoice] = useState([]);
   const [campaignAnalytics, setCampaignAnalytics] = useState([]);
-
+  const [isInvalidCampaign, setIsInvalidCampaign] = useState(false);
   const { fetchCampaign, artists } = useContext(CampaignContext);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     async function fetchData() {
-      let temp = await axios.get(
-        `${process.env.REACT_APP_API_URI}/campaigns/single/`,
-        {
+      try {
+        let temp = await API_CAMPAIGN().get(`/single/`, {
           params: { id: campaignId },
-        }
-      );
-      temp.data.totalCreator = temp.data.selectedArtists.length.toString();
-      temp.data.agencyFees = getTotal(temp.data.selectedArtists, "agencyFees");
-      console.log({ temp });
-      setCampaign(temp.data);
-      setCampaignMain(
-        temp.data.selectedArtists.map((item) => ({
-          key: item._id,
-          _id: item._id,
-          name: item.name,
-          link: item.link || "",
-          followers: item.instagram ? item.instagram.followers : "NA",
-          averageViews: item.averageViews,
-          deliverable: temp.data.deliverable,
-          // commercialCreator: item.commercialCreator || 0,
-          brandCommercial: item.brandCommercial || 0,
-          cpvBrand: item.cpvBrand || 0,
-          agencyFees:
-            item.agencyFees ||
-            parseInt(item.brandCommercial) - parseInt(item.commercialCreator) ||
-            0,
-        }))
-      );
-      setCampaignInfo(
-        temp.data.selectedArtists.map((item) => ({
-          key: item._id,
-          _id: item._id,
-          name: item.name,
-          gender: item.gender,
-          location: item.location,
-          languages: item.languages,
-          categories: item.categories,
-          type: item.type,
-        }))
-      );
-      setCampaignContact(
-        temp.data.selectedArtists.map((item) => ({
-          key: item._id,
-          _id: item._id,
-          name: item.name,
-          agencyName: item.agencyName,
-          manager: item.manager,
-          contact: item.contact,
-          email: item.email,
-        }))
-      );
-      setCampaignInvoice(
-        temp.data.selectedArtists.map((item) => ({
-          key: item._id,
-          _id: item._id,
-          name: item.name,
-          invoice: item.invoice,
-          date: item.date,
-          note: item.note,
-        }))
-      );
-      setCampaignAnalytics(
-        temp.data.selectedArtists.map((item) => ({
-          key: item._id,
-          _id: item._id,
-          name: item.name,
-          deliverableLink: item.deliverableLink || "NA",
-          views: item.views || "NA",
-          comments: item.comments,
-          roi: item.roi,
-        }))
-      );
-      // handleTable(location);
-      console.log("inside");
+        });
+        temp.data.totalCreator = temp.data.selectedArtists.length.toString();
+        temp.data.agencyFees = getTotal(
+          temp.data.selectedArtists,
+          "agencyFees"
+        );
+        console.log({ temp });
+        setCampaign(temp.data);
+        setCampaignMain(
+          temp.data.selectedArtists.map((item) => ({
+            key: item._id,
+            _id: item._id,
+            name: item.name,
+            link: item.link || "",
+            followers: item.instagram ? item.instagram.followers : "NA",
+            averageViews: item.averageViews,
+            deliverable: temp.data.deliverable,
+            // commercialCreator: item.commercialCreator || 0,
+            brandCommercial: item.brandCommercial || 0,
+            cpvBrand: item.cpvBrand || 0,
+            agencyFees:
+              item.agencyFees ||
+              parseInt(item.brandCommercial) -
+                parseInt(item.commercialCreator) ||
+              0,
+          }))
+        );
+        setCampaignInfo(
+          temp.data.selectedArtists.map((item) => ({
+            key: item._id,
+            _id: item._id,
+            name: item.name,
+            gender: item.gender,
+            location: item.location,
+            languages: item.languages,
+            categories: item.categories,
+            type: item.type,
+          }))
+        );
+        setCampaignContact(
+          temp.data.selectedArtists.map((item) => ({
+            key: item._id,
+            _id: item._id,
+            name: item.name,
+            agencyName: item.agencyName,
+            manager: item.manager,
+            contact: item.contact,
+            email: item.email,
+          }))
+        );
+        setCampaignInvoice(
+          temp.data.selectedArtists.map((item) => ({
+            key: item._id,
+            _id: item._id,
+            name: item.name,
+            invoice: item.invoice,
+            date: item.date,
+            note: item.note,
+          }))
+        );
+        setCampaignAnalytics(
+          temp.data.selectedArtists.map((item) => ({
+            key: item._id,
+            _id: item._id,
+            name: item.name,
+            deliverableLink: item.deliverableLink || "NA",
+            views: item.views || "NA",
+            comments: item.comments,
+            roi: item.roi,
+          }))
+        );
+        // handleTable(location);
+        console.log("inside");
+        setLoading(false);
+      } catch (error) {
+        setIsInvalidCampaign(true);
+        setLoading(false);
+      }
     }
     // console.log("fdsddddddddd ", { campaignId, len: artists?.length });
     if (campaignId && artists?.length) {
@@ -186,6 +195,7 @@ const CurrentContextProvider = ({ children }) => {
         setCampaignId,
         setTabIndex,
         tabIndex,
+        isInvalidCampaign,
         campaignMain,
         campaignInfo,
         campaignContact,
@@ -194,6 +204,7 @@ const CurrentContextProvider = ({ children }) => {
         setCampaignMain,
         setCampaignInfo,
         setCampaignContact,
+        loading,
         setCampaignInvoice,
         setCampaignAnalytics,
       }}

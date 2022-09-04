@@ -28,7 +28,7 @@
   }
 }
 .dialog {
-  >div:nth-of-type(3) > div {
+  > div:nth-of-type(3) > div {
     background: var(--clr-bg-dark) !important;
   }
   header {
@@ -64,5 +64,15 @@
       text-align: center;
       width: 100%;
     }
+  }
+}
+.tempContainer {
+  @extend .flexRow;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  background: var(--clr-bg-dark);
+  * {
+    color: white;
   }
 }

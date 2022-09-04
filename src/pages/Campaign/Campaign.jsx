@@ -6,15 +6,13 @@ import { CampaignContext } from "../../utils/contexts/CampaignContext";
 import styles from "./Campaign.module.scss";
 // import { TabContext, TabPanel, TabList } from "@mui/lab";
 import {
-  Box,
   Tab,
   Tabs,
-  styled,
   Skeleton,
-  IconButton,
-  Tooltip,
   Switch,
   FormControlLabel,
+  Tooltip,
+  CircularProgress,
 } from "@mui/material";
 import { TabIcon } from "../../assets";
 import { CurrentContext } from "../../utils/contexts";
@@ -28,9 +26,7 @@ import {
 import { tableData } from "../../utils/constants";
 import SelectArtists from "./SelectArtists";
 import NewColumn from "./NewColumn";
-import { RemoveRedEyeOutlined } from "@mui/icons-material";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+import { AuthContext } from "../../utils/auth/AuthContext";
 
 function newSelectionArist(item, campaign) {
   console.log({ item });
@@ -156,7 +152,10 @@ const Campaign = () => {
     campaignInvoice,
     campaignAnalytics,
     setCampaign,
+    loading,
+    isInvalidCampaign,
   } = useContext(CurrentContext);
+
   const { id } = useParams();
   const [test, setTest] = useState(campaign);
   useEffect(() => {
@@ -182,7 +181,6 @@ const Campaign = () => {
       }
     };
   }
-
   useEffect(() => {
     setCampaignId(id);
     console.log("set id");
@@ -209,12 +207,14 @@ const Campaign = () => {
                   </Tooltip>
                 )}
               </IconButton> */}
-              <Tooltip title={item?.isVisible?"Hide From Brand":"Show to Brand"}>
-                  <Switch
-                    checked={item?.isVisible}
-                    onChange={handleVisibilityColumn(item)}
-                  />
-                  </Tooltip>
+              <Tooltip
+                title={item?.isVisible ? "Hide From Brand" : "Show to Brand"}
+              >
+                <Switch
+                  checked={item?.isVisible}
+                  onChange={handleVisibilityColumn(item)}
+                />
+              </Tooltip>
             </span>
           ),
           searchable: true,
@@ -231,22 +231,6 @@ const Campaign = () => {
       );
     }
   }, [campaign]);
-
-  useEffect(() => {
-    console.log({
-      campaignMain,
-      campaignInfo,
-      campaignContact,
-      campaignInvoice,
-      campaignAnalytics,
-    });
-  }, [
-    campaignMain,
-    campaignInfo,
-    campaignContact,
-    campaignInvoice,
-    campaignAnalytics,
-  ]);
 
   useEffect(() => {
     setTotalAvgViews(0);
@@ -325,6 +309,9 @@ const Campaign = () => {
     let newCampaign = {
       ...campaign,
       totalAverageViews: totalAvgViews || 0,
+      agencyFee: totalAgencyFees || 0,
+      brandAmount: totalBrandAmount || 0,
+      averageROI: averageROI || 0,
       selectedArtists: selectedRows?.map((item) =>
         newSelectionArist(item, campaign)
       ),
@@ -362,7 +349,21 @@ const Campaign = () => {
   // useEffect(() => {
   //   setSelectedRows();
   // }, [selRows]);
-
+  console.log({ isInvalidCampaign });
+  if (loading) {
+    return (
+      <div className={styles.tempContainer}>
+        <CircularProgress />
+      </div>
+    );
+  }
+  if (isInvalidCampaign) {
+    return (
+      <div className={styles.tempContainer}>
+        <InvalidCampaign />
+      </div>
+    );
+  }
   return (
     <MainLayout
       classes={[styles.container]}
@@ -549,3 +550,11 @@ const Campaign = () => {
 // });
 
 export default Campaign;
+
+const InvalidCampaign = () => {
+  return (
+    <div className={styles.invalidCampaign}>
+      <h3>Either this campaign is invalid or you do not have access to it!</h3>
+    </div>
+  );
+};

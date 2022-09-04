@@ -8,6 +8,7 @@ import { useNavigate, useParams } from "react-router";
 import { LinearProgress } from "@mui/material";
 import Logo from "../../components/Logo/Logo";
 import { showAlert } from "../../utils";
+import { API_AUTH } from "../../utils/API";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -35,15 +36,12 @@ const Login = () => {
     async function confirmToken() {
       // console.log({ uri: window.location.href, id });
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_URI}/auth/verify-reset-token/`,
-          {
-            params: {
-              uri: window.location.href,
-              token,
-            },
-          }
-        );
+        const res = await API_AUTH().get(`/verify-reset-token/`, {
+          params: {
+            uri: window.location.href,
+            token,
+          },
+        });
         if (res.status === 200) {
           setIsValidURI(true);
         } else {
@@ -70,14 +68,11 @@ const Login = () => {
         return showAlert("error", "Passwords do not match");
       }
       try {
-        const res = await axios.post(
-          `${process.env.REACT_APP_API_URI}/auth/reset-password/`,
-          {
-            email: user.email,
-            newPassword: values.newPassword,
-            userType: "team",
-          }
-        );
+        const res = await API_AUTH().post(`/reset-password/`, {
+          email: user.email,
+          newPassword: values.newPassword,
+          userType: "team",
+        });
         setLoading(false);
         showAlert("success", res.data.message);
         setTimeout(() => {
@@ -91,13 +86,10 @@ const Login = () => {
 
     if (!token && !user?.userId && !isValidURI) {
       try {
-        const response = await axios.post(
-          `${process.env.REACT_APP_API_URI}/auth/request-password-reset/`,
-          {
-            email: values?.email,
-            userType: "team",
-          }
-        );
+        const response = await API_AUTH().post(`/request-password-reset/`, {
+          email: values?.email,
+          userType: "team",
+        });
 
         if (response.status === 200) {
           showAlert("success", "Reset Link sent on your email");
@@ -124,7 +116,7 @@ const Login = () => {
             required
             value={values?.email}
             onChange={handleChange}
-            type="text"
+            type="email"
             disabled={loading}
           />
         )}

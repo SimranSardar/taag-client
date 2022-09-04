@@ -15,6 +15,7 @@ import { CreatableSingleSelect } from "../../components";
 import { deliverableOptions, sectorOptions } from "../../utils/constants";
 import { showAlert } from "../../utils";
 import { AuthContext } from "../../utils/auth/AuthContext";
+import { API_ALL, API_CAMPAIGN } from "../../utils/API";
 
 const brandOptions = [
   {
@@ -82,10 +83,7 @@ const AddCampaign = () => {
       campaigns: [],
       password,
     };
-    let temp = await axios.post(
-      `${process.env.REACT_APP_API_URI}/brand/create`,
-      finalData
-    );
+    let temp = await API_ALL().post(`/brand/create`, finalData);
     console.log({ hello: temp.data.data, finalData });
     setNewBrand(temp.data.data);
     setBrandOptions((prev) => [...prev, temp.data]);
@@ -93,7 +91,7 @@ const AddCampaign = () => {
   }
 
   async function getBrands() {
-    let temp = await axios.get(`${process.env.REACT_APP_API_URI}/brand/all`);
+    let temp = await API_ALL().get(`/brand/all`);
     setBrandOptions(temp.data);
   }
   useEffect(() => {
@@ -221,10 +219,7 @@ const AddCampaign = () => {
       },
     };
     // console.log({ campaign });
-    const res = await axios.post(
-      `${process.env.REACT_APP_API_URI}/campaigns/create`,
-      campaign
-    );
+    const res = await API_CAMPAIGN().post(`/create`, campaign);
 
     console.log({ res });
 

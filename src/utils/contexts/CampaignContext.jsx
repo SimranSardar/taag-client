@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useEffect, createContext, useContext } from "react";
+import { API_ALL, API_ARTIST, API_CAMPAIGN } from "../API";
 import { AuthContext } from "../auth/AuthContext";
 
 export const CampaignContext = createContext({});
@@ -9,17 +10,18 @@ const CampaignContextProvider = ({ children }) => {
   const [artists, setArtists] = useState([]);
 
   const { currentUser } = useContext(AuthContext);
-useEffect(() => {console.log({currentUser})}, [currentUser])
+
+  useEffect(() => {
+    console.log({ currentUser });
+  }, [currentUser]);
+
   async function fetchCampaigns(status = "all") {
-    const res = await axios.get(
-      `${process.env.REACT_APP_API_URI}/campaigns/all-by-user`,
-      {
-        params: {
-          status,
-          userId: currentUser.id,
-        },
-      }
-    );
+    const res = await API_CAMPAIGN().get(`/all-by-user`, {
+      params: {
+        status,
+        userId: currentUser.id,
+      },
+    });
     setCampaigns(
       res.data?.map((campaign) => {
         let newObj = { ...campaign };
@@ -29,44 +31,40 @@ useEffect(() => {console.log({currentUser})}, [currentUser])
       })
     );
     console.log("Yahi hai sab kuch", res.data);
-    const art = await axios.get(`${process.env.REACT_APP_API_URI}/artist/all`);
+    const art = await API_ARTIST().get(`/all`);
 
     setArtists(art.data);
   }
 
   async function fetchCampaign(id) {
     console.log({ id });
-    return await axios.get(
-      `${process.env.REACT_APP_API_URI}/campaigns/single/`,
-      {
+    try {
+      const res = await API_CAMPAIGN().get(`/single/`, {
         params: { id },
-      }
-    );
+      });
+      return res;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async function updateCampaign(campaign) {
-    const res = await axios.patch(
-      `${process.env.REACT_APP_API_URI}/campaigns/update/`,
-      campaign
-    );
+    const res = await API_CAMPAIGN().patch(`/update/`, campaign);
 
     return res;
   }
 
-  async function updateBrand(brandEmail,campaignId) {
-    const res = await axios.post(
-      `${process.env.REACT_APP_API_URI}/brand/push-campaign/`,
-      {campaignId,email:brandEmail}
-    );
+  async function updateBrand(brandEmail, campaignId) {
+    const res = await API_ALL().post(`/brand/push-campaign/`, {
+      campaignId,
+      email: brandEmail,
+    });
 
     return res;
   }
 
   async function updateArtistsGlobal(artists) {
-    return await axios.patch(
-      `${process.env.REACT_APP_API_URI}/artist/update/bulk`,
-      artists
-    );
+    return await API_ARTIST().patch(`/update/bulk`, artists);
   }
 
   useEffect(() => {
