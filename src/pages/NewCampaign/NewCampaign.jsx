@@ -83,11 +83,19 @@ const AddCampaign = () => {
       campaigns: [],
       password,
     };
-    let temp = await API_ALL().post(`/brand/create`, finalData);
-    console.log({ hello: temp.data.data, finalData });
-    setNewBrand(temp.data.data);
-    setBrandOptions((prev) => [...prev, temp.data]);
-    console.log({ res: temp });
+    try {
+      let temp = await API_ALL().post(`/brand/create`, finalData);
+      console.log({ hello: temp.data.data, finalData });
+      setNewBrand(temp.data.data);
+      setBrandOptions((prev) => [...prev, temp.data]);
+      console.log({ res: temp });
+      return {
+        status: "success",
+      };
+    } catch (error) {
+      showAlert("error", error.response.data.message);
+      // console.log(error);
+    }
   }
 
   async function getBrands() {
@@ -130,7 +138,7 @@ const AddCampaign = () => {
   }, [newBrand]);
 
   async function handleAddBrand(valueToAdd) {
-    await createBrand(valueToAdd);
+    return await createBrand(valueToAdd);
   }
 
   function handleAddBrandSectors(newValue) {

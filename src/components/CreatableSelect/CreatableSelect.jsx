@@ -227,13 +227,16 @@ export const CreatableSingleSelect = ({
     //       Value: parseInt(dialogValue.Value, 10),
     // } This is the new value
     event.preventDefault();
-    await onAddModalSubmit(dialogValue);
-    //And temporarily this setValue function will add that value to the autocomplete so in mean time add that value to the database
-    setValue((prev) => {
-      return dialogValue;
-    });
 
-    handleClose();
+    const res = await onAddModalSubmit(dialogValue);
+    if (res.status === "success") {
+      //And temporarily this setValue function will add that value to the autocomplete so in mean time add that value to the database
+      setValue((prev) => {
+        return dialogValue;
+      });
+
+      handleClose();
+    }
   };
   return (
     <StyledDiv>
