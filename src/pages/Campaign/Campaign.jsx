@@ -176,7 +176,7 @@ const Campaign = () => {
         };
         // console.log({ campaign, newCampaign });
         const res = await updateCampaign(newCampaign);
-        setCampaign(res?.data?.data);
+        // setCampaign({...campaign, extras: res?.data?.data?.extras});
       } catch (err) {
         console.log({ err });
       }
@@ -209,15 +209,12 @@ const Campaign = () => {
                   </Tooltip>
                 )}
               </IconButton> */}
-              <FormControlLabel
-                control={
+              <Tooltip title={item?.isVisible?"Hide From Brand":"Show to Brand"}>
                   <Switch
                     checked={item?.isVisible}
                     onChange={handleVisibilityColumn(item)}
                   />
-                }
-                label="Visible"
-              />
+                  </Tooltip>
             </span>
           ),
           searchable: true,
