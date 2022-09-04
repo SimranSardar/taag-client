@@ -9,6 +9,7 @@ import {
   Campaigns,
   AddArtist,
   ResetPassword,
+  Error404,
 } from "./pages/";
 import SelectArtists from "./pages/SelectArtists/SelectArtists";
 import UploadArtists from "./pages/UploadArtists/UploadArtists";
@@ -65,7 +66,7 @@ const App = () => {
                 path="/upload-artists"
                 element={<PrivateRoute component={UploadArtists} />}
               />
-              <Route path="/brand" element={<BrandCampaigns />} />
+              <Route path="*" element={<Error404 />} />
             </Routes>
           </CurrentContextProvider>
         </CampaignContextProvider>
