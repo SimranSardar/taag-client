@@ -19,7 +19,7 @@ const CampaignContextProvider = ({ children }) => {
     const res = await API_CAMPAIGN().get(`/all-by-user`, {
       params: {
         status,
-        userId: currentUser.id,
+        userId: currentUser?.id,
       },
     });
     setCampaigns(
