@@ -188,28 +188,26 @@ const Campaign = () => {
         };
         // console.log({ campaign, newCampaign });
         const res = await updateCampaign(newCampaign);
-        setCampaign(res?.data?.data);
+        setCampaign(newCampaign);
       } catch (err) {
         console.log({ err });
       }
     };
   }
 
-  function handleDeleteColumn(currentItem) {
-    return async (e) => {
-      try {
-        const newCampaign = {
-          ...campaign,
-          extras: campaign?.extras?.filter(
-            (item) => item.dataIndex !== currentItem.dataIndex
-          ),
-        };
-        const res = await updateCampaign(newCampaign);
-        setCampaign(res?.data?.data);
-      } catch (err) {
-        console.log({ err });
-      }
-    };
+  async function handleDeleteColumn(currentItem) {
+    try {
+      const newCampaign = {
+        ...campaign,
+        extras: campaign?.extras?.filter(
+          (item) => item.dataIndex !== currentItem.dataIndex
+        ),
+      };
+      const res = await updateCampaign(newCampaign);
+      setCampaign(newCampaign);
+    } catch (err) {
+      console.log({ err });
+    }
   }
 
   useEffect(() => {
