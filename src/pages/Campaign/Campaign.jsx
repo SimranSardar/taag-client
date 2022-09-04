@@ -13,6 +13,7 @@ import {
   FormControlLabel,
   Tooltip,
   CircularProgress,
+  IconButton,
 } from "@mui/material";
 import { TabIcon } from "../../assets";
 import { CurrentContext } from "../../utils/contexts";
@@ -27,6 +28,8 @@ import { tableData } from "../../utils/constants";
 import SelectArtists from "./SelectArtists";
 import NewColumn from "./NewColumn";
 import { AuthContext } from "../../utils/auth/AuthContext";
+import { Popconfirm } from "antd";
+import { DeleteOutlined } from "@mui/icons-material";
 
 function newSelectionArist(item, campaign) {
   console.log({ item });
@@ -170,6 +173,7 @@ const Campaign = () => {
   useEffect(() => {
     console.log({ campaign });
   });
+
   function handleVisibilityColumn(currentItem) {
     return async (e) => {
       console.log([campaign]);
@@ -190,6 +194,24 @@ const Campaign = () => {
       }
     };
   }
+
+  function handleDeleteColumn(currentItem) {
+    return async (e) => {
+      try {
+        const newCampaign = {
+          ...campaign,
+          extras: campaign?.extras?.filter(
+            (item) => item.dataIndex !== currentItem.dataIndex
+          ),
+        };
+        const res = await updateCampaign(newCampaign);
+        setCampaign(res?.data?.data);
+      } catch (err) {
+        console.log({ err });
+      }
+    };
+  }
+
   useEffect(() => {
     setCampaignId(id);
     console.log("set id");
@@ -203,7 +225,13 @@ const Campaign = () => {
         ...campaign.extras.map((item) => ({
           ...item,
           title: (
-            <span style={{ display: "flex" }}>
+            <span
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               {item.title}
               {/* <IconButton onClick={handleVisibilityColumn(item)}>
                 {item?.isVisible ? (
@@ -224,10 +252,19 @@ const Campaign = () => {
                   onChange={handleVisibilityColumn(item)}
                 />
               </Tooltip>
+              <Popconfirm
+                title="Sure to delete?"
+                onConfirm={() => handleDeleteColumn(item)}
+              >
+                <IconButton>
+                  <DeleteOutlined htmlColor="pink" />
+                </IconButton>
+              </Popconfirm>
             </span>
           ),
           searchable: true,
           editable: true,
+          width: "12%",
         })),
       ]);
     }
