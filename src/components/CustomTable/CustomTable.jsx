@@ -319,6 +319,20 @@ const CustomTable = ({
               ),
             };
           }
+          if (
+            campaign?.deliverable?.includes("YT") &&
+            col.dataIndex === "followers"
+          ) {
+            finalCol = {
+              ...finalCol,
+              title: "Subscribers",
+              render: (text, record) => (
+                <span>
+                  {KMBFormatter(record?.youtube?.subscribers) || "NA"}
+                </span>
+              ),
+            };
+          }
           return finalCol;
         }),
       ]);

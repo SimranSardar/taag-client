@@ -431,13 +431,19 @@ export const selectArtistColumns = {
       dataIndex: "followers",
       key: "followers",
       render: (followers, record) => (
-        <span>
-          {KMBFormatter(
-            record.deliverable?.includes("YT")
-              ? record.youtube?.subscribers
-              : record.instagram?.followers || "NA"
-          )}
-        </span>
+        <span>{KMBFormatter(record.instagram?.followers || "NA")}</span>
+      ),
+      // width: "20%",
+      sorter: (a, b) =>
+        parseInt(a.instagram?.followers) - parseInt(b.instagram?.followers),
+      // sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: "Subscribers",
+      dataIndex: "subscribers",
+      key: "subscribers",
+      render: (sub, record) => (
+        <span>{KMBFormatter(record.youtube?.subscribers || "NA")}</span>
       ),
       // width: "20%",
       sorter: (a, b) =>

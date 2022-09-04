@@ -10,9 +10,11 @@ const CampaignContextProvider = ({ children }) => {
   const [artists, setArtists] = useState([]);
 
   const { currentUser } = useContext(AuthContext);
+
   useEffect(() => {
     console.log({ currentUser });
   }, [currentUser]);
+
   async function fetchCampaigns(status = "all") {
     const res = await API_CAMPAIGN().get(`/all-by-user`, {
       params: {
