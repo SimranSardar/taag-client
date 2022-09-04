@@ -418,12 +418,63 @@ export const selectArtistColumns = {
       },
     },
     {
-      title: "Link",
+      title: "Youtube Link",
       dataIndex: "link",
       key: "link",
       // width: "20%",
       // searchable: true,
-      render: (link, record) => getLink(record) ?? "NA",
+      render: (link, record) => (
+        <span>
+          {record?.youtube?.link ? (
+            <a
+              style={{
+                maxWidth: "100px",
+                display: "block",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+              href={record?.youtube?.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {record?.youtube?.link || "NA"}
+            </a>
+          ) : (
+            "NA"
+          )}
+        </span>
+      ),
+      editable: false,
+    },
+    {
+      title: "Instagram Link",
+      dataIndex: "link",
+      key: "link",
+      // width: "20%",
+      // searchable: true,
+      render: (link, record) => (
+        <span>
+          {record?.instagram?.link ? (
+            <a
+              style={{
+                maxWidth: "100px",
+                display: "block",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+              href={record?.instagram?.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {record?.instagram?.link || "NA"}
+            </a>
+          ) : (
+            "NA"
+          )}
+        </span>
+      ),
       editable: false,
     },
     {
