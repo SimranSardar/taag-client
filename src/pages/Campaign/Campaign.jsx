@@ -146,7 +146,7 @@ const Campaign = () => {
     totalArtists: 0,
   });
   const [ytStatsPromises, setYTStatsPromises] = useState({});
-  const [tableLoading, setTableLoading] = useState(false);
+  const [tableLoading, setTableLoading] = useState(true);
   const [averageROI, setAverageROI] = useState(0.0);
   const [languages, setLanguages] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -333,7 +333,7 @@ const Campaign = () => {
   useEffect(() => {
     async function fetchYTData() {
       console.log("fetching yt data");
-      setTableLoading(true);
+      setTableLoading(() => true);
       const values = await Promise.all(Object.values(ytStatsPromises));
       console.log({ values });
       const newSelectedRows = selectedRows?.map((item) => {
@@ -349,8 +349,8 @@ const Campaign = () => {
           views: ytStats?.data?.views,
         };
       });
-      setSelectedRows(newSelectedRows);
-      setTableLoading(false);
+      setSelectedRows(() => newSelectedRows);
+      setTableLoading(() => false);
     }
     if (
       Object.values(ytStatsPromises).length &&

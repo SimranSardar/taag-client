@@ -115,9 +115,10 @@ const CustomTable = ({
   // const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  useState(() => {
-    setLoading(tableLoading);
-  }, [tableLoading]);
+  // useState(() => {
+  //   console.log({})
+  //   setLoading(tableLoading);
+  // }, [tableLoading]);
 
   useEffect(() => {
     setLoading(true);
@@ -454,7 +455,7 @@ const CustomTable = ({
         x: width || 1500,
         y: 350,
       }}
-      loading={loading}
+      loading={tableLoading ?? loading}
     />
   );
 };
