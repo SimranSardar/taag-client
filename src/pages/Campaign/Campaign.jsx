@@ -21,6 +21,7 @@ import {
   formatIndianCurrency,
   getCommercial,
   getROI,
+  getYoutubeId,
   KMBFormatter,
   showAlert,
 } from "../../utils";
@@ -30,6 +31,7 @@ import NewColumn from "./NewColumn";
 import { AuthContext } from "../../utils/auth/AuthContext";
 import { Popconfirm } from "antd";
 import { DeleteOutlined } from "@mui/icons-material";
+import { API_ALL } from "../../utils/API";
 
 function newSelectionArist(item, campaign) {
   console.log({ item });
@@ -143,6 +145,8 @@ const Campaign = () => {
     averageROI: 0,
     totalArtists: 0,
   });
+  const [ytStatsPromises, setYTStatsPromises] = useState({});
+  const [tableLoading, setTableLoading] = useState(false);
   const [averageROI, setAverageROI] = useState(0.0);
   const [languages, setLanguages] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -231,17 +235,6 @@ const Campaign = () => {
               }}
             >
               {item.title}
-              {/* <IconButton onClick={handleVisibilityColumn(item)}>
-                {item?.isVisible ? (
-                  <Tooltip title="Show to Brand">
-                    <VisibilityIcon htmlColor="white" />
-                  </Tooltip>
-                ) : (
-                  <Tooltip title="Hide from Brand">
-                    <VisibilityOffIcon htmlColor="white" />
-                  </Tooltip>
-                )}
-              </IconButton> */}
               <Tooltip
                 title={item?.isVisible ? "Hide From Brand" : "Show to Brand"}
               >
@@ -268,13 +261,27 @@ const Campaign = () => {
     }
     if (campaign?.selectedArtists) {
       console.log({ selected: campaign.selectedArtists });
+      let tYtStatsPromises = {};
       setSelectedRows(
-        campaign.selectedArtists.map((item) =>
-          newSelectionArist(item, campaign)
-        )
+        campaign.selectedArtists.map((item) => {
+          if (item.deliverableLink && item.deliverableLink !== "NA") {
+            tYtStatsPromises[item._id] = getYoutubeStats(item.deliverableLink);
+          }
+          return newSelectionArist(item, campaign);
+        })
       );
+      setYTStatsPromises(tYtStatsPromises);
     }
   }, [campaign]);
+
+  async function getYoutubeStats(link) {
+    const ytId = getYoutubeId(link);
+    return await API_ALL().get(`/youtube/getLikes`, {
+      params: {
+        videoId: ytId["1"],
+      },
+    });
+  }
 
   useEffect(() => {
     setHeaderData({
@@ -322,6 +329,36 @@ const Campaign = () => {
       console.log({ tCategories, tLanguages });
     }
   }, [selectedRows]);
+
+  useEffect(() => {
+    async function fetchYTData() {
+      console.log("fetching yt data");
+      setTableLoading(true);
+      const values = await Promise.all(Object.values(ytStatsPromises));
+      console.log({ values });
+      const newSelectedRows = selectedRows?.map((item) => {
+        const ytId = getYoutubeId(item.deliverableLink);
+        if (!ytId) {
+          return item;
+        }
+        const ytStats = values.find((val) => val.data.videoId === ytId["1"]);
+        return {
+          ...item,
+          likes: ytStats?.data?.likes,
+          comments: ytStats?.data?.comments,
+          views: ytStats?.data?.views,
+        };
+      });
+      setSelectedRows(newSelectedRows);
+      setTableLoading(false);
+    }
+    if (
+      Object.values(ytStatsPromises).length &&
+      location.pathname.includes("analytics")
+    ) {
+      fetchYTData();
+    }
+  }, [ytStatsPromises, location.pathname]);
 
   function handleSelectRow(rows) {
     // setCampaign({ ...campaign, selectedArtists: rows });
@@ -481,6 +518,7 @@ const Campaign = () => {
                 columns={tableData.campaign_analytics.columns}
                 data={selectedRows}
                 // isSelectable
+                tableLoading={tableLoading}
                 setData={setSelectedRows}
                 onRowSelect={handleSelectRow}
                 selectedRows={campaign?.selectedArtists || []}

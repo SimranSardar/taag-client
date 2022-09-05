@@ -110,9 +110,14 @@ const CustomTable = ({
   categories,
   width,
   setModifiedArtists,
+  tableLoading,
 }) => {
   // const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  useState(() => {
+    setLoading(tableLoading);
+  }, [tableLoading]);
 
   useEffect(() => {
     setLoading(true);
