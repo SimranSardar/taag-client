@@ -146,7 +146,7 @@ const Campaign = () => {
     totalArtists: 0,
   });
   const [ytStatsPromises, setYTStatsPromises] = useState({});
-  const [tableLoading, setTableLoading] = useState(true);
+  const [tableLoading, setTableLoading] = useState(false);
   const [averageROI, setAverageROI] = useState(0.0);
   const [languages, setLanguages] = useState([]);
   const [categories, setCategories] = useState([]);
